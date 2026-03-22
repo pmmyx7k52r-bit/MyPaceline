@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pace v1.5</title>
+<title>Pace v1.5 korrigiert</title>
 
 <style>
 body {
@@ -154,33 +154,26 @@ let timeLeft = 180;
 function startDay(value) {
 energy = value;
 log = [];
-
 document.getElementById("startScreen").classList.add("hidden");
 document.getElementById("app").classList.remove("hidden");
-
 updateUI();
 renderLog();
 }
 
 function startFocus() {
 if (focusTimer) return;
-
 timeLeft = 180;
 document.getElementById("timer").classList.remove("hidden");
-
 focusTimer = setInterval(() => {
 timeLeft--;
 updateTimer();
-
 if (timeLeft <= 0) {
 clearInterval(focusTimer);
 focusTimer = null;
-
 addLoad(3, "3 Min Fokus geschafft");
-pause(); // zwingende Pause nach Fokus
-showMessage("Stopp. Jetzt Pause.");
-
+pause(); // zwingende Pause
 document.getElementById("timer").classList.add("hidden");
+showMessage("Stopp. Jetzt Pause.");
 }
 }, 1000);
 }
@@ -195,10 +188,8 @@ String(min).padStart(2, '0') + ":" + String(sec).padStart(2, '0');
 function addLoad(amount, label) {
 energy -= amount;
 if (energy < 0) energy = 0;
-
 const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 log.unshift({ time, label, amount });
-
 updateUI();
 renderLog();
 checkLimits();
@@ -210,24 +201,20 @@ clearInterval(focusTimer);
 focusTimer = null;
 document.getElementById("timer").classList.add("hidden");
 }
-
 log.unshift({
 time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
 label: "Pause",
 amount: 0
 });
-
 renderLog();
 showMessage("Erholung läuft.");
 }
 
 function undoLast() {
 if (log.length === 0) return;
-
 const last = log.shift();
 energy += last.amount;
 if (energy > 100) energy = 100;
-
 updateUI();
 renderLog();
 }
@@ -235,7 +222,6 @@ renderLog();
 function renderLog() {
 const logDiv = document.getElementById("log");
 logDiv.innerHTML = ""
-
 log.forEach(entry => {
 const div = document.createElement("div");
 div.className = "log-entry"
@@ -246,7 +232,6 @@ logDiv.appendChild(div);
 
 function updateUI() {
 const statusEl = document.getElementById("statusText");
-
 let status = "Alles ok"
 let color = "#34c759"
 
@@ -257,7 +242,6 @@ if (energy < 25) { status = "Zu spät – nur noch Erholung" color = "#ff3b30" }
 
 statusEl.innerText = status;
 statusEl.style.background = color;
-
 document.getElementById("energy").innerText = "Energie: " + energy + "%"
 }
 
