@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pace v1.5</title>
+
+<style>
+body {
+font-family: -apple-system, sans-serif;
+background: #f2f2f7;
+text-align: center;
+margin: 0;
+padding: 20px;
+}
+
+.card {
+background: white;
+border-radius: 16px;
+padding: 20px;
+margin: 20px auto;
+max-width: 400px;
+box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.button {
+display: block;
+width: 100%;
+padding: 15px;
+margin: 10px 0;
+border-radius: 12px;
+border: none;
+font-size: 17px;
+font-weight: bold;
+}
+
+.sub {
+font-size: 13px;
+opacity: 0.7;
+margin-top: 4px;
+}
+
+.green { background: #34c759; color: white; }
+.yellow { background: #ffcc00; }
+.orange { background: #ff9500; color: white; }
+.red { background: #ff3b30; color: white; }
+.gray { background: #e5e5ea; }
+
+.status {
+font-size: 28px;
+font-weight: bold;
+padding: 10px;
+border-radius: 12px;
+color: white;
+}
+
+.energy {
+font-size: 14px;
+opacity: 0.7;
+margin-top: 5px;
+}
+
+.timer {
+font-size: 30px;
+margin-top: 10px;
+font-weight: bold;
+}
+
+.log {
+text-align: left;
+font-size: 14px;
+max-height: 200px;
+overflow-y: auto;
+}
+
+.log-entry {
+padding: 5px 0;
+border-bottom: 1px solid #eee;
+}
+
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+
+<h1>Pace</h1>
+
+<div id="startScreen" class="card">
+<h2>Wie hast du geschlafen?</h2>
+<button class="button green" onclick="startDay(100)">🟢 Gut geschlafen</button>
+<button class="button yellow" onclick="startDay(80)">🟡 So lala</button>
+<button class="button red" onclick="startDay(60)">🔴 Schlecht geschlafen</button>
+</div>
+
+<div id="app" class="hidden">
+
+<div class="card">
+<div id="statusText" class="status">Alles ok</div>
+<div id="energy" class="energy">Energie: 100%</div>
+<div id="timer" class="timer hidden">03:00</div>
+</div>
+
+<div class="card">
+<h3>Was ist gerade passiert?</h3>
+
+<button class="button orange" onclick="startFocus()">
+🟠 Ich starte jetzt 3 Minuten Fokus
+</button>
+
+<button class="button green" onclick="addLoad(2,'Kurz körperlich aktiv')">
+🟢 Ich war kurz körperlich aktiv
+<div class="sub">Treppen • Tragen • Puls hoch</div>
+</button>
+
+<button class="button yellow" onclick="addLoad(5,'Länger bewegt')">
+🟡 Ich habe mich länger bewegt
+<div class="sub">Gehen • stehen • unterwegs</div>
+</button>
+
+<button class="button yellow" onclick="addLoad(7,'Etwas erledigt')">
+🟡 Ich habe etwas erledigt
+<div class="sub">Haushalt • Gespräch • Einkaufen</div>
+</button>
+
+<button class="button red" onclick="addLoad(20,'Zu viel für mich')">
+🔴 Das war zu viel für mich
+</button>
+
+</div>
+
+<div class="card">
+<button class="button gray" onclick="pause()">Ich mache Pause</button>
+</div>
+
+<div class="card">
+<div id="message"></div>
+</div>
+
+<div class="card">
+<h3>Heute</h3>
+<div id="log" class="log"></div>
+<button class="button gray" onclick="undoLast()">Letzten Eintrag löschen</button>
+</div>
+
+</div>
+
+<script>
+let energy = 100;
+let log = [];
+let focusTimer = null;
+let timeLeft = 180;
+
+function startDay(value) {
+energy = value;
+log = [];
+
+document.getElementById("startScreen").classList.add("hidden");
+document.getElementById("app").classList.remove("hidden");
+
+updateUI();
+renderLog();
+}
+
+function startFocus() {
+if (focusTimer) return;
+
+timeLeft = 180;
+document.getElementById("timer").classList.remove("hidden");
+
+focusTimer = setInterval(() => {
+timeLeft--;
+updateTimer();
+
+if (timeLeft <= 0) {
+clearInterval(focusTimer);
+focusTimer = null;
+
+addLoad(3, "3 Min Fokus geschafft");
+pause(); // zwingende Pause nach Fokus
+showMessage("Stopp. Jetzt Pause.");
+
+document.getElementById("timer").classList.add("hidden");
+}
+}, 1000);
+}
+
+function updateTimer() {
+let min = Math.floor(timeLeft / 60);
+let sec = timeLeft % 60;
+document.getElementById("timer").innerText =
+String(min).padStart(2, '0') + ":" + String(sec).padStart(2, '0');
+}
+
+function addLoad(amount, label) {
+energy -= amount;
+if (energy < 0) energy = 0;
+
+const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+log.unshift({ time, label, amount });
+
+updateUI();
+renderLog();
+checkLimits();
+}
+
+function pause() {
+if (focusTimer) {
+clearInterval(focusTimer);
+focusTimer = null;
+document.getElementById("timer").classList.add("hidden");
+}
+
+log.unshift({
+time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+label: "Pause",
+amount: 0
+});
+
+renderLog();
+showMessage("Erholung läuft.");
+}
+
+function undoLast() {
+if (log.length === 0) return;
+
+const last = log.shift();
+energy += last.amount;
+if (energy > 100) energy = 100;
+
+updateUI();
+renderLog();
+}
+
+function renderLog() {
+const logDiv = document.getElementById("log");
+logDiv.innerHTML = ""
+
+log.forEach(entry => {
+const div = document.createElement("div");
+div.className = "log-entry"
+div.innerText = `${entry.time} – ${entry.label} ${entry.amount ? "(-"+entry.amount+")":""}`;
+logDiv.appendChild(div);
+});
+}
+
+function updateUI() {
+const statusEl = document.getElementById("statusText");
+
+let status = "Alles ok"
+let color = "#34c759"
+
+if (energy < 70) { status = "Langsam machen" color = "#ffcc00" }
+if (energy < 55) { status = "Pause einlegen" color = "#ff9500" }
+if (energy < 40) { status = "Stopp jetzt" color = "#ff3b30" }
+if (energy < 25) { status = "Zu spät – nur noch Erholung" color = "#ff3b30" }
+
+statusEl.innerText = status;
+statusEl.style.background = color;
+
+document.getElementById("energy").innerText = "Energie: " + energy + "%"
+}
+
+function checkLimits() {
+if (energy < 55) showMessage("Jetzt Pause einlegen.");
+if (energy < 40) showMessage("Stopp. Sonst Crash.");
+if (energy < 25) showMessage("Zu spät – nur noch Erholung.");
+}
+
+function showMessage(text) {
+document.getElementById("message").innerText = text;
+}
+</script>
+
+</body>
+</html>
