@@ -3,289 +3,343 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pace 2.4.1</title>
-
-<meta http-equiv="Cache-Control" content="no-store">
+<title>MyPaceline 2.5.5</title>
 
 <style>
-body {
-font-family: -apple-system, sans-serif;
-background:#f2f2f7;
-padding:20px;
-text-align:center;
-}
-
-.card {
-background:white;
-border-radius:12px;
-padding:16px;
-margin-bottom:15px;
-}
+body { font-family:-apple-system; background:#f2f2f7; padding:20px; text-align:center;}
+.card { background:white; border-radius:12px; padding:16px; margin-bottom:15px;}
 
 button {
 width:100%;
 padding:14px;
 margin-top:8px;
-font-size:15px;
 border:none;
 border-radius:10px;
 color:white;
-}
-
-.focus { background:#34c759; }
-.light { background:#5ac8fa; }
-.bodywork { background:#ff9500; }
-.toomuch { background:#ff3b30; }
-.pause { background:#007aff; }
-.undo { background:#ccc; color:#333; }
-
-#status {
-font-size:32px;
-font-weight:bold;
-}
-
-.ok { color:#2ecc71; }
-.mid { color:#f39c12; }
-.bad {
-color:#e74c3c;
-animation: blink 1s infinite;
-}
-
-@keyframes blink {
-0% {opacity:1;}
-50% {opacity:0.4;}
-100% {opacity:1;}
-}
-
-#timer {
-font-size:28px;
-margin-top:10px;
-}
-
-#warningBox {
-font-weight:bold;
-min-height:22px;
-}
-
-input {
-width:60px;
 font-size:16px;
+}
+
+.green{background:#34c759;}
+.orange{background:#ff9500;}
+.red{background:#ff3b30;}
+.blue{background:#007aff;}
+.grey{background:#ccc;color:#333;}
+
+#status{
+font-size:28px;
+font-weight:bold;
+padding:10px;
+border-radius:10px;
+}
+
+.ok{background:#d4f8d4;color:#1a7f1a;}
+.warn{background:#fff4cc;color:#b38600;}
+.danger{background:#ffd6d6;color:#a10000;}
+
+#timer{display:none;font-size:26px;margin-top:10px;}
+
+#focusRow{
+display:flex;
+gap:8px;
+align-items:center;
+}
+
+#focusRow button{
+flex:1;
+margin-top:0;
+}
+
+#baselineDisplay{
+width:70px;
 text-align:center;
+font-weight:bold;
+}
+
+/* Popup */
+#baselinePopup{
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.5);
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.popupBox{
+background:white;
+padding:20px;
+border-radius:12px;
+width:80%;
+max-width:300px;
+}
+
+#baselineOptions{
+display:flex;
+flex-direction:column;
+}
+
+#baselineOptions button{
+width:100%;
+margin-top:8px;
+}
+
+.selected{
+background:#007aff !important;
+color:white !important;
+}
+
+/* Toast */
+#toast{
+position:fixed;
+bottom:30px;
+left:50%;
+transform:translateX(-50%);
+background:#333;
+color:white;
+padding:12px 20px;
+border-radius:10px;
+opacity:0;
+transition:opacity 0.3s;
+z-index:1000;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Pace 2.4.1</h1>
+<h1>MyPaceline</h1>
 
 <div id="start" class="card">
-<p>Wie hast du geschlafen?</p>
-<button onclick="startDay(100)">Gut</button>
-<button onclick="startDay(80)">Geht so</button>
-<button onclick="startDay(60)">Schlecht</button>
+<h3>Wie hast du geschlafen?</h3>
+<button id="good" class="green">Gut</button>
+<button id="mid" class="orange">Geht so</button>
+<button id="bad" class="red">Schlecht</button>
 </div>
 
 <div id="app" style="display:none;">
 
 <div class="card">
-Fokus-Limit:
-<input type="number" id="focusLimitInput" value="3" min="1" max="15"> Minuten
-</div>
-
-<div class="card">
-<div id="status">Alles ok</div>
+<div id="status" class="ok">Alles ok</div>
 <div id="energy">Energie: 100%</div>
-<div id="timer" style="display:none;">00:00</div>
-<div id="warningBox"></div>
+<div id="timer">00:00</div>
+<div id="warn"></div>
 </div>
 
 <div class="card">
-<button class="pause" onclick="doPause()">Pause</button>
+<button id="pause" class="green">Pause</button>
 </div>
 
 <div class="card">
-<button class="focus" onclick="toggleFocus()">Kopf an (Lesen, Handy, Einkaufen)</button>
-<button class="light" onclick="add(2,'Locker bewegt')">Locker bewegen</button>
-<button class="bodywork" onclick="add(6,'Körper anstrengend')">Körper anstrengend</button>
-<button class="toomuch" onclick="add(20,'Zu viel')">Das war zu viel</button>
+
+<div id="focusRow">
+<button id="focus" class="blue">Kopf an</button>
+<div id="baselineDisplay">3 min</div>
+<button id="baselineBtn" class="grey">⚙️</button>
+</div>
+
+<button id="move" class="blue">Locker bewegen</button>
+<button id="body" class="orange">Körper anstrengend</button>
+<button id="too" class="red">Zu viel</button>
+
 </div>
 
 <div class="card">
-<h3>Heute</h3>
 <div id="log"></div>
 </div>
 
-<button class="undo" onclick="undo()">Rückgängig</button>
+<button id="undo" class="grey">Rückgängig</button>
 
 </div>
 
+<!-- Popup -->
+<div id="baselinePopup">
+<div class="popupBox">
+<h3>Baseline ändern</h3>
+<p>Wähle deine Minuten-Grenze:</p>
+<div id="baselineOptions"></div>
+<button id="closeBaseline" class="grey">Abbrechen</button>
+</div>
+</div>
+
+<!-- Toast -->
+<div id="toast">Neue Baseline gespeichert</div>
+
 <script>
+document.addEventListener("DOMContentLoaded", function(){
 
-var energy = 100;
-var log = [];
+let energy=100, log=[];
+let timer=null, start=0;
 
-var slowLimit, pauseLimit, stopLimit;
-var pauseHintShown = false;
+let baseline = localStorage.getItem("baseline")
+? parseInt(localStorage.getItem("baseline"))
+: 3;
 
-var timer = null;
-var focusStart = null;
+const $ = id => document.getElementById(id);
+
+function showApp(){
+$("start").style.display="none"
+$("app").style.display="block"
+}
+
+function updateStatus(){
+let s=$("status");
+
+if(energy>70){
+s.className="ok"
+s.innerText="Alles ok"
+}else if(energy>40){
+s.className="warn"
+s.innerText="Achtung"
+}else{
+s.className="danger"
+s.innerText="Stopp"
+}
+}
+
+function updateBaselineDisplay(){
+$("baselineDisplay").innerText = baseline + " min"
+}
+
+function showToast(msg){
+let t = $("toast");
+t.innerText = msg;
+t.style.opacity = 1;
+
+setTimeout(()=>{
+t.style.opacity = 0;
+},1500);
+}
 
 function now(){
-let d = new Date();
+let d=new Date();
 return d.getHours()+":"+("0"+d.getMinutes()).slice(-2);
 }
 
-function startDay(val){
-
-energy = val;
-log = [];
-pauseHintShown = false;
-
-if(val === 60){
-slowLimit = 75;
-pauseLimit = 60;
-stopLimit = 35;
-} else if(val === 80){
-slowLimit = 70;
-pauseLimit = 55;
-stopLimit = 30;
-} else {
-slowLimit = 65;
-pauseLimit = 50;
-stopLimit = 25;
+function render(){
+$("log").innerHTML = log.map(e=>e.time+" - "+e.text).join("<br>");
+$("energy").innerText="Energie: "+energy+"%"
+updateStatus();
 }
 
-document.getElementById("start").style.display = "none"
-document.getElementById("app").style.display = "block"
+// Start
+$("good").onclick=()=>{energy=100;showApp();render();}
+$("mid").onclick=()=>{energy=80;showApp();render();}
+$("bad").onclick=()=>{energy=60;showApp();render();}
 
-update();
-}
+// Actions
+$("move").onclick=()=>add(2,"Locker bewegt");
+$("body").onclick=()=>add(6,"Körper anstrengend");
+$("too").onclick=()=>add(20,"Zu viel");
+$("pause").onclick=()=>add(0,"Pause");
 
-function add(val, text){
-energy -= val;
-if(energy < 0) energy = 0;
-
-log.unshift({time: now(), text: text, value: val});
+$("undo").onclick=()=>{
+if(!log.length) return;
+log.shift();
 render();
-update();
-}
+};
 
-function doPause(){
-
-// ALLES resetten
-document.getElementById("warningBox").innerText = ""
-pauseHintShown = false;
-
-log.unshift({time: now(), text: "Pause", value:0});
+function add(v,t){
+energy-=v; if(energy<0) energy=0;
+log.unshift({time:now(),text:t});
 render();
 }
 
-function toggleFocus(){
-
-let warning = document.getElementById("warningBox");
+// Fokus
+$("focus").onclick=()=>{
 
 if(timer){
 clearInterval(timer);
-timer = null;
+timer=null;
 
-let min = (Date.now() - focusStart)/60000;
+let min=(Date.now()-start)/60000;
 
-document.getElementById("timer").style.display = "none"
-warning.innerText = ""
+$("timer").style.display="none"
+$("focus").innerText="Kopf an"
 
-let cost = 2;
-if(min > 3) cost = 5;
-if(min > 6) cost = 10;
-if(min > 10) cost = 12;
-if(min > 15) cost = 15;
+let cost = min>baseline?5:2;
+add(cost,"Kopf an "+Math.round(min)+" Min");
 
-add(cost, "Kopf an "+Math.round(min)+" Min");
+}else{
 
-} else {
+start=Date.now();
+$("timer").style.display="block"
+$("focus").innerText="Stopp"
 
-focusStart = Date.now();
-document.getElementById("timer").style.display = "block"
+timer=setInterval(()=>{
+let sec=(Date.now()-start)/1000;
+let m=Math.floor(sec/60);
+let s=Math.floor(sec%60);
 
-timer = setInterval(function(){
+$("timer").innerText=("0"+m).slice(-2)+":"+("0"+s).slice(-2);
 
-let sec = (Date.now() - focusStart)/1000;
-let m = Math.floor(sec/60);
-let s = Math.floor(sec%60);
+let cur=sec/60;
 
-document.getElementById("timer").innerText =
-("0"+m).slice(-2)+":"+("0"+s).slice(-2);
-
-let limit = parseFloat(document.getElementById("focusLimitInput").value);
-let warn = limit * 0.85;
-
-let currentMin = sec / 60;
-
-if(currentMin >= warn && currentMin < limit){
-warning.innerText = "⚠ gleich drüber!"
-}
-else if(currentMin >= limit){
-warning.innerText = "⚠ Grenze erreicht!"
-}
-else{
-warning.innerText = ""
-}
+if(cur>baseline*0.85 && cur<baseline) $("warn").innerText="⚠ gleich"
+else if(cur>=baseline) $("warn").innerText="⚠ Grenze"
+else $("warn").innerText=""
 
 },1000);
 }
-}
+};
 
-function undo(){
-if(log.length === 0) return;
+// Baseline Popup
+$("baselineBtn").onclick=()=>{
 
-let last = log.shift();
-energy += last.value;
-if(energy > 100) energy = 100;
+$("baselinePopup").style.display="flex"
 
-render();
-update();
-}
+let box=$("baselineOptions");
+box.innerHTML=""
 
-function update(){
+const options = [
+{v:2, label:"sehr vorsichtig"},
+{v:3, label:"Standard"},
+{v:4, label:"etwas mehr"},
+{v:5, label:"hoch"},
+{v:6, label:"riskant"}
+];
 
-let status = document.getElementById("status");
-let warning = document.getElementById("warningBox");
+options.forEach(o=>{
+let b=document.createElement("button");
 
-document.getElementById("energy").innerText = "Energie: "+energy+"%"
+let text = o.v+" min ("+o.label+")"
+if(o.v===baseline) text += " ✓"
 
-if(energy >= slowLimit){
-status.innerText = "Alles ok"
-status.className = "ok"
-}
-else if(energy >= stopLimit){
-status.innerText = "Langsam machen"
-status.className = "mid"
-}
-else{
-status.innerText = "Stopp"
-status.className = "bad"
-}
+b.innerText = text;
 
-// KORREKTE Pause-Logik
-if(energy <= pauseLimit){
-if(!pauseHintShown){
-warning.innerText = "⚠ Pause sinnvoll"
-pauseHintShown = true;
-}
-} else {
-warning.innerText = ""
-pauseHintShown = false;
-}
-}
+if(o.v===baseline) b.classList.add("selected");
 
-function render(){
-let out = ""
-for(let e of log){
-out += e.time+" – "+e.text+"<br>"
-}
-document.getElementById("log").innerHTML = out;
-}
+b.onclick=()=>{
+baseline = o.v;
+localStorage.setItem("baseline", baseline);
+updateBaselineDisplay();
+$("baselinePopup").style.display="none"
+showToast("Neue Baseline gespeichert");
+};
 
+box.appendChild(b);
+});
+};
+
+$("closeBaseline").onclick=()=>{
+$("baselinePopup").style.display="none"
+};
+
+// Outside click
+let popup = $("baselinePopup");
+let box = document.querySelector(".popupBox");
+
+popup.onclick=(e)=>{
+if(e.target===popup) popup.style.display="none"
+};
+
+box.onclick=(e)=>e.stopPropagation();
+
+// Init
+updateBaselineDisplay();
+
+});
 </script>
 
 </body>
