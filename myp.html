@@ -1,11 +1,9 @@
-M1.9
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pace 1.9</title>
+<title>Pace 2.4.1</title>
 
 <meta http-equiv="Cache-Control" content="no-store">
 
@@ -15,7 +13,6 @@ font-family: -apple-system, sans-serif;
 background:#f2f2f7;
 padding:20px;
 text-align:center;
-transition: background 0.3s;
 }
 
 .card {
@@ -35,24 +32,24 @@ border-radius:10px;
 color:white;
 }
 
-/* Farben */
-.primary { background:#007aff; }
-.pauseBtn { background:#5ac8fa; }
-.move { background:#34c759; }
-.task { background:#ff9500; }
-.danger { background:#ff3b30; }
+.focus { background:#34c759; }
+.light { background:#5ac8fa; }
+.bodywork { background:#ff9500; }
+.toomuch { background:#ff3b30; }
+.pause { background:#007aff; }
 .undo { background:#ccc; color:#333; }
 
-/* Status */
-#status.ok { color:#2ecc71; }
-#status.mid { color:#f39c12; }
-#status.bad {
+#status {
+font-size:32px;
+font-weight:bold;
+}
+
+.ok { color:#2ecc71; }
+.mid { color:#f39c12; }
+.bad {
 color:#e74c3c;
 animation: blink 1s infinite;
 }
-#status.pause { color:#3498db; }
-
-body.pause { background:#eaf4ff; }
 
 @keyframes blink {
 0% {opacity:1;}
@@ -61,21 +58,26 @@ body.pause { background:#eaf4ff; }
 }
 
 #timer {
-font-size:26px;
+font-size:28px;
 margin-top:10px;
 }
 
 #warningBox {
-color:red;
 font-weight:bold;
-height:20px;
+min-height:22px;
+}
+
+input {
+width:60px;
+font-size:16px;
+text-align:center;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Pace 1.9</h1>
+<h1>Pace 2.4.1</h1>
 
 <div id="start" class="card">
 <p>Wie hast du geschlafen?</p>
@@ -87,43 +89,26 @@ height:20px;
 <div id="app" style="display:none;">
 
 <div class="card">
-<h2 id="status">Alles ok</h2>
-<p id="energy">Energie: 100%</p>
+Fokus-Limit:
+<input type="number" id="focusLimitInput" value="3" min="1" max="15"> Minuten
+</div>
+
+<div class="card">
+<div id="status">Alles ok</div>
+<div id="energy">Energie: 100%</div>
 <div id="timer" style="display:none;">00:00</div>
 <div id="warningBox"></div>
 </div>
 
-<!-- PAUSE -->
 <div class="card">
-<button id="pauseBtn" class="pauseBtn" onclick="togglePause()">
-Pause starten (hinlegen, Augen zu)
-</button>
+<button class="pause" onclick="doPause()">Pause</button>
 </div>
 
-<!-- FOKUS -->
 <div class="card">
-<button id="focusBtn" class="primary" onclick="toggleFocus()">
-Konzentriert arbeiten starten (Handy, PC, Lesen)
-</button>
-</div>
-
-<!-- AKTIONEN -->
-<div class="card">
-<button class="move" onclick="add(2,'Kurz bewegt')">
-Kurz bewegt (aufstehen, paar Schritte)
-</button>
-
-<button class="move" onclick="add(5,'Länger bewegt')">
-Länger bewegt (Duschen, Küche, Wege)
-</button>
-
-<button class="task" onclick="add(7,'Etwas erledigt')">
-Etwas erledigt (Telefon, Termine)
-</button>
-
-<button class="danger" onclick="add(20,'Zu viel')">
-Das war zu viel (Stress, Überforderung)
-</button>
+<button class="focus" onclick="toggleFocus()">Kopf an (Lesen, Handy, Einkaufen)</button>
+<button class="light" onclick="add(2,'Locker bewegt')">Locker bewegen</button>
+<button class="bodywork" onclick="add(6,'Körper anstrengend')">Körper anstrengend</button>
+<button class="toomuch" onclick="add(20,'Zu viel')">Das war zu viel</button>
 </div>
 
 <div class="card">
@@ -140,20 +125,36 @@ Das war zu viel (Stress, Überforderung)
 var energy = 100;
 var log = [];
 
-var isPause = false;
-var pauseStart = null;
+var slowLimit, pauseLimit, stopLimit;
+var pauseHintShown = false;
 
 var timer = null;
 var focusStart = null;
 
 function now(){
-var d = new Date();
-return d.getHours() + ":" + ("0"+d.getMinutes()).slice(-2);
+let d = new Date();
+return d.getHours()+":"+("0"+d.getMinutes()).slice(-2);
 }
 
 function startDay(val){
+
 energy = val;
 log = [];
+pauseHintShown = false;
+
+if(val === 60){
+slowLimit = 75;
+pauseLimit = 60;
+stopLimit = 35;
+} else if(val === 80){
+slowLimit = 70;
+pauseLimit = 55;
+stopLimit = 30;
+} else {
+slowLimit = 65;
+pauseLimit = 50;
+stopLimit = 25;
+}
 
 document.getElementById("start").style.display = "none"
 document.getElementById("app").style.display = "block"
@@ -162,8 +163,6 @@ update();
 }
 
 function add(val, text){
-if(isPause) return;
-
 energy -= val;
 if(energy < 0) energy = 0;
 
@@ -172,77 +171,64 @@ render();
 update();
 }
 
-function togglePause(){
+function doPause(){
 
-if(!isPause){
-isPause = true;
-pauseStart = Date.now();
+// ALLES resetten
+document.getElementById("warningBox").innerText = ""
+pauseHintShown = false;
 
-document.body.classList.add("pause");
-
-document.getElementById("status").innerText = "Pause läuft"
-document.getElementById("status").className = "pause"
-
-document.getElementById("pauseBtn").innerText = "Pause beenden"
-
-} else {
-
-isPause = false;
-
-var min = Math.round((Date.now() - pauseStart)/60000);
-
-log.unshift({time: now(), text: "Pause "+min+" Min", value:0});
-
-document.body.classList.remove("pause");
-
-document.getElementById("pauseBtn").innerText =
-"Pause starten (hinlegen, Augen zu)"
-
+log.unshift({time: now(), text: "Pause", value:0});
 render();
-update();
-}
 }
 
 function toggleFocus(){
-if(isPause) return;
+
+let warning = document.getElementById("warningBox");
 
 if(timer){
 clearInterval(timer);
 timer = null;
 
-var min = (Date.now() - focusStart)/60000;
+let min = (Date.now() - focusStart)/60000;
 
 document.getElementById("timer").style.display = "none"
-document.getElementById("focusBtn").innerText =
-"Konzentriert arbeiten starten (Handy, PC, Lesen)"
+warning.innerText = ""
 
-var cost = 3;
-if(min > 3) cost = 6;
+let cost = 2;
+if(min > 3) cost = 5;
 if(min > 6) cost = 10;
 if(min > 10) cost = 12;
 if(min > 15) cost = 15;
 
-add(cost, "Fokus "+Math.round(min)+" Min");
+add(cost, "Kopf an "+Math.round(min)+" Min");
 
 } else {
 
 focusStart = Date.now();
-
-document.getElementById("focusBtn").innerText = "Stoppen"
 document.getElementById("timer").style.display = "block"
 
 timer = setInterval(function(){
 
-var sec = (Date.now() - focusStart)/1000;
-var m = Math.floor(sec/60);
-var s = Math.floor(sec%60);
+let sec = (Date.now() - focusStart)/1000;
+let m = Math.floor(sec/60);
+let s = Math.floor(sec%60);
 
 document.getElementById("timer").innerText =
 ("0"+m).slice(-2)+":"+("0"+s).slice(-2);
 
-if(m === 2 && s > 30){
-document.getElementById("warningBox").innerText =
-"⚠ gleich über 3 Minuten!"
+let limit = parseFloat(document.getElementById("focusLimitInput").value);
+let warn = limit * 0.85;
+
+let currentMin = sec / 60;
+
+if(currentMin >= warn && currentMin < limit){
+warning.innerText = "⚠ gleich drüber!"
+}
+else if(currentMin >= limit){
+warning.innerText = "⚠ Grenze erreicht!"
+}
+else{
+warning.innerText = ""
 }
 
 },1000);
@@ -252,7 +238,7 @@ document.getElementById("warningBox").innerText =
 function undo(){
 if(log.length === 0) return;
 
-var last = log.shift();
+let last = log.shift();
 energy += last.value;
 if(energy > 100) energy = 100;
 
@@ -262,40 +248,41 @@ update();
 
 function update(){
 
-if(isPause) return;
+let status = document.getElementById("status");
+let warning = document.getElementById("warningBox");
 
-var status = document.getElementById("status");
+document.getElementById("energy").innerText = "Energie: "+energy+"%"
 
-document.getElementById("energy").innerText =
-"Energie: " + energy + "%"
-
-if(energy >= 70){
+if(energy >= slowLimit){
 status.innerText = "Alles ok"
 status.className = "ok"
-document.body.style.background = "#eafaf1"
 }
-else if(energy >= 40){
+else if(energy >= stopLimit){
 status.innerText = "Langsam machen"
 status.className = "mid"
-document.body.style.background = "#fff8e1"
 }
 else{
 status.innerText = "Stopp"
 status.className = "bad"
-document.body.style.background = "#fdecea"
+}
+
+// KORREKTE Pause-Logik
+if(energy <= pauseLimit){
+if(!pauseHintShown){
+warning.innerText = "⚠ Pause sinnvoll"
+pauseHintShown = true;
+}
+} else {
+warning.innerText = ""
+pauseHintShown = false;
 }
 }
 
 function render(){
-var out = ""
-
-for(var i=0;i<log.length;i++){
-var e = log[i];
-out += e.time + " – " + e.text;
-if(e.value) out += " (-"+e.value+")"
-out += "<br>"
+let out = ""
+for(let e of log){
+out += e.time+" – "+e.text+"<br>"
 }
-
 document.getElementById("log").innerHTML = out;
 }
 
