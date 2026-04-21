@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk 1.2.1</title>
+<title>VagusBuk 1.6</title>
 
 <style>
 body {
@@ -14,51 +14,103 @@ color: #e8eef2;
 text-align: center;
 }
 .container { padding: 20px; }
+
 button {
 width: 90%; max-width: 400px;
-margin: 10px; padding: 18px;
-font-size: 18px; border-radius: 12px;
-border: none; background: #1c2733; color: white;
+margin: 8px; padding: 18px;
+font-size: 18px;
+border-radius: 12px;
+border: none;
+color: white;
 }
-.hidden { display: none; }
-.timer { font-size: 48px; margin: 20px; }
-.warning { color: #ff6b6b; }
+
+.stable { background:#1f3d2b; }
+.tense { background:#4a3f1d; }
+.over { background:#4a1d1d; }
+.crash { background:#111; }
+
+.hidden { display:none; }
+.timer { font-size:48px; margin:20px; }
+
+.warning { color:#ff6b6b; }
+.good { color:#6bff95; }
+.info { opacity:0.8; }
+
+select {
+width: 90%;
+max-width: 400px;
+padding: 12px;
+margin: 8px;
+border-radius: 8px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>VagusBuk 1.2.1</h1>
+<h1>VagusBuk 1.6</h1>
 
 <div class="container" id="home">
 
-<h3>Zustand wählen</h3>
+<h2>Zustand</h2>
 
-<select id="trigger">
-<option value="none">Auslöser wählen</option>
-<option value="screen">Bildschirm</option>
-<option value="stress">Stress</option>
-<option value="emotion">Emotion</option>
-<option value="unknown">Unklar</option>
+<button class="stable" onclick="startSession('stable')">Stabil</button>
+<button class="tense" onclick="startSession('tense')">Angespannt</button>
+<button class="over" onclick="startSession('overstimulated')">Überreizt</button>
+<button class="crash" onclick="startSession('crash')">Crash</button>
+
+<p id="dayState"></p>
+<p id="forecast" class="warning"></p>
+
+<hr>
+
+<h3>HRV (optional)</h3>
+<select id="hrv">
+<option value="unknown">Keine Angabe</option>
+<option value="good">Gut</option>
+<option value="normal">Normal</option>
+<option value="low">Niedrig</option>
 </select>
 
-<button onclick="quickStart()">Letzte gute Übung</button>
+<hr>
 
-<button onclick="startSession('stable')">Stabil</button>
-<button onclick="startSession('tense')">Angespannt</button>
-<button onclick="startSession('overstimulated')">Überreizt</button>
-<button onclick="startSession('crash')">Crash</button>
+<h3>Auslöser</h3>
+<select id="triggerMain">
+<option value="none">Kein klarer Auslöser</option>
+<option value="screen_long">Langer Bildschirm</option>
+<option value="screen_intense">Intensiver Bildschirm</option>
+<option value="social">Sozial</option>
+<option value="emotion_negative">Emotion</option>
+<option value="cognitive">Denken</option>
+<option value="noise">Lärm</option>
+</select>
 
-<p id="overuse" class="warning"></p>
+<select id="triggerIntensity">
+<option value="low">leicht</option>
+<option value="medium">mittel</option>
+<option value="high">stark</option>
+</select>
 
+<h3>Kopfdruck</h3>
+<select id="symptomHead">
+<option value="none">Nein</option>
+<option value="mild">Leicht</option>
+<option value="strong">Stark</option>
+</select>
+
+<hr>
+
+<button onclick="quickStart()">Sicher starten</button>
 <button onclick="showLog()">Verlauf</button>
 
 </div>
 
 <div class="container hidden" id="session">
 <h3 id="exerciseTitle"></h3>
-<p id="instruction"></p>
+<div id="breath"></div>
 <div class="timer" id="timer"></div>
+
+<button onclick="panic()">Zu viel</button>
 <button onclick="finishSession()">Fertig</button>
 </div>
 
@@ -79,38 +131,8 @@ let currentState = ""
 let currentExercise = ""
 let duration = 60;
 let interval;
+let breathInterval;
 
-// --- AUDIO CORE ---
-function playGong(type="start") {
-let ctx = new (window.AudioContext || window.webkitAudioContext)();
-let osc = ctx.createOscillator();
-let gain = ctx.createGain();
-
-osc.type = "sine"
-osc.frequency.value = type === "start" ? 220 : 110;
-
-gain.gain.setValueAtTime(0.001, ctx.currentTime);
-gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.1);
-gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
-
-osc.connect(gain);
-gain.connect(ctx.destination);
-
-osc.start();
-osc.stop(ctx.currentTime + 1.5);
-}
-
-function speak(text, state) {
-if (state === "crash") return; // KEINE Stimme im Crash
-
-let msg = new SpeechSynthesisUtterance(text);
-msg.rate = state === "overstimulated" ? 0.8 : 0.9;
-msg.volume = state === "overstimulated" ? 0.6 : 1;
-
-speechSynthesis.speak(msg);
-}
-
-// --- EXERCISES ---
 const exercises = {
 stable: ["Resonanzatmung","Summen"],
 tense: ["4-6 Atmung","Nacken lösen"],
@@ -118,49 +140,89 @@ overstimulated: ["Augen zu + Atmung","Dunkel + Ruhe"],
 crash: ["Minimalmodus"]
 };
 
+// --- TAGESFORM ---
+function evaluateDay() {
+let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
+let hrv = document.getElementById("hrv").value;
+
+let last = log.slice(-5);
+let worse = last.filter(e => e.result === "worse").length;
+
+let score = 0;
+
+score -= worse;
+
+if (hrv === "low") score -= 2;
+if (hrv === "good") score += 1;
+
+let state = "stabil"
+
+if (score <= -3) state = "instabil"
+else if (score <= -1) state = "fragil"
+
+document.getElementById("dayState").innerText = "Tagesform: " + state;
+
+if (state === "instabil") {
+document.getElementById("forecast").innerText =
+"⚠️ Heute Belastung vermeiden"
+} else if (state === "fragil") {
+document.getElementById("forecast").innerText =
+"⚠️ Vorsichtig bleiben"
+} else {
+document.getElementById("forecast").innerText =
+"✔ stabiler Tag"
+}
+
+return state;
+}
+
+// --- START ---
 function startSession(state) {
+let day = evaluateDay();
+
+if (day === "instabil") state = "crash"
+
 currentState = state;
-
-if (isLocked()) state = "crash"
-
 currentExercise = selectExercise(state);
 duration = getDuration(state);
-
-playGong("start");
-speak("Starte jetzt", state);
 
 document.getElementById("home").classList.add("hidden");
 document.getElementById("session").classList.remove("hidden");
 
 document.getElementById("exerciseTitle").innerText = currentExercise;
-document.getElementById("instruction").innerText = "Einfach folgen"
 
+startBreathing(state);
 startTimer();
 }
 
-function isLocked() {
-let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
-let last = log.slice(-2);
-return last.length === 2 && last.every(e => e.result === "worse");
-}
-
+// --- AUSWAHL ---
 function selectExercise(state) {
-let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
-let bad = log.filter(e => e.result === "worse").map(e => e.exercise);
-
-let options = exercises[state].filter(e => !bad.includes(e));
-if (options.length === 0) options = exercises[state];
-
-return options[Math.floor(Math.random() * options.length)];
+return exercises[state][0];
 }
 
-function getDuration(state) {
-if (state === "crash") return 90;
-if (state === "overstimulated") return 60;
-if (state === "tense") return 90;
-return 120;
+// --- BREATH ---
+function startBreathing(state) {
+let el = document.getElementById("breath");
+
+if (state === "crash") {
+el.innerText = "Still liegen."
+return;
 }
 
+let inhale = 4, exhale = 6;
+
+if (state === "overstimulated") { inhale = 3; exhale = 6; }
+if (state === "stable") { inhale = 5; exhale = 5; }
+
+let phase = "in"
+
+breathInterval = setInterval(() => {
+el.innerText = (phase === "in") ? "Ein" : "Aus"
+phase = (phase === "in") ? "out" : "in"
+}, inhale * 1000);
+}
+
+// --- TIMER ---
 function startTimer() {
 let time = duration;
 document.getElementById("timer").innerText = time;
@@ -171,36 +233,29 @@ document.getElementById("timer").innerText = time;
 
 if (time <= 0) {
 clearInterval(interval);
-endSessionAuto();
+endSession();
 }
 }, 1000);
 }
 
-function endSessionAuto() {
-playGong("end");
-
-setTimeout(() => {
-speak(getEndText(currentState), currentState);
-}, 800);
+function endSession() {
+clearInterval(interval);
+clearInterval(breathInterval);
 
 setTimeout(() => {
 document.getElementById("session").classList.add("hidden");
 document.getElementById("feedback").classList.remove("hidden");
-}, 2500);
+}, 500);
 }
 
-function getEndText(state) {
-if (state === "crash") return ""
-if (state === "overstimulated") return "Gut. Reize niedrig halten."
-if (state === "tense") return "Gut gemacht. Kurz nachspüren."
-return "Session beendet."
-}
-
-function finishSession() {
+// --- PANIC ---
+function panic() {
 clearInterval(interval);
-endSessionAuto();
+clearInterval(breathInterval);
+document.getElementById("breath").innerText = "Stop."
 }
 
+// --- SAVE ---
 function saveFeedback(result) {
 let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
 
@@ -209,29 +264,20 @@ date: new Date().toLocaleString(),
 state: currentState,
 exercise: currentExercise,
 result: result,
-trigger: document.getElementById("trigger").value
+trigger: document.getElementById("triggerMain").value,
+intensity: document.getElementById("triggerIntensity").value,
+head: document.getElementById("symptomHead").value,
+hrv: document.getElementById("hrv").value
 });
 
 localStorage.setItem("vagusLog", JSON.stringify(log));
 
-checkOveruse(log);
 goHome();
 }
 
-function checkOveruse(log) {
-let recent = log.slice(-5);
-if (recent.length >= 4) {
-document.getElementById("overuse").innerText =
-"⚠️ Zu viele Sessions – eher Pause"
-}
-}
-
+// --- UI ---
 function quickStart() {
-let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
-let last = log.reverse().find(e => e.result === "better");
-if (!last) return startSession("stable");
-
-startSession(last.state);
+startSession("overstimulated");
 }
 
 function showLog() {
@@ -247,8 +293,8 @@ log.slice().reverse().forEach(e => {
 container.innerHTML += `
 <p>
 ${e.date}<br>
-${e.state} – ${e.exercise} → ${e.result}<br>
-Trigger: ${e.trigger}
+${e.state} → ${e.result}<br>
+HRV: ${e.hrv} | Kopf: ${e.head}
 </p><hr>`;
 });
 }
@@ -258,7 +304,12 @@ document.getElementById("feedback").classList.add("hidden");
 document.getElementById("logView").classList.add("hidden");
 document.getElementById("session").classList.add("hidden");
 document.getElementById("home").classList.remove("hidden");
+
+evaluateDay();
 }
+
+// INIT
+evaluateDay();
 </script>
 
 </body>
