@@ -3,28 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk CORE 2.3</title>
+<title>VagusBuk CORE 2.3 FIX</title>
 
 <style>
 body {
-margin: 0;
-font-family: -apple-system, sans-serif;
-background: #0b0f14;
-color: #e8eef2;
-text-align: center;
+margin:0;
+font-family:-apple-system,sans-serif;
+background:#0b0f14;
+color:#e8eef2;
+text-align:center;
 }
 
-.container { padding: 20px; }
+.container { padding:20px; }
 
 button {
-width: 90%;
-max-width: 420px;
-margin: 10px;
-padding: 18px;
-font-size: 18px;
-border-radius: 12px;
-border: none;
-color: white;
+width:90%;
+max-width:420px;
+margin:10px;
+padding:18px;
+font-size:18px;
+border-radius:12px;
+border:none;
+color:white;
 }
 
 .ventral { background:#1f3d2b; }
@@ -33,15 +33,18 @@ color: white;
 
 .hidden { display:none; }
 
-.big { font-size: 28px; margin: 15px 0; }
-.sub { opacity: 0.7; font-size: 14px; }
+.big { font-size:28px; margin:15px 0; }
+.sub { opacity:0.7; font-size:14px; }
+
+.timer { font-size:42px; margin:20px; }
+
 .danger { color:#ff5c5c; }
 </style>
 </head>
 
 <body>
 
-<h1>VagusBuk CORE 2.3</h1>
+<h1>VagusBuk 2.3 FIX</h1>
 
 <div class="container" id="home">
 
@@ -60,13 +63,15 @@ color: white;
 <div id="title" class="big"></div>
 <div id="instruction" class="sub"></div>
 
+<div class="timer" id="timer">60</div>
+
 <button onclick="stop()">Stop</button>
 
 </div>
 
 <div class="container hidden" id="feedback">
 
-<div class="big">Hilft es?</div>
+<div class="big">Hilft dir das?</div>
 
 <button onclick="save('better')">Besser</button>
 <button onclick="save('same')">Gleich</button>
@@ -77,24 +82,57 @@ color: white;
 <script>
 
 let state = ""
-let sessionActive = false;
+let interval = null;
+let timer = null;
+let audioCtx = null;
 
 // ----------------------------
-// STABILITÄTSCHECK
+// STIMME
+// ----------------------------
+function speak(text) {
+if (!window.speechSynthesis) return;
+
+let msg = new SpeechSynthesisUtterance(text);
+msg.lang = "de-DE"
+msg.rate = 0.9;
+speechSynthesis.speak(msg);
+}
+
+// ----------------------------
+// BEEP
+// ----------------------------
+function beep(freq, duration) {
+
+if (!audioCtx) {
+audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+let osc = audioCtx.createOscillator();
+let gain = audioCtx.createGain();
+
+osc.frequency.value = freq;
+gain.gain.value = 0.05;
+
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+
+osc.start();
+setTimeout(() => osc.stop(), duration);
+}
+
+// ----------------------------
+// STABILITÄT
 // ----------------------------
 function stabilityCheck() {
 
 let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
 
-let last5 = log.slice(-5);
+let last = log.slice(-5);
+let worse = last.filter(e => e.result === "worse").length;
 
-let worse = last5.filter(e => e.result === "worse").length;
-
-let dorsalCount = last5.filter(e => e.state === "dorsal").length;
-
-if (worse >= 3 || dorsalCount >= 3) {
+if (worse >= 3) {
 document.getElementById("warning").innerText =
-"⚠️ Vorsicht: System instabil – nur Minimalmodus empfohlen"
+"⚠️ vorsichtig – reduziere Belastung"
 
 return false;
 }
@@ -111,20 +149,18 @@ function start(s) {
 state = s;
 
 if (!stabilityCheck() && state !== "dorsal") {
-alert("Zu instabil für aktive Übungen. Wechsel zu Minimalmodus.");
 state = "dorsal"
 }
-
-sessionActive = true;
 
 document.getElementById("home").classList.add("hidden");
 document.getElementById("session").classList.remove("hidden");
 
 apply(state);
+runSession();
 }
 
 // ----------------------------
-// MODE
+// UI
 // ----------------------------
 function apply(s) {
 
@@ -133,34 +169,77 @@ let instruction = ""
 
 if (s === "ventral") {
 title = "Stabilisierung"
-instruction = "ruhig bleiben"
+instruction = "ruhig bleiben, nur folgen"
 
 } else if (s === "sympathikus") {
 title = "Runterregulation"
-instruction = "langsamer werden"
+instruction = "langsamer ausatmen"
 
 } else {
 title = "Minimalmodus"
-instruction = "keine Übung. nur Sicherheit."
+instruction = "keine Übung, nur Sicherheit"
 }
 
 document.getElementById("title").innerText = title;
 document.getElementById("instruction").innerText = instruction;
+
+speak(title);
+speak(instruction);
 }
 
 // ----------------------------
-// STOP (STABIL FIX)
+// SESSION ENGINE (FIX)
+// ----------------------------
+function runSession() {
+
+let t = 60;
+document.getElementById("timer").innerText = t;
+
+// klare Atemstruktur
+interval = setInterval(() => {
+
+speak("Einatmen");
+beep(300, 120);
+
+setTimeout(() => {
+speak("Ausatmen");
+beep(180, 180);
+}, 4000);
+
+}, 8000);
+
+timer = setInterval(() => {
+
+t--;
+document.getElementById("timer").innerText = t;
+
+if (t <= 0) stop();
+
+}, 1000);
+}
+
+// ----------------------------
+// STOP (FIXED)
 // ----------------------------
 function stop() {
 
-sessionActive = false;
+clearInterval(interval);
+clearInterval(timer);
+
+interval = null;
+timer = null;
+
+if (audioCtx) {
+audioCtx.close();
+audioCtx = null;
+}
 
 document.getElementById("session").classList.add("hidden");
 document.getElementById("feedback").classList.remove("hidden");
 }
 
 // ----------------------------
-// SAVE + LERNLOGIK
+// SAVE
 // ----------------------------
 function save(result) {
 
