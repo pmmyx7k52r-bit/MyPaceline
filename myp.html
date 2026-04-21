@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk 1.1</title>
+<title>VagusBuk 1.2</title>
 
 <style>
 body {
@@ -13,56 +13,46 @@ background: #0b0f14;
 color: #e8eef2;
 text-align: center;
 }
-
-h1 { margin-top: 20px; }
-
 .container { padding: 20px; }
-
 button {
-width: 90%;
-max-width: 400px;
-margin: 10px;
-padding: 18px;
-font-size: 18px;
-border-radius: 12px;
-border: none;
-background: #1c2733;
-color: white;
+width: 90%; max-width: 400px;
+margin: 10px; padding: 18px;
+font-size: 18px; border-radius: 12px;
+border: none; background: #1c2733; color: white;
 }
-
-.state-green { background: #1f3d2b; }
-.state-yellow { background: #4a3f1d; }
-.state-red { background: #4a1d1d; }
-.state-black { background: #111; }
-
 .hidden { display: none; }
-
 .timer { font-size: 48px; margin: 20px; }
-
-.log {
-text-align: left;
-max-width: 400px;
-margin: auto;
-font-size: 14px;
-}
+.warning { color: #ff6b6b; }
 </style>
 </head>
 
 <body>
 
-<h1>VagusBuk 1.1</h1>
+<h1>VagusBuk 1.2</h1>
 
 <div class="container" id="home">
+
 <h3>Zustand wählen</h3>
+
+<select id="trigger">
+<option value="none">Auslöser wählen</option>
+<option value="screen">Bildschirm</option>
+<option value="stress">Stress</option>
+<option value="emotion">Emotion</option>
+<option value="unknown">Unklar</option>
+</select>
 
 <button onclick="quickStart()">Letzte gute Übung</button>
 
-<button class="state-green" onclick="startSession('stable')">Stabil</button>
-<button class="state-yellow" onclick="startSession('tense')">Angespannt</button>
-<button class="state-red" onclick="startSession('overstimulated')">Überreizt</button>
-<button class="state-black" onclick="startSession('crash')">Crash</button>
+<button onclick="startSession('stable')">Stabil</button>
+<button onclick="startSession('tense')">Angespannt</button>
+<button onclick="startSession('overstimulated')">Überreizt</button>
+<button onclick="startSession('crash')">Crash</button>
+
+<p id="overuse" class="warning"></p>
 
 <button onclick="showLog()">Verlauf</button>
+
 </div>
 
 <div class="container hidden" id="session">
@@ -80,9 +70,7 @@ font-size: 14px;
 </div>
 
 <div class="container hidden" id="logView">
-<h3>Verlauf</h3>
-<div id="patterns"></div>
-<div class="log" id="log"></div>
+<div id="log"></div>
 <button onclick="goHome()">Zurück</button>
 </div>
 
@@ -93,52 +81,50 @@ let duration = 60;
 let interval;
 
 const exercises = {
-stable: [
-{name:"Resonanzatmung", text:"5 ein / 5 aus"},
-{name:"Summen", text:"ruhig summen beim Ausatmen"}
-],
-tense: [
-{name:"4-6 Atmung", text:"4 ein / 6 aus"},
-{name:"Nacken lösen", text:"langsame Kopfbewegungen"}
-],
-overstimulated: [
-{name:"Augen zu + Atmung", text:"nur ausatmen, nichts denken"},
-{name:"Dunkel + Ruhe", text:"Reize reduzieren"}
-],
-crash: [
-{name:"Minimalmodus", text:"Augen zu, liegen bleiben"},
-{name:"Still liegen", text:"keine Bewegung"}
-]
+stable: ["Resonanzatmung","Summen"],
+tense: ["4-6 Atmung","Nacken lösen"],
+overstimulated: ["Augen zu + Atmung","Dunkel + Ruhe"],
+crash: ["Minimalmodus"]
 };
 
 function startSession(state) {
 currentState = state;
 
-let ex = selectBestExercise(state);
+if (isLocked()) {
+state = "crash"
+}
 
-currentExercise = ex.name;
-
+currentExercise = selectExercise(state);
 duration = getDuration(state);
+
+speak(currentExercise);
 
 document.getElementById("home").classList.add("hidden");
 document.getElementById("session").classList.remove("hidden");
 
-document.getElementById("exerciseTitle").innerText = ex.name;
-document.getElementById("instruction").innerText = ex.text;
+document.getElementById("exerciseTitle").innerText = currentExercise;
+document.getElementById("instruction").innerText = "Folge der Stimme"
 
 startTimer();
 }
 
-function selectBestExercise(state) {
+function isLocked() {
 let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
-let stateLogs = log.filter(e => e.state === state && e.result === "better");
+let last = log.slice(-2);
 
-if (stateLogs.length === 0) {
-return exercises[state][0];
+return last.length === 2 && last.every(e => e.result === "worse");
 }
 
-let lastGood = stateLogs[stateLogs.length - 1].exercise;
-return exercises[state].find(e => e.name === lastGood) || exercises[state][0];
+function selectExercise(state) {
+let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
+
+let bad = log.filter(e => e.result === "worse").map(e => e.exercise);
+
+let options = exercises[state].filter(e => !bad.includes(e));
+
+if (options.length === 0) options = exercises[state];
+
+return options[Math.floor(Math.random() * options.length)];
 }
 
 function getDuration(state) {
@@ -146,6 +132,12 @@ if (state === "crash") return 90;
 if (state === "overstimulated") return 60;
 if (state === "tense") return 90;
 return 120;
+}
+
+function speak(text) {
+let msg = new SpeechSynthesisUtterance(text);
+msg.rate = 0.9;
+speechSynthesis.speak(msg);
 }
 
 function startTimer() {
@@ -172,30 +164,31 @@ log.push({
 date: new Date().toLocaleString(),
 state: currentState,
 exercise: currentExercise,
-result: result
+result: result,
+trigger: document.getElementById("trigger").value
 });
 
 localStorage.setItem("vagusLog", JSON.stringify(log));
+
+checkOveruse(log);
+
 goHome();
+}
+
+function checkOveruse(log) {
+let recent = log.slice(-5);
+if (recent.length >= 4) {
+document.getElementById("overuse").innerText =
+"⚠️ Viele Sessions → evtl. Überforderung"
+}
 }
 
 function quickStart() {
 let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
 let last = log.reverse().find(e => e.result === "better");
+if (!last) return startSession("stable");
 
-if (!last) return;
-
-currentState = last.state;
-currentExercise = last.exercise;
-duration = getDuration(last.state);
-
-document.getElementById("home").classList.add("hidden");
-document.getElementById("session").classList.remove("hidden");
-
-document.getElementById("exerciseTitle").innerText = last.exercise;
-document.getElementById("instruction").innerText = "Wiederholen"
-
-startTimer();
+startSession(last.state);
 }
 
 function showLog() {
@@ -204,23 +197,15 @@ document.getElementById("logView").classList.remove("hidden");
 
 let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
 let container = document.getElementById("log");
-let patterns = document.getElementById("patterns");
 
 container.innerHTML = ""
-patterns.innerHTML = ""
-
-if (log.length >= 5) {
-let bad = log.filter(e => e.result === "worse").length;
-if (bad > log.length / 2) {
-patterns.innerHTML = "<p>⚠️ Viele Verschlechterungen → Belastung zu hoch</p>"
-}
-}
 
 log.slice().reverse().forEach(e => {
 container.innerHTML += `
 <p>
 ${e.date}<br>
-${e.state} – ${e.exercise} → ${e.result}
+${e.state} – ${e.exercise} → ${e.result}<br>
+Trigger: ${e.trigger}
 </p><hr>`;
 });
 }
