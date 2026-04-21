@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk 1.2</title>
+<title>VagusBuk 1.2.1</title>
 
 <style>
 body {
@@ -28,7 +28,7 @@ border: none; background: #1c2733; color: white;
 
 <body>
 
-<h1>VagusBuk 1.2</h1>
+<h1>VagusBuk 1.2.1</h1>
 
 <div class="container" id="home">
 
@@ -80,6 +80,37 @@ let currentExercise = ""
 let duration = 60;
 let interval;
 
+// --- AUDIO CORE ---
+function playGong(type="start") {
+let ctx = new (window.AudioContext || window.webkitAudioContext)();
+let osc = ctx.createOscillator();
+let gain = ctx.createGain();
+
+osc.type = "sine"
+osc.frequency.value = type === "start" ? 220 : 110;
+
+gain.gain.setValueAtTime(0.001, ctx.currentTime);
+gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.1);
+gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+
+osc.connect(gain);
+gain.connect(ctx.destination);
+
+osc.start();
+osc.stop(ctx.currentTime + 1.5);
+}
+
+function speak(text, state) {
+if (state === "crash") return; // KEINE Stimme im Crash
+
+let msg = new SpeechSynthesisUtterance(text);
+msg.rate = state === "overstimulated" ? 0.8 : 0.9;
+msg.volume = state === "overstimulated" ? 0.6 : 1;
+
+speechSynthesis.speak(msg);
+}
+
+// --- EXERCISES ---
 const exercises = {
 stable: ["Resonanzatmung","Summen"],
 tense: ["4-6 Atmung","Nacken lösen"],
@@ -90,20 +121,19 @@ crash: ["Minimalmodus"]
 function startSession(state) {
 currentState = state;
 
-if (isLocked()) {
-state = "crash"
-}
+if (isLocked()) state = "crash"
 
 currentExercise = selectExercise(state);
 duration = getDuration(state);
 
-speak(currentExercise);
+playGong("start");
+speak("Starte jetzt", state);
 
 document.getElementById("home").classList.add("hidden");
 document.getElementById("session").classList.remove("hidden");
 
 document.getElementById("exerciseTitle").innerText = currentExercise;
-document.getElementById("instruction").innerText = "Folge der Stimme"
+document.getElementById("instruction").innerText = "Einfach folgen"
 
 startTimer();
 }
@@ -111,17 +141,14 @@ startTimer();
 function isLocked() {
 let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
 let last = log.slice(-2);
-
 return last.length === 2 && last.every(e => e.result === "worse");
 }
 
 function selectExercise(state) {
 let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
-
 let bad = log.filter(e => e.result === "worse").map(e => e.exercise);
 
 let options = exercises[state].filter(e => !bad.includes(e));
-
 if (options.length === 0) options = exercises[state];
 
 return options[Math.floor(Math.random() * options.length)];
@@ -134,12 +161,6 @@ if (state === "tense") return 90;
 return 120;
 }
 
-function speak(text) {
-let msg = new SpeechSynthesisUtterance(text);
-msg.rate = 0.9;
-speechSynthesis.speak(msg);
-}
-
 function startTimer() {
 let time = duration;
 document.getElementById("timer").innerText = time;
@@ -147,14 +168,37 @@ document.getElementById("timer").innerText = time;
 interval = setInterval(() => {
 time--;
 document.getElementById("timer").innerText = time;
-if (time <= 0) clearInterval(interval);
+
+if (time <= 0) {
+clearInterval(interval);
+endSessionAuto();
+}
 }, 1000);
+}
+
+function endSessionAuto() {
+playGong("end");
+
+setTimeout(() => {
+speak(getEndText(currentState), currentState);
+}, 800);
+
+setTimeout(() => {
+document.getElementById("session").classList.add("hidden");
+document.getElementById("feedback").classList.remove("hidden");
+}, 2500);
+}
+
+function getEndText(state) {
+if (state === "crash") return ""
+if (state === "overstimulated") return "Gut. Reize niedrig halten."
+if (state === "tense") return "Gut gemacht. Kurz nachspüren."
+return "Session beendet."
 }
 
 function finishSession() {
 clearInterval(interval);
-document.getElementById("session").classList.add("hidden");
-document.getElementById("feedback").classList.remove("hidden");
+endSessionAuto();
 }
 
 function saveFeedback(result) {
@@ -171,7 +215,6 @@ trigger: document.getElementById("trigger").value
 localStorage.setItem("vagusLog", JSON.stringify(log));
 
 checkOveruse(log);
-
 goHome();
 }
 
@@ -179,7 +222,7 @@ function checkOveruse(log) {
 let recent = log.slice(-5);
 if (recent.length >= 4) {
 document.getElementById("overuse").innerText =
-"⚠️ Viele Sessions → evtl. Überforderung"
+"⚠️ Zu viele Sessions – eher Pause"
 }
 }
 
