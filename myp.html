@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk CORE 2.2</title>
+<title>VagusBuk CORE 2.3</title>
 
 <style>
 body {
@@ -35,13 +35,13 @@ color: white;
 
 .big { font-size: 28px; margin: 15px 0; }
 .sub { opacity: 0.7; font-size: 14px; }
-.timer { font-size: 42px; margin: 20px; }
+.danger { color:#ff5c5c; }
 </style>
 </head>
 
 <body>
 
-<h1>VagusBuk CORE 2.2</h1>
+<h1>VagusBuk CORE 2.3</h1>
 
 <div class="container" id="home">
 
@@ -51,20 +51,14 @@ color: white;
 <button class="sympathikus" onclick="start('sympathikus')">Angespannt</button>
 <button class="dorsal" onclick="start('dorsal')">Erschöpft</button>
 
-<hr>
-
-<button onclick="showLog()">Verlauf</button>
-
-<p id="suggestion" class="sub"></p>
+<p id="warning" class="danger"></p>
 
 </div>
 
 <div class="container hidden" id="session">
 
-<div id="modeTitle" class="big"></div>
+<div id="title" class="big"></div>
 <div id="instruction" class="sub"></div>
-
-<div class="timer" id="timer">60</div>
 
 <button onclick="stop()">Stop</button>
 
@@ -80,183 +74,93 @@ color: white;
 
 </div>
 
-<div class="container hidden" id="logView">
-<div id="log"></div>
-<button onclick="home()">Zurück</button>
-</div>
-
 <script>
 
-let currentState = ""
-let interval = null;
+let state = ""
+let sessionActive = false;
 
 // ----------------------------
-// AUDIO
+// STABILITÄTSCHECK
 // ----------------------------
-let audioCtx = null;
+function stabilityCheck() {
 
-function beep(freq, duration) {
-if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
 
-let osc = audioCtx.createOscillator();
-let gain = audioCtx.createGain();
+let last5 = log.slice(-5);
 
-osc.frequency.value = freq;
-gain.gain.value = 0.06;
+let worse = last5.filter(e => e.result === "worse").length;
 
-osc.connect(gain);
-gain.connect(audioCtx.destination);
+let dorsalCount = last5.filter(e => e.state === "dorsal").length;
 
-osc.start();
-setTimeout(() => osc.stop(), duration);
+if (worse >= 3 || dorsalCount >= 3) {
+document.getElementById("warning").innerText =
+"⚠️ Vorsicht: System instabil – nur Minimalmodus empfohlen"
+
+return false;
 }
 
-// ----------------------------
-// ADAPTIVER RHYTHMUS
-// ----------------------------
-function getBreathingPattern(state, lastResult) {
-
-let inhale = 4;
-let exhale = 6;
-
-// Basis je Zustand
-if (state === "ventral") {
-inhale = 5; exhale = 5;
-}
-
-if (state === "sympathikus") {
-inhale = 4; exhale = 6;
-}
-
-if (state === "dorsal") {
-inhale = 3; exhale = 5;
-}
-
-// Anpassung durch Feedback
-if (lastResult === "better") {
-inhale += 0.5;
-exhale += 0.5;
-}
-
-if (lastResult === "worse") {
-inhale -= 0.5;
-exhale -= 0.5;
-}
-
-inhale = Math.max(2, inhale);
-exhale = Math.max(3, exhale);
-
-return {inhale, exhale};
+document.getElementById("warning").innerText = ""
+return true;
 }
 
 // ----------------------------
 // START
 // ----------------------------
-function start(state) {
+function start(s) {
 
-currentState = state;
+state = s;
+
+if (!stabilityCheck() && state !== "dorsal") {
+alert("Zu instabil für aktive Übungen. Wechsel zu Minimalmodus.");
+state = "dorsal"
+}
+
+sessionActive = true;
 
 document.getElementById("home").classList.add("hidden");
 document.getElementById("session").classList.remove("hidden");
 
-applyMode(state);
-startBreathing(state);
-runTimer();
+apply(state);
 }
 
 // ----------------------------
 // MODE
 // ----------------------------
-function applyMode(state) {
+function apply(s) {
 
 let title = ""
 let instruction = ""
 
-if (state === "ventral") {
+if (s === "ventral") {
 title = "Stabilisierung"
-instruction = "ruhig bleiben, nichts erzwingen"
+instruction = "ruhig bleiben"
 
-} else if (state === "sympathikus") {
+} else if (s === "sympathikus") {
 title = "Runterregulation"
-instruction = "Ausatmung verlängern"
+instruction = "langsamer werden"
 
 } else {
 title = "Minimalmodus"
-instruction = "nur Sicherheit, kein Training"
+instruction = "keine Übung. nur Sicherheit."
 }
 
-document.getElementById("modeTitle").innerText = title;
+document.getElementById("title").innerText = title;
 document.getElementById("instruction").innerText = instruction;
 }
 
 // ----------------------------
-// BREATHING
-// ----------------------------
-function startBreathing(state) {
-
-let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
-let last = log.slice(-1)[0];
-let lastResult = last ? last.result : "same"
-
-let pattern = getBreathingPattern(state, lastResult);
-
-document.getElementById("instruction").innerText =
-`Ein ${pattern.inhale}s – Aus ${pattern.exhale}s`;
-
-let phase = "in"
-
-interval = setInterval(() => {
-
-if (phase === "in") {
-document.getElementById("modeTitle").innerText = "Einatmen"
-beep(300, 120);
-phase = "out"
-
-} else {
-document.getElementById("modeTitle").innerText = "Ausatmen"
-beep(180, 200);
-phase = "in"
-}
-
-}, (pattern.inhale + pattern.exhale) * 1000);
-}
-
-// ----------------------------
-// TIMER
-// ----------------------------
-function runTimer() {
-let t = 60;
-document.getElementById("timer").innerText = t;
-
-let timer = setInterval(() => {
-t--;
-document.getElementById("timer").innerText = t;
-
-if (t <= 0) {
-clearInterval(timer);
-stop();
-}
-}, 1000);
-}
-
-// ----------------------------
-// STOP (sauber)
+// STOP (STABIL FIX)
 // ----------------------------
 function stop() {
-clearInterval(interval);
-interval = null;
 
-if (audioCtx) {
-audioCtx.close();
-audioCtx = null;
-}
+sessionActive = false;
 
 document.getElementById("session").classList.add("hidden");
 document.getElementById("feedback").classList.remove("hidden");
 }
 
 // ----------------------------
-// SAVE
+// SAVE + LERNLOGIK
 // ----------------------------
 function save(result) {
 
@@ -264,41 +168,16 @@ let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
 
 log.push({
 date: new Date().toLocaleString(),
-state: currentState,
+state: state,
 result: result
 });
 
 localStorage.setItem("vagusLog", JSON.stringify(log));
 
-home();
-}
-
-// ----------------------------
-// LOG
-// ----------------------------
-function showLog() {
-
-document.getElementById("home").classList.add("hidden");
-document.getElementById("logView").classList.remove("hidden");
-
-let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
-let el = document.getElementById("log");
-
-el.innerHTML = ""
-
-log.slice().reverse().forEach(e => {
-el.innerHTML += `<p>${e.date}<br>${e.state} → ${e.result}</p><hr>`;
-});
-}
-
-// ----------------------------
-// HOME
-// ----------------------------
-function home() {
 document.getElementById("feedback").classList.add("hidden");
-document.getElementById("logView").classList.add("hidden");
-document.getElementById("session").classList.add("hidden");
 document.getElementById("home").classList.remove("hidden");
+
+stabilityCheck();
 }
 
 </script>
