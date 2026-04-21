@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk CORE 2.3 FIX</title>
+<title>VagusBuk 3.3</title>
 
 <style>
 body {
@@ -20,78 +20,63 @@ button {
 width:90%;
 max-width:420px;
 margin:10px;
-padding:18px;
-font-size:18px;
+padding:16px;
+font-size:16px;
 border-radius:12px;
 border:none;
 color:white;
 }
 
-.ventral { background:#1f3d2b; }
-.sympathikus { background:#4a3f1d; }
-.dorsal { background:#1a1a1a; }
+.primary { background:#2b4a3a; }
+.secondary { background:#2d3b4a; }
+
+.card {
+background:#15202b;
+padding:16px;
+margin-top:16px;
+border-radius:12px;
+text-align:left;
+}
+
+.small { font-size:13px; opacity:0.7; }
 
 .hidden { display:none; }
 
-.big { font-size:28px; margin:15px 0; }
-.sub { opacity:0.7; font-size:14px; }
-
-.timer { font-size:42px; margin:20px; }
-
-.danger { color:#ff5c5c; }
+.badge {
+font-size:12px;
+opacity:0.6;
+margin-bottom:8px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>VagusBuk 2.3 FIX</h1>
+<h1>VagusBuk 3.3</h1>
 
-<div class="container" id="home">
+<div class="container">
 
-<div class="big">Zustand wählen</div>
-
-<button class="ventral" onclick="start('ventral')">Stabil</button>
-<button class="sympathikus" onclick="start('sympathikus')">Angespannt</button>
-<button class="dorsal" onclick="start('dorsal')">Erschöpft</button>
-
-<p id="warning" class="danger"></p>
-
+<div class="card">
+<strong>Soft Adaptive System</strong><br>
+<div class="small">keine automatische Steuerung – nur Vorschläge</div>
 </div>
 
-<div class="container hidden" id="session">
+<button class="primary" onclick="runSession()">
+Recovery starten
+</button>
 
-<div id="title" class="big"></div>
-<div id="instruction" class="sub"></div>
+<div id="suggestion" class="card hidden"></div>
 
-<div class="timer" id="timer">60</div>
-
-<button onclick="stop()">Stop</button>
-
-</div>
-
-<div class="container hidden" id="feedback">
-
-<div class="big">Hilft dir das?</div>
-
-<button onclick="save('better')">Besser</button>
-<button onclick="save('same')">Gleich</button>
-<button onclick="save('worse')">Schlechter</button>
+<div id="status" class="card hidden"></div>
 
 </div>
 
 <script>
 
-let state = ""
-let interval = null;
-let timer = null;
-let audioCtx = null;
+let interruptions = 0;
+let lastShortSession = false;
 
-// ----------------------------
-// STIMME
-// ----------------------------
 function speak(text) {
-if (!window.speechSynthesis) return;
-
 let msg = new SpeechSynthesisUtterance(text);
 msg.lang = "de-DE"
 msg.rate = 0.9;
@@ -99,164 +84,95 @@ speechSynthesis.speak(msg);
 }
 
 // ----------------------------
-// BEEP
+// BASIS SESSION
 // ----------------------------
-function beep(freq, duration) {
+function runSession() {
 
-if (!audioCtx) {
-audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-}
+document.getElementById("status").classList.remove("hidden");
+document.getElementById("status").innerText = "Session läuft (60s)"
 
-let osc = audioCtx.createOscillator();
-let gain = audioCtx.createGain();
+speak("Beginne. Folge deinem Atem.");
 
-osc.frequency.value = freq;
-gain.gain.value = 0.05;
-
-osc.connect(gain);
-gain.connect(audioCtx.destination);
-
-osc.start();
-setTimeout(() => osc.stop(), duration);
+setTimeout(() => {
+endSession(true);
+}, 60000);
 }
 
 // ----------------------------
-// STABILITÄT
+// SESSION ENDE
 // ----------------------------
-function stabilityCheck() {
+function endSession(completed) {
 
-let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
+document.getElementById("status").innerText =
+completed ? "Abgeschlossen" : "Früh beendet"
 
-let last = log.slice(-5);
-let worse = last.filter(e => e.result === "worse").length;
-
-if (worse >= 3) {
-document.getElementById("warning").innerText =
-"⚠️ vorsichtig – reduziere Belastung"
-
-return false;
+if (!completed) {
+interruptions++;
+lastShortSession = true;
+} else {
+// leichte Erholung im System
+interruptions = Math.max(0, interruptions - 1);
+lastShortSession = false;
 }
 
-document.getElementById("warning").innerText = ""
-return true;
+evaluateState();
 }
 
 // ----------------------------
-// START
+// SOFT ANALYSIS
 // ----------------------------
-function start(s) {
+function evaluateState() {
 
-state = s;
+let level = "stable"
+let text = ""
 
-if (!stabilityCheck() && state !== "dorsal") {
-state = "dorsal"
+// nur Tendenzen, keine harte Klassifikation
+if (interruptions >= 3) {
+level = "low_capacity"
 }
 
-document.getElementById("home").classList.add("hidden");
-document.getElementById("session").classList.remove("hidden");
+if (lastShortSession) {
+level = "reduced_capacity"
+}
 
-apply(state);
-runSession();
+// Vorschläge statt Zwang
+if (level === "stable") {
+
+text = `
+✔ stabiler Verlauf<br>
+→ normale 60s Session empfohlen
+`;
+
+} else if (level === "reduced_capacity") {
+
+text = `
+⚠ reduzierte Kapazität erkannt<br><br>
+Vorschlag:<br>
+- kürzere 30–40s Session<br>
+- mehr Pausen zwischen Übungen
+`;
+
+} else {
+
+text = `
+⚠ hohe Belastungstendenz<br><br>
+Vorschlag:<br>
+- nur Körperkontakt (Hand auf Brust)<br>
+- keine strukturierte Atmung erzwingen<br>
+`;
+}
+
+showSuggestion(text);
 }
 
 // ----------------------------
 // UI
 // ----------------------------
-function apply(s) {
+function showSuggestion(text) {
 
-let title = ""
-let instruction = ""
-
-if (s === "ventral") {
-title = "Stabilisierung"
-instruction = "ruhig bleiben, nur folgen"
-
-} else if (s === "sympathikus") {
-title = "Runterregulation"
-instruction = "langsamer ausatmen"
-
-} else {
-title = "Minimalmodus"
-instruction = "keine Übung, nur Sicherheit"
-}
-
-document.getElementById("title").innerText = title;
-document.getElementById("instruction").innerText = instruction;
-
-speak(title);
-speak(instruction);
-}
-
-// ----------------------------
-// SESSION ENGINE (FIX)
-// ----------------------------
-function runSession() {
-
-let t = 60;
-document.getElementById("timer").innerText = t;
-
-// klare Atemstruktur
-interval = setInterval(() => {
-
-speak("Einatmen");
-beep(300, 120);
-
-setTimeout(() => {
-speak("Ausatmen");
-beep(180, 180);
-}, 4000);
-
-}, 8000);
-
-timer = setInterval(() => {
-
-t--;
-document.getElementById("timer").innerText = t;
-
-if (t <= 0) stop();
-
-}, 1000);
-}
-
-// ----------------------------
-// STOP (FIXED)
-// ----------------------------
-function stop() {
-
-clearInterval(interval);
-clearInterval(timer);
-
-interval = null;
-timer = null;
-
-if (audioCtx) {
-audioCtx.close();
-audioCtx = null;
-}
-
-document.getElementById("session").classList.add("hidden");
-document.getElementById("feedback").classList.remove("hidden");
-}
-
-// ----------------------------
-// SAVE
-// ----------------------------
-function save(result) {
-
-let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
-
-log.push({
-date: new Date().toLocaleString(),
-state: state,
-result: result
-});
-
-localStorage.setItem("vagusLog", JSON.stringify(log));
-
-document.getElementById("feedback").classList.add("hidden");
-document.getElementById("home").classList.remove("hidden");
-
-stabilityCheck();
+let box = document.getElementById("suggestion");
+box.classList.remove("hidden");
+box.innerHTML = text;
 }
 
 </script>
