@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk 1.6</title>
+<title>VagusBuk CORE 2.2</title>
 
 <style>
 body {
@@ -13,303 +13,294 @@ background: #0b0f14;
 color: #e8eef2;
 text-align: center;
 }
+
 .container { padding: 20px; }
 
 button {
-width: 90%; max-width: 400px;
-margin: 8px; padding: 18px;
+width: 90%;
+max-width: 420px;
+margin: 10px;
+padding: 18px;
 font-size: 18px;
 border-radius: 12px;
 border: none;
 color: white;
 }
 
-.stable { background:#1f3d2b; }
-.tense { background:#4a3f1d; }
-.over { background:#4a1d1d; }
-.crash { background:#111; }
+.ventral { background:#1f3d2b; }
+.sympathikus { background:#4a3f1d; }
+.dorsal { background:#1a1a1a; }
 
 .hidden { display:none; }
-.timer { font-size:48px; margin:20px; }
 
-.warning { color:#ff6b6b; }
-.good { color:#6bff95; }
-.info { opacity:0.8; }
-
-select {
-width: 90%;
-max-width: 400px;
-padding: 12px;
-margin: 8px;
-border-radius: 8px;
-}
+.big { font-size: 28px; margin: 15px 0; }
+.sub { opacity: 0.7; font-size: 14px; }
+.timer { font-size: 42px; margin: 20px; }
 </style>
 </head>
 
 <body>
 
-<h1>VagusBuk 1.6</h1>
+<h1>VagusBuk CORE 2.2</h1>
 
 <div class="container" id="home">
 
-<h2>Zustand</h2>
+<div class="big">Zustand wählen</div>
 
-<button class="stable" onclick="startSession('stable')">Stabil</button>
-<button class="tense" onclick="startSession('tense')">Angespannt</button>
-<button class="over" onclick="startSession('overstimulated')">Überreizt</button>
-<button class="crash" onclick="startSession('crash')">Crash</button>
-
-<p id="dayState"></p>
-<p id="forecast" class="warning"></p>
+<button class="ventral" onclick="start('ventral')">Stabil</button>
+<button class="sympathikus" onclick="start('sympathikus')">Angespannt</button>
+<button class="dorsal" onclick="start('dorsal')">Erschöpft</button>
 
 <hr>
 
-<h3>HRV (optional)</h3>
-<select id="hrv">
-<option value="unknown">Keine Angabe</option>
-<option value="good">Gut</option>
-<option value="normal">Normal</option>
-<option value="low">Niedrig</option>
-</select>
-
-<hr>
-
-<h3>Auslöser</h3>
-<select id="triggerMain">
-<option value="none">Kein klarer Auslöser</option>
-<option value="screen_long">Langer Bildschirm</option>
-<option value="screen_intense">Intensiver Bildschirm</option>
-<option value="social">Sozial</option>
-<option value="emotion_negative">Emotion</option>
-<option value="cognitive">Denken</option>
-<option value="noise">Lärm</option>
-</select>
-
-<select id="triggerIntensity">
-<option value="low">leicht</option>
-<option value="medium">mittel</option>
-<option value="high">stark</option>
-</select>
-
-<h3>Kopfdruck</h3>
-<select id="symptomHead">
-<option value="none">Nein</option>
-<option value="mild">Leicht</option>
-<option value="strong">Stark</option>
-</select>
-
-<hr>
-
-<button onclick="quickStart()">Sicher starten</button>
 <button onclick="showLog()">Verlauf</button>
+
+<p id="suggestion" class="sub"></p>
 
 </div>
 
 <div class="container hidden" id="session">
-<h3 id="exerciseTitle"></h3>
-<div id="breath"></div>
-<div class="timer" id="timer"></div>
 
-<button onclick="panic()">Zu viel</button>
-<button onclick="finishSession()">Fertig</button>
+<div id="modeTitle" class="big"></div>
+<div id="instruction" class="sub"></div>
+
+<div class="timer" id="timer">60</div>
+
+<button onclick="stop()">Stop</button>
+
 </div>
 
 <div class="container hidden" id="feedback">
-<h3>Wie war es?</h3>
-<button onclick="saveFeedback('better')">Besser</button>
-<button onclick="saveFeedback('same')">Gleich</button>
-<button onclick="saveFeedback('worse')">Schlechter</button>
+
+<div class="big">Hilft es?</div>
+
+<button onclick="save('better')">Besser</button>
+<button onclick="save('same')">Gleich</button>
+<button onclick="save('worse')">Schlechter</button>
+
 </div>
 
 <div class="container hidden" id="logView">
 <div id="log"></div>
-<button onclick="goHome()">Zurück</button>
+<button onclick="home()">Zurück</button>
 </div>
 
 <script>
+
 let currentState = ""
-let currentExercise = ""
-let duration = 60;
-let interval;
-let breathInterval;
+let interval = null;
 
-const exercises = {
-stable: ["Resonanzatmung","Summen"],
-tense: ["4-6 Atmung","Nacken lösen"],
-overstimulated: ["Augen zu + Atmung","Dunkel + Ruhe"],
-crash: ["Minimalmodus"]
-};
+// ----------------------------
+// AUDIO
+// ----------------------------
+let audioCtx = null;
 
-// --- TAGESFORM ---
-function evaluateDay() {
-let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
-let hrv = document.getElementById("hrv").value;
+function beep(freq, duration) {
+if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-let last = log.slice(-5);
-let worse = last.filter(e => e.result === "worse").length;
+let osc = audioCtx.createOscillator();
+let gain = audioCtx.createGain();
 
-let score = 0;
+osc.frequency.value = freq;
+gain.gain.value = 0.06;
 
-score -= worse;
+osc.connect(gain);
+gain.connect(audioCtx.destination);
 
-if (hrv === "low") score -= 2;
-if (hrv === "good") score += 1;
-
-let state = "stabil"
-
-if (score <= -3) state = "instabil"
-else if (score <= -1) state = "fragil"
-
-document.getElementById("dayState").innerText = "Tagesform: " + state;
-
-if (state === "instabil") {
-document.getElementById("forecast").innerText =
-"⚠️ Heute Belastung vermeiden"
-} else if (state === "fragil") {
-document.getElementById("forecast").innerText =
-"⚠️ Vorsichtig bleiben"
-} else {
-document.getElementById("forecast").innerText =
-"✔ stabiler Tag"
+osc.start();
+setTimeout(() => osc.stop(), duration);
 }
 
-return state;
+// ----------------------------
+// ADAPTIVER RHYTHMUS
+// ----------------------------
+function getBreathingPattern(state, lastResult) {
+
+let inhale = 4;
+let exhale = 6;
+
+// Basis je Zustand
+if (state === "ventral") {
+inhale = 5; exhale = 5;
 }
 
-// --- START ---
-function startSession(state) {
-let day = evaluateDay();
+if (state === "sympathikus") {
+inhale = 4; exhale = 6;
+}
 
-if (day === "instabil") state = "crash"
+if (state === "dorsal") {
+inhale = 3; exhale = 5;
+}
+
+// Anpassung durch Feedback
+if (lastResult === "better") {
+inhale += 0.5;
+exhale += 0.5;
+}
+
+if (lastResult === "worse") {
+inhale -= 0.5;
+exhale -= 0.5;
+}
+
+inhale = Math.max(2, inhale);
+exhale = Math.max(3, exhale);
+
+return {inhale, exhale};
+}
+
+// ----------------------------
+// START
+// ----------------------------
+function start(state) {
 
 currentState = state;
-currentExercise = selectExercise(state);
-duration = getDuration(state);
 
 document.getElementById("home").classList.add("hidden");
 document.getElementById("session").classList.remove("hidden");
 
-document.getElementById("exerciseTitle").innerText = currentExercise;
-
+applyMode(state);
 startBreathing(state);
-startTimer();
+runTimer();
 }
 
-// --- AUSWAHL ---
-function selectExercise(state) {
-return exercises[state][0];
+// ----------------------------
+// MODE
+// ----------------------------
+function applyMode(state) {
+
+let title = ""
+let instruction = ""
+
+if (state === "ventral") {
+title = "Stabilisierung"
+instruction = "ruhig bleiben, nichts erzwingen"
+
+} else if (state === "sympathikus") {
+title = "Runterregulation"
+instruction = "Ausatmung verlängern"
+
+} else {
+title = "Minimalmodus"
+instruction = "nur Sicherheit, kein Training"
 }
 
-// --- BREATH ---
+document.getElementById("modeTitle").innerText = title;
+document.getElementById("instruction").innerText = instruction;
+}
+
+// ----------------------------
+// BREATHING
+// ----------------------------
 function startBreathing(state) {
-let el = document.getElementById("breath");
 
-if (state === "crash") {
-el.innerText = "Still liegen."
-return;
-}
+let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
+let last = log.slice(-1)[0];
+let lastResult = last ? last.result : "same"
 
-let inhale = 4, exhale = 6;
+let pattern = getBreathingPattern(state, lastResult);
 
-if (state === "overstimulated") { inhale = 3; exhale = 6; }
-if (state === "stable") { inhale = 5; exhale = 5; }
+document.getElementById("instruction").innerText =
+`Ein ${pattern.inhale}s – Aus ${pattern.exhale}s`;
 
 let phase = "in"
 
-breathInterval = setInterval(() => {
-el.innerText = (phase === "in") ? "Ein" : "Aus"
-phase = (phase === "in") ? "out" : "in"
-}, inhale * 1000);
+interval = setInterval(() => {
+
+if (phase === "in") {
+document.getElementById("modeTitle").innerText = "Einatmen"
+beep(300, 120);
+phase = "out"
+
+} else {
+document.getElementById("modeTitle").innerText = "Ausatmen"
+beep(180, 200);
+phase = "in"
 }
 
-// --- TIMER ---
-function startTimer() {
-let time = duration;
-document.getElementById("timer").innerText = time;
+}, (pattern.inhale + pattern.exhale) * 1000);
+}
 
-interval = setInterval(() => {
-time--;
-document.getElementById("timer").innerText = time;
+// ----------------------------
+// TIMER
+// ----------------------------
+function runTimer() {
+let t = 60;
+document.getElementById("timer").innerText = t;
 
-if (time <= 0) {
-clearInterval(interval);
-endSession();
+let timer = setInterval(() => {
+t--;
+document.getElementById("timer").innerText = t;
+
+if (t <= 0) {
+clearInterval(timer);
+stop();
 }
 }, 1000);
 }
 
-function endSession() {
+// ----------------------------
+// STOP (sauber)
+// ----------------------------
+function stop() {
 clearInterval(interval);
-clearInterval(breathInterval);
+interval = null;
 
-setTimeout(() => {
+if (audioCtx) {
+audioCtx.close();
+audioCtx = null;
+}
+
 document.getElementById("session").classList.add("hidden");
 document.getElementById("feedback").classList.remove("hidden");
-}, 500);
 }
 
-// --- PANIC ---
-function panic() {
-clearInterval(interval);
-clearInterval(breathInterval);
-document.getElementById("breath").innerText = "Stop."
-}
+// ----------------------------
+// SAVE
+// ----------------------------
+function save(result) {
 
-// --- SAVE ---
-function saveFeedback(result) {
 let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
 
 log.push({
 date: new Date().toLocaleString(),
 state: currentState,
-exercise: currentExercise,
-result: result,
-trigger: document.getElementById("triggerMain").value,
-intensity: document.getElementById("triggerIntensity").value,
-head: document.getElementById("symptomHead").value,
-hrv: document.getElementById("hrv").value
+result: result
 });
 
 localStorage.setItem("vagusLog", JSON.stringify(log));
 
-goHome();
+home();
 }
 
-// --- UI ---
-function quickStart() {
-startSession("overstimulated");
-}
-
+// ----------------------------
+// LOG
+// ----------------------------
 function showLog() {
+
 document.getElementById("home").classList.add("hidden");
 document.getElementById("logView").classList.remove("hidden");
 
 let log = JSON.parse(localStorage.getItem("vagusLog")) || [];
-let container = document.getElementById("log");
+let el = document.getElementById("log");
 
-container.innerHTML = ""
+el.innerHTML = ""
 
 log.slice().reverse().forEach(e => {
-container.innerHTML += `
-<p>
-${e.date}<br>
-${e.state} → ${e.result}<br>
-HRV: ${e.hrv} | Kopf: ${e.head}
-</p><hr>`;
+el.innerHTML += `<p>${e.date}<br>${e.state} → ${e.result}</p><hr>`;
 });
 }
 
-function goHome() {
+// ----------------------------
+// HOME
+// ----------------------------
+function home() {
 document.getElementById("feedback").classList.add("hidden");
 document.getElementById("logView").classList.add("hidden");
 document.getElementById("session").classList.add("hidden");
 document.getElementById("home").classList.remove("hidden");
-
-evaluateDay();
 }
 
-// INIT
-evaluateDay();
 </script>
 
 </body>
