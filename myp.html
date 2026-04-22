@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk 3.3</title>
+<title>VagusBuk 3.4</title>
 
 <style>
 body {
@@ -40,34 +40,39 @@ text-align:left;
 
 .small { font-size:13px; opacity:0.7; }
 
-.hidden { display:none; }
-
-.badge {
-font-size:12px;
-opacity:0.6;
-margin-bottom:8px;
+.timer {
+font-size:40px;
+margin-top:15px;
 }
+
+.phase {
+font-size:20px;
+margin-top:10px;
+}
+
+.hidden { display:none; }
 </style>
 </head>
 
 <body>
 
-<h1>VagusBuk 3.3</h1>
+<h1>VagusBuk 3.4</h1>
 
 <div class="container">
 
-<div class="card">
-<strong>Soft Adaptive System</strong><br>
-<div class="small">keine automatische Steuerung – nur Vorschläge</div>
-</div>
-
-<button class="primary" onclick="runSession()">
-Recovery starten
+<button class="primary" onclick="startSession()">
+Recovery starten (60s)
 </button>
 
-<div id="suggestion" class="card hidden"></div>
+<button class="secondary" onclick="quickRelief()">
+Soforthilfe (15s)
+</button>
+
+<div id="timer" class="timer hidden">60</div>
+<div id="phase" class="phase hidden"></div>
 
 <div id="status" class="card hidden"></div>
+<div id="explain" class="card small hidden"></div>
 
 </div>
 
@@ -76,6 +81,12 @@ Recovery starten
 let interruptions = 0;
 let lastShortSession = false;
 
+let timerInterval = null;
+let breathInterval = null;
+
+// ----------------------------
+// VOICE
+// ----------------------------
 function speak(text) {
 let msg = new SpeechSynthesisUtterance(text);
 msg.lang = "de-DE"
@@ -84,95 +95,152 @@ speechSynthesis.speak(msg);
 }
 
 // ----------------------------
-// BASIS SESSION
+// MAIN SESSION
 // ----------------------------
-function runSession() {
+function startSession() {
 
-document.getElementById("status").classList.remove("hidden");
-document.getElementById("status").innerText = "Session läuft (60s)"
+clearAll();
 
-speak("Beginne. Folge deinem Atem.");
+let t = 60;
+let phase = "in"
+
+showUI();
+
+document.getElementById("timer").innerText = t;
+document.getElementById("phase").innerText = "Start"
+
+speak("Einfach folgen. Vier ein, sechs aus.");
+
+breathInterval = setInterval(() => {
+
+if (phase === "in") {
+
+document.getElementById("phase").innerText = "Einatmen (4s)"
+speak("Ein");
 
 setTimeout(() => {
-endSession(true);
-}, 60000);
+document.getElementById("phase").innerText = "Ausatmen (6s)"
+speak("Aus");
+}, 4000);
+
+phase = "out"
+
+} else {
+phase = "in"
+}
+
+}, 10000);
+
+timerInterval = setInterval(() => {
+
+t--;
+document.getElementById("timer").innerText = t;
+
+if (t <= 0) finish(true);
+
+}, 1000);
 }
 
 // ----------------------------
-// SESSION ENDE
+// QUICK RELIEF
 // ----------------------------
-function endSession(completed) {
+function quickRelief() {
 
-document.getElementById("status").innerText =
-completed ? "Abgeschlossen" : "Früh beendet"
+clearAll();
+showUI();
+
+document.getElementById("timer").innerText = "15"
+document.getElementById("phase").innerText = "Schultern hochziehen..."
+
+speak("Zieh die Schultern hoch... halten... und fallen lassen.");
+
+setTimeout(() => {
+document.getElementById("phase").innerText = "Loslassen"
+speak("Loslassen");
+}, 5000);
+
+setTimeout(() => finish(true), 15000);
+}
+
+// ----------------------------
+// FINISH
+// ----------------------------
+function finish(completed) {
+
+clearAll();
+
+document.getElementById("phase").innerText = "Fertig – kurz nachspüren"
+
+speak("Fertig.");
 
 if (!completed) {
 interruptions++;
 lastShortSession = true;
 } else {
-// leichte Erholung im System
 interruptions = Math.max(0, interruptions - 1);
 lastShortSession = false;
 }
 
-evaluateState();
+explainDecision();
 }
 
 // ----------------------------
-// SOFT ANALYSIS
+// EXPLAIN
 // ----------------------------
-function evaluateState() {
+function explainDecision() {
 
-let level = "stable"
+let box = document.getElementById("explain");
+box.classList.remove("hidden");
+
 let text = ""
 
-// nur Tendenzen, keine harte Klassifikation
 if (interruptions >= 3) {
-level = "low_capacity"
-}
-
-if (lastShortSession) {
-level = "reduced_capacity"
-}
-
-// Vorschläge statt Zwang
-if (level === "stable") {
 
 text = `
-✔ stabiler Verlauf<br>
-→ normale 60s Session empfohlen
+Warum diese Übung?<br><br>
+• mehrere Abbrüche erkannt<br>
+→ geringere Belastbarkeit<br>
+→ einfache Regulation sinnvoll
 `;
 
-} else if (level === "reduced_capacity") {
+} else if (lastShortSession) {
 
 text = `
-⚠ reduzierte Kapazität erkannt<br><br>
-Vorschlag:<br>
-- kürzere 30–40s Session<br>
-- mehr Pausen zwischen Übungen
+Warum diese Übung?<br><br>
+• letzte Session früh beendet<br>
+→ reduzierte Kapazität<br>
+→ sanfter Einstieg empfohlen
 `;
 
 } else {
 
 text = `
-⚠ hohe Belastungstendenz<br><br>
-Vorschlag:<br>
-- nur Körperkontakt (Hand auf Brust)<br>
-- keine strukturierte Atmung erzwingen<br>
+Warum diese Übung?<br><br>
+• stabile Nutzung<br>
+→ normale Atemübung passend
 `;
 }
 
-showSuggestion(text);
+box.innerHTML = text;
 }
 
 // ----------------------------
 // UI
 // ----------------------------
-function showSuggestion(text) {
+function showUI() {
 
-let box = document.getElementById("suggestion");
-box.classList.remove("hidden");
-box.innerHTML = text;
+document.getElementById("timer").classList.remove("hidden");
+document.getElementById("phase").classList.remove("hidden");
+document.getElementById("status").classList.remove("hidden");
+}
+
+function clearAll() {
+
+clearInterval(timerInterval);
+clearInterval(breathInterval);
+
+timerInterval = null;
+breathInterval = null;
 }
 
 </script>
