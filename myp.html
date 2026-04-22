@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk 3.6</title>
+<title>VagusBuk A1</title>
 
 <style>
 body {
@@ -14,76 +14,50 @@ color:#e8eef2;
 text-align:center;
 }
 
-.container { padding:20px; }
+.container { padding:30px; }
 
 button {
 width:90%;
 max-width:420px;
-margin:10px;
-padding:16px;
-font-size:16px;
-border-radius:12px;
+padding:22px;
+font-size:20px;
+border-radius:16px;
 border:none;
+background:#2b4a3a;
 color:white;
 }
 
-.green { background:#2b4a3a; }
-.yellow { background:#5a4a2b; }
-.gray { background:#333; }
-.blue { background:#2b3f5a; }
-
-.card {
-background:#15202b;
-padding:16px;
-margin-top:16px;
-border-radius:12px;
-}
-
 .timer {
-font-size:40px;
-margin-top:15px;
+font-size:50px;
+margin-top:30px;
 }
 
 .phase {
-font-size:20px;
-margin-top:10px;
+font-size:22px;
+margin-top:20px;
 }
-
-.hidden { display:none; }
 </style>
 </head>
 
 <body>
 
-<h1>VagusBuk 3.6</h1>
+<h1>VagusBuk</h1>
 
 <div class="container">
 
-<button class="green" onclick="startBreath()">
-Beruhigen (Atmung)
+<button onclick="start()">
+Es kippt gerade
 </button>
 
-<button class="yellow" onclick="startRelease()">
-Spannung lösen (Körper)
-</button>
-
-<button class="gray" onclick="startSafe()">
-Stabilisieren (Ruhe)
-</button>
-
-<button class="blue" onclick="startFocus()">
-Fokus zurückholen
-</button>
-
-<div id="timer" class="timer hidden"></div>
-<div id="phase" class="phase hidden"></div>
+<div id="timer" class="timer"></div>
+<div id="phase" class="phase"></div>
 
 </div>
 
 <script>
 
-let timer = null;
-let timeLeft = 0;
+let t = 0;
+let interval = null;
 
 // ----------------------------
 // VOICE
@@ -91,110 +65,73 @@ let timeLeft = 0;
 function speak(text) {
 let msg = new SpeechSynthesisUtterance(text);
 msg.lang = "de-DE"
+msg.rate = 0.9;
 speechSynthesis.speak(msg);
 }
 
 // ----------------------------
-// RESET
+// START
 // ----------------------------
-function resetUI() {
-clearInterval(timer);
-document.getElementById("timer").classList.remove("hidden");
-document.getElementById("phase").classList.remove("hidden");
+function start() {
+
+clearInterval(interval);
+
+t = 20;
+
+document.getElementById("phase").innerText =
+"Schultern hochziehen"
+
+speak("Zieh die Schultern hoch.");
+
+interval = setInterval(() => {
+
+t--;
+document.getElementById("timer").innerText = t;
+
+if (t === 15) {
+document.getElementById("phase").innerText = "Halten"
+speak("Halten.");
+}
+
+if (t === 10) {
+document.getElementById("phase").innerText = "Loslassen"
+speak("Loslassen.");
+}
+
+if (t === 0) {
+clearInterval(interval);
+startBreath();
+}
+
+}, 1000);
 }
 
 // ----------------------------
-// 1. BERUHIGEN (ATMUNG)
+// BREATH
 // ----------------------------
 function startBreath() {
 
-resetUI();
-timeLeft = 60;
+let timeLeft = 40;
+let cycle = 0;
 
 speak("Vier ein. Sechs aus.");
 
-timer = setInterval(() => {
+interval = setInterval(() => {
 
 timeLeft--;
+cycle++;
+
 document.getElementById("timer").innerText = timeLeft;
 
-let cycle = timeLeft % 10;
-
-if (cycle < 4) {
+if (cycle % 10 < 4) {
 document.getElementById("phase").innerText = "Einatmen"
 } else {
 document.getElementById("phase").innerText = "Ausatmen"
 }
 
-if (timeLeft <= 0) finish();
-
-}, 1000);
+if (timeLeft <= 0) {
+finish();
 }
-
-// ----------------------------
-// 2. SPANNUNG LÖSEN
-// ----------------------------
-function startRelease() {
-
-resetUI();
-timeLeft = 20;
-
-speak("Schultern hochziehen... halten... und loslassen.");
-
-timer = setInterval(() => {
-
-timeLeft--;
-document.getElementById("timer").innerText = timeLeft;
-
-document.getElementById("phase").innerText = "Spannung lösen"
-
-if (timeLeft <= 0) finish();
-
-}, 1000);
-}
-
-// ----------------------------
-// 3. STABILISIEREN
-// ----------------------------
-function startSafe() {
-
-resetUI();
-timeLeft = 30;
-
-speak("Lege eine Hand auf deine Brust.");
-
-timer = setInterval(() => {
-
-timeLeft--;
-document.getElementById("timer").innerText = timeLeft;
-
-document.getElementById("phase").innerText =
-"Nichts tun. Nur spüren."
-
-if (timeLeft <= 0) finish();
-
-}, 1000);
-}
-
-// ----------------------------
-// 4. FOKUS
-// ----------------------------
-function startFocus() {
-
-resetUI();
-timeLeft = 30;
-
-speak("Schau langsam nach links und rechts.");
-
-timer = setInterval(() => {
-
-timeLeft--;
-document.getElementById("timer").innerText = timeLeft;
-
-document.getElementById("phase").innerText =
-"Augen bewegen"
-
-if (timeLeft <= 0) finish();
 
 }, 1000);
 }
@@ -204,11 +141,27 @@ if (timeLeft <= 0) finish();
 // ----------------------------
 function finish() {
 
-clearInterval(timer);
+clearInterval(interval);
 
+document.getElementById("phase").innerText =
+"Hand auf Brust – kurz spüren"
+
+speak("Lege eine Hand auf deine Brust.");
+
+let t2 = 10;
+
+interval = setInterval(() => {
+
+t2--;
+document.getElementById("timer").innerText = t2;
+
+if (t2 <= 0) {
+clearInterval(interval);
 document.getElementById("phase").innerText = "Fertig"
-
 speak("Fertig.");
+}
+
+}, 1000);
 }
 
 </script>
