@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk 3.5</title>
+<title>VagusBuk 3.6</title>
 
 <style>
 body {
@@ -27,20 +27,16 @@ border:none;
 color:white;
 }
 
-.primary { background:#2b4a3a; }
-.secondary { background:#2d3b4a; }
-
-.feedback button {
-width:30%;
-margin:5px;
-}
+.green { background:#2b4a3a; }
+.yellow { background:#5a4a2b; }
+.gray { background:#333; }
+.blue { background:#2b3f5a; }
 
 .card {
 background:#15202b;
 padding:16px;
 margin-top:16px;
 border-radius:12px;
-text-align:left;
 }
 
 .timer {
@@ -59,56 +55,61 @@ margin-top:10px;
 
 <body>
 
-<h1>VagusBuk 3.5</h1>
+<h1>VagusBuk 3.6</h1>
 
 <div class="container">
 
-<button class="primary" onclick="startSession('breath')">
-Recovery (60s)
+<button class="green" onclick="startBreath()">
+Beruhigen (Atmung)
 </button>
 
-<button class="secondary" onclick="quickRelief('quick')">
-Soforthilfe (15s)
+<button class="yellow" onclick="startRelease()">
+Spannung lösen (Körper)
 </button>
 
-<div id="timer" class="timer hidden">60</div>
+<button class="gray" onclick="startSafe()">
+Stabilisieren (Ruhe)
+</button>
+
+<button class="blue" onclick="startFocus()">
+Fokus zurückholen
+</button>
+
+<div id="timer" class="timer hidden"></div>
 <div id="phase" class="phase hidden"></div>
-
-<div id="feedback" class="card hidden feedback">
-Wie hat es gewirkt?<br><br>
-<button onclick="saveFeedback(1)">👍</button>
-<button onclick="saveFeedback(0)">➖</button>
-<button onclick="saveFeedback(-1)">👎</button>
-</div>
-
-<div id="insight" class="card hidden"></div>
 
 </div>
 
 <script>
 
-let currentMode = null;
-
-// gespeicherte Daten
-let stats = JSON.parse(localStorage.getItem("vb_stats")) || {
-breath: { good: 0, bad: 0 },
-quick: { good: 0, bad: 0 }
-};
-
-// ----------------------------
-// SESSION
-// ----------------------------
 let timer = null;
 let timeLeft = 0;
 
-function startSession(mode) {
+// ----------------------------
+// VOICE
+// ----------------------------
+function speak(text) {
+let msg = new SpeechSynthesisUtterance(text);
+msg.lang = "de-DE"
+speechSynthesis.speak(msg);
+}
 
-clearAll();
+// ----------------------------
+// RESET
+// ----------------------------
+function resetUI() {
+clearInterval(timer);
+document.getElementById("timer").classList.remove("hidden");
+document.getElementById("phase").classList.remove("hidden");
+}
 
-currentMode = mode;
+// ----------------------------
+// 1. BERUHIGEN (ATMUNG)
+// ----------------------------
+function startBreath() {
+
+resetUI();
 timeLeft = 60;
-
-showUI();
 
 speak("Vier ein. Sechs aus.");
 
@@ -131,18 +132,14 @@ if (timeLeft <= 0) finish();
 }
 
 // ----------------------------
-// QUICK
+// 2. SPANNUNG LÖSEN
 // ----------------------------
-function quickRelief(mode) {
+function startRelease() {
 
-clearAll();
+resetUI();
+timeLeft = 20;
 
-currentMode = mode;
-timeLeft = 15;
-
-showUI();
-
-speak("Schultern hochziehen und loslassen.");
+speak("Schultern hochziehen... halten... und loslassen.");
 
 timer = setInterval(() => {
 
@@ -157,73 +154,61 @@ if (timeLeft <= 0) finish();
 }
 
 // ----------------------------
+// 3. STABILISIEREN
+// ----------------------------
+function startSafe() {
+
+resetUI();
+timeLeft = 30;
+
+speak("Lege eine Hand auf deine Brust.");
+
+timer = setInterval(() => {
+
+timeLeft--;
+document.getElementById("timer").innerText = timeLeft;
+
+document.getElementById("phase").innerText =
+"Nichts tun. Nur spüren."
+
+if (timeLeft <= 0) finish();
+
+}, 1000);
+}
+
+// ----------------------------
+// 4. FOKUS
+// ----------------------------
+function startFocus() {
+
+resetUI();
+timeLeft = 30;
+
+speak("Schau langsam nach links und rechts.");
+
+timer = setInterval(() => {
+
+timeLeft--;
+document.getElementById("timer").innerText = timeLeft;
+
+document.getElementById("phase").innerText =
+"Augen bewegen"
+
+if (timeLeft <= 0) finish();
+
+}, 1000);
+}
+
+// ----------------------------
 // FINISH
 // ----------------------------
 function finish() {
 
-clearAll();
+clearInterval(timer);
 
 document.getElementById("phase").innerText = "Fertig"
 
 speak("Fertig.");
-
-document.getElementById("feedback").classList.remove("hidden");
-}
-
-// ----------------------------
-// FEEDBACK
-// ----------------------------
-function saveFeedback(val) {
-
-if (val === 1) stats[currentMode].good++;
-if (val === -1) stats[currentMode].bad++;
-
-localStorage.setItem("vb_stats", JSON.stringify(stats));
-
-showInsight();
-}
-
-// ----------------------------
-// INSIGHT
-// ----------------------------
-function showInsight() {
-
-let box = document.getElementById("insight");
-box.classList.remove("hidden");
-
-let breathScore = stats.breath.good - stats.breath.bad;
-let quickScore = stats.quick.good - stats.quick.bad;
-
-let text = "Was hilft dir aktuell:<br><br>"
-
-if (breathScore > quickScore) {
-text += "→ Atemübungen wirken besser"
-} else if (quickScore > breathScore) {
-text += "→ Soforthilfe wirkt besser"
-} else {
-text += "→ beide ähnlich wirksam"
-}
-
-box.innerHTML = text;
-}
-
-// ----------------------------
-// HELPERS
-// ----------------------------
-function speak(text) {
-let msg = new SpeechSynthesisUtterance(text);
-msg.lang = "de-DE"
-speechSynthesis.speak(msg);
-}
-
-function showUI() {
-document.getElementById("timer").classList.remove("hidden");
-document.getElementById("phase").classList.remove("hidden");
-document.getElementById("feedback").classList.add("hidden");
-}
-
-function clearAll() {
-clearInterval(timer);
 }
 
 </script>
