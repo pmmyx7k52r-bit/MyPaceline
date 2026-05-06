@@ -6,16 +6,41 @@
 <title>VagusBuk</title>
 
 <style>
-body {margin:0;font-family:-apple-system;background:#0b0f14;color:#e8eef2;text-align:center;}
-.container{padding:20px;}
-button{width:90%;max-width:420px;margin:6px;padding:16px;font-size:16px;border-radius:12px;border:none;color:white;}
-.red{background:#4a2b2b;} .green{background:#2b4a3a;} .yellow{background:#5a4a2b;} .gray{background:#444;}
-.timer{font-size:42px;margin-top:10px;} .phase{font-size:20px;margin-top:6px;}
+body {
+margin:0;
+font-family:-apple-system,sans-serif;
+background:#0b0f14;
+color:#e8eef2;
+text-align:center;
+}
+.container { padding:20px; }
 
-.accordion{background:#15202b;margin-top:10px;border-radius:10px;overflow:hidden;}
-.accordion-header{padding:14px;background:#1f2a36;cursor:pointer;}
-.accordion-content{display:none;padding:12px;}
-.accordion.open .accordion-content{display:block;}
+button {
+width:90%;
+max-width:420px;
+margin:6px;
+padding:16px;
+font-size:16px;
+border-radius:12px;
+border:none;
+color:white;
+}
+
+.red { background:#4a2b2b; }
+.green { background:#2b4a3a; }
+.yellow { background:#5a4a2b; }
+.gray { background:#444; }
+
+.timer { font-size:42px; margin-top:10px; }
+.phase { font-size:20px; margin-top:6px; }
+
+.box {
+background:#15202b;
+margin-top:10px;
+border-radius:10px;
+padding:12px;
+}
+.hidden { display:none; }
 </style>
 </head>
 
@@ -25,36 +50,31 @@ button{width:90%;max-width:420px;margin:6px;padding:16px;font-size:16px;border-r
 
 <div class="container">
 
-<!-- CHECK -->
-<div class="accordion open" id="acc_check">
-<div class="accordion-header" onclick="toggleAccordion('acc_check')">🧠 Wie ist es gerade?</div>
-<div class="accordion-content">
-<button class="green" onclick="checkState('good')">🟢 stabil</button>
-<button class="yellow" onclick="checkState('mid')">🟡 kippt leicht</button>
-<button class="red" onclick="checkState('bad')">🔴 kippt</button>
-</div>
+<!-- STEP 1 -->
+<div id="checkBox" class="box">
+<b>Wie ist es gerade?</b><br>
+<button id="btnGood" class="green">🟢 stabil</button>
+<button id="btnMid" class="yellow">🟡 kippt leicht</button>
+<button id="btnBad" class="red">🔴 kippt</button>
 </div>
 
-<!-- CONTEXT -->
-<div class="accordion" id="acc_context">
-<div class="accordion-header">Kontext</div>
-<div class="accordion-content" id="contextBox">
-<button onclick="selectContext('talk')">💬 Gespräch</button>
-<button onclick="selectContext('screen')">📱 Bildschirm</button>
-<button onclick="selectContext('thinking')">🧠 Denken</button>
-<button onclick="selectContext('tired')">😴 müde</button>
-<button onclick="selectContext('unknown')">❓ egal</button>
-</div>
+<!-- STEP 2 -->
+<div id="contextBox" class="box hidden">
+<b>Was war gerade?</b><br>
+<button data-context="talk">💬 Gespräch</button>
+<button data-context="screen">📱 Bildschirm</button>
+<button data-context="thinking">🧠 Denken</button>
+<button data-context="tired">😴 müde</button>
+<button data-context="unknown">❓ egal</button>
 </div>
 
-<!-- ACTION -->
-<div class="accordion" id="acc_actions">
-<div class="accordion-header" onclick="toggleAccordion('acc_actions')">Übungen</div>
-<div class="accordion-content">
-<button class="red" onclick="startEmergency()">Akut</button>
-<button class="green" onclick="startHRV()">5 Min ruhig</button>
-<button class="gray" onclick="stopAll()">Abbrechen</button>
-</div>
+<!-- STEP 3 -->
+<div id="actionBox" class="box hidden">
+<b>Übung</b><br>
+<button id="btnEmergency" class="red">Akut (Klopfen)</button>
+<button id="btnHRV" class="green">5 Minuten ruhig</button>
+<button id="btnStop" class="gray">Abbrechen</button>
+<button id="btnReset" class="gray">Zurück</button>
 </div>
 
 <div id="timer" class="timer"></div>
@@ -65,178 +85,240 @@ button{width:90%;max-width:420px;margin:6px;padding:16px;font-size:16px;border-r
 
 <script>
 
-let interval=null;
-let crashLog=JSON.parse(localStorage.getItem("vb_crashlog"))||[];
-let lastHintTime=0;
+// ---------- STATE
+let interval = null;
+let currentState = null;
+let crashLog = JSON.parse(localStorage.getItem("vb_crashlog")) || [];
+let audioReady = false;
 
-let pendingState=null;
+// ---------- UI
+const checkBox = document.getElementById("checkBox");
+const contextBox = document.getElementById("contextBox");
+const actionBox = document.getElementById("actionBox");
 
-// -------- UI
-function setPhase(t){document.getElementById("phase").innerText=t;}
-function setTimer(t){document.getElementById("timer").innerText=t;}
-function showInfo(t){document.getElementById("info").innerHTML=t;}
+function show(el){ el.classList.remove("hidden"); }
+function hide(el){ el.classList.add("hidden"); }
 
-function toggleAccordion(id){
-let el=document.getElementById(id);
-el.classList.toggle("open");
+function setPhase(t){ document.getElementById("phase").innerText = t; }
+function setTimer(t){ document.getElementById("timer").innerText = t; }
+function showInfo(t){ document.getElementById("info").innerHTML = t; }
+
+// ---------- AUDIO (iOS fix)
+function unlockAudio(){
+if(audioReady) return;
+audioReady = true;
+let msg = new SpeechSynthesisUtterance(" ");
+speechSynthesis.speak(msg);
 }
 
-// -------- VOICE
-function speak(t){
+function speak(text){
+if(!audioReady) return;
 speechSynthesis.cancel();
-let m=new SpeechSynthesisUtterance(t);
-m.lang="de-DE" m.rate=0.9;
-speechSynthesis.speak(m);
+let msg = new SpeechSynthesisUtterance(text);
+msg.lang = "de-DE"
+msg.rate = 0.9;
+speechSynthesis.speak(msg);
 }
 
-// -------- STOP
+// ---------- RESET (ZENTRAL!)
+function resetApp(){
+
+clearInterval(interval);
+speechSynthesis.cancel();
+
+show(checkBox);
+hide(contextBox);
+hide(actionBox);
+
+setPhase("");
+setTimer("");
+showInfo("Bereit.");
+}
+
+// ---------- STOP
 function stopAll(){
+
 clearInterval(interval);
 speechSynthesis.cancel();
-setPhase("Abgebrochen"); setTimer("");
-showInfo("Abgebrochen – ok.");
+
+setPhase("Abgebrochen");
+setTimer("");
+showInfo("Abgebrochen – wird zurückgesetzt.");
+
+setTimeout(resetApp, 2000);
 }
 
-// -------- CHECK
-function checkState(s){
+// ---------- STEP 1
+function handleState(state){
 
-if(s==="good"){showInfo("Stabil.");return;}
+unlockAudio();
 
-pendingState=s;
-document.getElementById("acc_context").classList.add("open");
-}
+currentState = state;
 
-// -------- SAVE
-function selectContext(c){
-
-document.getElementById("acc_context").classList.remove("open");
-
-let h=new Date().getHours();
-
-crashLog.push({type:pendingState,hour:h,context:c,time:Date.now()});
-crashLog=crashLog.slice(-100);
-localStorage.setItem("vb_crashlog",JSON.stringify(crashLog));
-
-if(pendingState==="mid") startMicro();
-if(pendingState==="bad") startEmergency();
-}
-
-// -------- MICRO
-function startMicro(){
-clearInterval(interval);
-let t=20;
-setPhase("Schultern lösen");
-interval=setInterval(()=>{
-t--; setTimer(t);
-if(t<=0){clearInterval(interval); setPhase("Fertig");}
-},1000);
-}
-
-// -------- AKUT
-function startEmergency(){
-clearInterval(interval);
-let t=20;
-setPhase("Klopfen Brust");
-interval=setInterval(()=>{
-t--; setTimer(t);
-if(t<=0){clearInterval(interval); startBreath();}
-},1000);
-}
-
-// -------- BREATH
-function startBreath(){
-let t=40,pt=0;
-interval=setInterval(()=>{
-t--; pt++; setTimer(t);
-if(pt%10<4){setPhase("Ein");}else{setPhase("Aus");}
-if(t<=0){clearInterval(interval); setPhase("Fertig");}
-},1000);
-}
-
-// -------- HRV
-function startHRV(){
-clearInterval(interval);
-let t=300,pt=0;
-interval=setInterval(()=>{
-t--; pt++; setTimer(t);
-if(pt%12<5){setPhase("Ein");}else{setPhase("Aus");}
-if(t<=0){clearInterval(interval); setPhase("Fertig");}
-},1000);
-}
-
-// -------- PATTERN
-function analyze(){
-
-let hMap={},cMap={};
-
-crashLog.forEach(e=>{
-hMap[e.hour]=(hMap[e.hour]||0)+1;
-cMap[e.context]=(cMap[e.context]||0)+1;
-});
-
-let h=null,hc=0,c=null,cc=0;
-
-for(let k in hMap){if(hMap[k]>hc){hc=hMap[k];h=k;}}
-for(let k in cMap){if(cMap[k]>cc){cc=cMap[k];c=k;}}
-
-return{h,hc,c,cc};
-}
-
-// -------- AUTO ACTION (A4.2)
-function autoIntervene(){
-
-let now=Date.now();
-if(now-lastHintTime<3600000) return;
-
-let p=analyze();
-let hour=new Date().getHours();
-
-if(p.h && p.hc>=3 && Math.abs(hour-p.h)<=1){
-
-lastHintTime=now;
-
-document.getElementById("acc_actions").classList.add("open");
-
-showInfo("Jetzt typischer Zeitpunkt → kurzer Reset");
-
-speak("Jetzt kurz runterfahren.");
-
-startMicro();
+if(state === "good"){
+showInfo("Stabil – nichts tun.");
+speak("Alles gut.");
 return;
 }
 
-if(p.c && p.cc>=3){
+hide(checkBox);
+show(contextBox);
 
-lastHintTime=now;
-
-document.getElementById("acc_actions").classList.add("open");
-
-if(p.c==="screen"){
-showInfo("Nach Bildschirm → Summen");
-speak("Summen hilft jetzt.");
-startHRV();
+showInfo("Was war der Auslöser?");
 }
 
-if(p.c==="talk"){
-showInfo("Nach Gespräch → Klopfen");
-speak("Klopfen hilft jetzt.");
-startEmergency();
-}
+// ---------- STEP 2
+function chooseContext(context){
 
-if(p.c==="thinking"){
-showInfo("Bei Denken → kurzer Reset");
+hide(contextBox);
+show(actionBox);
+
+crashLog.push({
+type: currentState,
+context,
+hour: new Date().getHours(),
+time: Date.now()
+});
+
+crashLog = crashLog.slice(-100);
+localStorage.setItem("vb_crashlog", JSON.stringify(crashLog));
+
+if(currentState === "mid"){
+showInfo("Leicht → kurzer Reset");
 startMicro();
 }
 
-if(p.c==="tired"){
-showInfo("Müdigkeit → ruhig atmen");
-startHRV();
-}
+if(currentState === "bad"){
+showInfo("Stark → sofort runterfahren");
+startEmergency();
 }
 }
 
-// alle 30 min prüfen
-setInterval(autoIntervene,1800000);
+// ---------- MICRO
+function startMicro(){
+
+clearInterval(interval);
+
+let t = 20;
+setPhase("Schultern lösen");
+speak("Schultern hoch und loslassen.");
+
+interval = setInterval(()=>{
+t--;
+setTimer(t);
+
+if(t <= 0){
+clearInterval(interval);
+setPhase("Fertig");
+speak("Fertig.");
+setTimeout(resetApp, 2000);
+}
+},1000);
+}
+
+// ---------- AKUT
+function startEmergency(){
+
+clearInterval(interval);
+
+let t = 20;
+setPhase("Brust klopfen");
+speak("Klopfe sanft.");
+
+interval = setInterval(()=>{
+t--;
+setTimer(t);
+
+if(t <= 0){
+clearInterval(interval);
+startBreath();
+}
+},1000);
+}
+
+// ---------- BREATH
+function startBreath(){
+
+let t = 40;
+let pt = 0;
+
+interval = setInterval(()=>{
+t--; pt++;
+setTimer(t);
+
+if(pt % 10 < 4){
+setPhase("Einatmen");
+} else {
+setPhase("Ausatmen");
+}
+
+if(pt % 10 === 0) speak("Ein");
+if(pt % 10 === 4) speak("Aus");
+
+if(t <= 0){
+clearInterval(interval);
+setPhase("Fertig");
+speak("Fertig.");
+setTimeout(resetApp, 2000);
+}
+
+},1000);
+}
+
+// ---------- HRV + SUMMEN
+function startHRV(){
+
+clearInterval(interval);
+
+let t = 300;
+let pt = 0;
+
+speak("Langsam starten.");
+
+interval = setInterval(()=>{
+
+t--;
+pt++;
+
+setTimer(t);
+
+if(t > 120){
+setPhase("Summen beim Ausatmen");
+if(pt % 6 === 0) speak("Voooo");
+} else {
+if(pt % 12 < 5){
+setPhase("Ein");
+} else {
+setPhase("Aus");
+}
+}
+
+if(t <= 0){
+clearInterval(interval);
+setPhase("Fertig");
+speak("Fertig.");
+setTimeout(resetApp, 2000);
+}
+
+},1000);
+}
+
+// ---------- EVENTS
+document.getElementById("btnGood").addEventListener("click",()=>handleState("good"));
+document.getElementById("btnMid").addEventListener("click",()=>handleState("mid"));
+document.getElementById("btnBad").addEventListener("click",()=>handleState("bad"));
+
+document.querySelectorAll("[data-context]").forEach(btn=>{
+btn.addEventListener("click", ()=>chooseContext(btn.dataset.context));
+});
+
+document.getElementById("btnEmergency").addEventListener("click", startEmergency);
+document.getElementById("btnHRV").addEventListener("click", startHRV);
+document.getElementById("btnStop").addEventListener("click", stopAll);
+document.getElementById("btnReset").addEventListener("click", resetApp);
+
+// ---------- INIT
+resetApp();
 
 </script>
 
