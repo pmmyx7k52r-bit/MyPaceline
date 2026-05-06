@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk A1</title>
+<title>VagusBuk</title>
 
 <style>
 body {
@@ -14,155 +14,287 @@ color:#e8eef2;
 text-align:center;
 }
 
-.container { padding:30px; }
+.container { padding:20px; }
 
 button {
 width:90%;
 max-width:420px;
-padding:22px;
-font-size:20px;
-border-radius:16px;
+margin:6px;
+padding:16px;
+font-size:16px;
+border-radius:12px;
 border:none;
-background:#2b4a3a;
 color:white;
 }
 
-.timer {
-font-size:50px;
-margin-top:30px;
-}
+.red { background:#4a2b2b; }
+.green { background:#2b4a3a; }
+.yellow { background:#5a4a2b; }
+.gray { background:#444; }
 
-.phase {
-font-size:22px;
-margin-top:20px;
+.timer { font-size:42px; margin-top:15px; }
+.phase { font-size:20px; margin-top:8px; }
+
+.card {
+background:#15202b;
+padding:12px;
+margin-top:12px;
+border-radius:10px;
+font-size:14px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>VagusBuk</h1>
+<h2>VagusBuk</h2>
 
 <div class="container">
 
-<button onclick="start()">
-Es kippt gerade
-</button>
+<!-- A3 CHECK -->
+<div class="card">
+<b>Wie ist es gerade?</b><br><br>
+<button class="green" onclick="checkState('good')">🟢 stabil</button>
+<button class="yellow" onclick="checkState('mid')">🟡 kippt leicht</button>
+<button class="red" onclick="checkState('bad')">🔴 kippt</button>
+</div>
+
+<!-- MANUELL -->
+<div class="card">
+<b>Übungen</b><br><br>
+<button class="red" onclick="startEmergency()">Akut starten</button>
+<button class="green" onclick="startHRV()">5 Minuten ruhig werden</button>
+<button class="gray" onclick="stopAll()">Abbrechen</button>
+</div>
 
 <div id="timer" class="timer"></div>
 <div id="phase" class="phase"></div>
+<div id="info" class="card"></div>
 
 </div>
 
 <script>
 
-let t = 0;
 let interval = null;
+let crashLog = JSON.parse(localStorage.getItem("vb_crashlog")) || [];
 
-// ----------------------------
-// VOICE
-// ----------------------------
+// ---------------- VOICE
 function speak(text) {
+speechSynthesis.cancel();
 let msg = new SpeechSynthesisUtterance(text);
 msg.lang = "de-DE"
 msg.rate = 0.9;
 speechSynthesis.speak(msg);
 }
 
-// ----------------------------
-// START
-// ----------------------------
-function start() {
-
+// ---------------- RESET
+function reset() {
 clearInterval(interval);
+}
 
-t = 20;
+// ---------------- STOP
+function stopAll() {
+reset();
+speechSynthesis.cancel();
+setPhase("Abgebrochen");
+setTimer("");
+showInfo("Abgebrochen – völlig ok.");
+}
 
-document.getElementById("phase").innerText =
-"Schultern hochziehen"
+// ---------------- UI
+function setPhase(text){ document.getElementById("phase").innerText = text; }
+function setTimer(text){ document.getElementById("timer").innerText = text; }
+function showInfo(text){ document.getElementById("info").innerHTML = text; }
 
-speak("Zieh die Schultern hoch.");
+// ---------------- A4 LOG
+function logEvent(type) {
+let hour = new Date().getHours();
+crashLog.push({type, hour, time: Date.now()});
+crashLog = crashLog.slice(-100);
+localStorage.setItem("vb_crashlog", JSON.stringify(crashLog));
+}
+
+// ---------------- A4 ANALYSE
+function analyzePattern() {
+let hours = {};
+crashLog.forEach(e => {
+if (!hours[e.hour]) hours[e.hour] = 0;
+hours[e.hour]++;
+});
+
+let maxHour=null, maxCount=0;
+for (let h in hours) {
+if (hours[h] > maxCount) {
+maxCount = hours[h];
+maxHour = h;
+}
+}
+return {hour:maxHour,count:maxCount};
+}
+
+function showPatternHint() {
+let p = analyzePattern();
+if (!p.hour || p.count < 3) return;
+
+let now = new Date().getHours();
+
+if (Math.abs(now - p.hour) <= 1) {
+showInfo(`⚠ Häufiger Zeitpunkt<br>→ oft um ${p.hour} Uhr<br>→ jetzt kurzer Reset sinnvoll`);
+speak("Jetzt wäre ein guter Zeitpunkt für einen kurzen Reset.");
+}
+}
+
+// ---------------- A3 CHECK
+function checkState(state) {
+
+if (state === "good") {
+showInfo("Alles stabil – nichts tun.");
+speak("Alles gut.");
+}
+
+if (state === "mid") {
+logEvent("mid");
+showInfo("Leichtes Kippen – kurzer Reset.");
+startMicro();
+}
+
+if (state === "bad") {
+logEvent("bad");
+showInfo("Jetzt eingreifen.");
+startEmergency();
+}
+}
+
+// ---------------- MICRO
+function startMicro() {
+reset();
+let t = 20;
+
+setPhase("Schultern anspannen");
+speak("Schultern hoch und loslassen.");
+
+interval = setInterval(() => {
+t--;
+setTimer(t);
+if (t <= 0) {
+reset();
+setPhase("Fertig");
+speak("Fertig.");
+}
+},1000);
+}
+
+// ---------------- AKUT
+function startEmergency() {
+reset();
+let t = 20;
+
+setPhase("Brust klopfen");
+speak("Klopfe sanft auf dein Brustbein.");
+
+interval = setInterval(() => {
+t--;
+setTimer(t);
+if (t <= 0) {
+reset();
+startBreath();
+}
+},1000);
+}
+
+// ---------------- BREATH (MIT VOICE!)
+function startBreath() {
+
+let t = 40;
+let phaseTime = 0;
+let inhale = 4;
+let exhale = 6;
+
+speak("Ein. Aus.");
 
 interval = setInterval(() => {
 
 t--;
-document.getElementById("timer").innerText = t;
+phaseTime++;
 
-if (t === 15) {
-document.getElementById("phase").innerText = "Halten"
-speak("Halten.");
-}
+setTimer(t);
 
-if (t === 10) {
-document.getElementById("phase").innerText = "Loslassen"
-speak("Loslassen.");
-}
+let cycle = phaseTime % (inhale + exhale);
 
-if (t === 0) {
-clearInterval(interval);
-startBreath();
-}
+if (cycle === 0) speak("Ein");
+if (cycle === inhale) speak("Aus");
 
-}, 1000);
-}
-
-// ----------------------------
-// BREATH
-// ----------------------------
-function startBreath() {
-
-let timeLeft = 40;
-let cycle = 0;
-
-speak("Vier ein. Sechs aus.");
-
-interval = setInterval(() => {
-
-timeLeft--;
-cycle++;
-
-document.getElementById("timer").innerText = timeLeft;
-
-if (cycle % 10 < 4) {
-document.getElementById("phase").innerText = "Einatmen"
+if (cycle < inhale) {
+setPhase("Einatmen");
 } else {
-document.getElementById("phase").innerText = "Ausatmen"
+setPhase("Ausatmen");
 }
 
-if (timeLeft <= 0) {
-finish();
+if (t <= 0) finishEmergency();
+
+},1000);
 }
 
-}, 1000);
+// ---------------- FINISH AKUT
+function finishEmergency() {
+reset();
+let t = 10;
+
+setPhase("Hand auf Brust");
+
+interval = setInterval(() => {
+t--;
+setTimer(t);
+if (t <= 0) {
+reset();
+setPhase("Fertig");
+speak("Fertig.");
+}
+},1000);
 }
 
-// ----------------------------
-// FINISH
-// ----------------------------
-function finish() {
+// ---------------- HRV
+function startHRV() {
 
-clearInterval(interval);
+reset();
 
-document.getElementById("phase").innerText =
-"Hand auf Brust – kurz spüren"
+let t = 300;
+let phaseTime = 0;
+let inhale = 5;
+let exhale = 7;
 
-speak("Lege eine Hand auf deine Brust.");
-
-let t2 = 10;
+showInfo("Kein Ziel. Ruhig bleiben. Abbrechen jederzeit ok.");
+speak("Langsam starten.");
 
 interval = setInterval(() => {
 
-t2--;
-document.getElementById("timer").innerText = t2;
+t--;
+phaseTime++;
 
-if (t2 <= 0) {
-clearInterval(interval);
-document.getElementById("phase").innerText = "Fertig"
+setTimer(t);
+
+let cycle = phaseTime % (inhale + exhale);
+
+if (cycle === 0) speak("Ein");
+if (cycle === inhale) speak("Aus");
+
+if (cycle < inhale) {
+setPhase("Einatmen ruhig");
+} else {
+setPhase("Ausatmen länger");
+}
+
+if (t <= 0) {
+reset();
+setPhase("Fertig");
 speak("Fertig.");
 }
 
-}, 1000);
+},1000);
 }
+
+// ---------------- A4 LOOP
+setInterval(showPatternHint, 1800000);
 
 </script>
 
