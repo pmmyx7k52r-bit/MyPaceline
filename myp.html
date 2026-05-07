@@ -2,288 +2,901 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VagusBuk A5.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>VagusBuk A5.1</title>
 
 <style>
-body {
-margin:0;
-font-family:-apple-system,sans-serif;
-background:#0b0f14;
-color:#e8eef2;
-text-align:center;
-}
-.container { padding:20px; }
 
-button {
-width:90%;
-max-width:420px;
-margin:6px;
-padding:16px;
-font-size:16px;
-border-radius:12px;
+:root{
+--bg:#071018;
+--card:#101c28;
+--card2:#152434;
+--text:#eef3f7;
+--muted:#9fb0c0;
+
+--green:#4cd964;
+--greenBg:#173823;
+
+--yellow:#ffd23f;
+--yellowBg:#4b3d12;
+
+--red:#ff5c5c;
+--redBg:#412020;
+
+--blue:#58a6ff;
+}
+
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+body{
+margin:0;
+background:
+radial-gradient(circle at top,#0d1d2f 0%,#071018 45%);
+color:var(--text);
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+.container{
+max-width:680px;
+margin:auto;
+padding:20px 16px 120px;
+}
+
+.header{
+text-align:center;
+margin-top:30px;
+margin-bottom:22px;
+}
+
+.logoWave{
+color:var(--green);
+font-size:34px;
+line-height:18px;
+margin-bottom:4px;
+}
+
+h1{
+margin:0;
+font-size:54px;
+font-weight:800;
+letter-spacing:-2px;
+}
+
+.subtitle{
+color:var(--muted);
+margin-top:6px;
+font-size:20px;
+}
+
+.card{
+background:rgba(16,28,40,.88);
+border:1px solid rgba(255,255,255,.05);
+border-radius:26px;
+padding:18px;
+margin-bottom:18px;
+backdrop-filter:blur(10px);
+}
+
+.flex{
+display:flex;
+gap:16px;
+}
+
+.col{
+flex:1;
+}
+
+.title{
+font-size:14px;
+text-transform:uppercase;
+letter-spacing:1px;
+color:var(--muted);
+margin-bottom:8px;
+}
+
+.big{
+font-size:54px;
+font-weight:800;
+line-height:1;
+}
+
+.hrText{
+margin-top:10px;
+color:var(--muted);
+}
+
+input{
+width:100%;
+background:#0d1621;
 border:none;
 color:white;
+font-size:34px;
+padding:18px;
+border-radius:18px;
+margin-top:14px;
 }
 
-.red { background:#4a2b2b; }
-.green { background:#2b4a3a; }
-.yellow { background:#5a4a2b; }
-.gray { background:#444; }
+button{
+border:none;
+border-radius:22px;
+color:white;
+cursor:pointer;
+transition:.2s;
+}
 
-.box {
-background:#15202b;
+.saveBtn{
+width:100%;
+margin-top:14px;
+padding:18px;
+font-size:20px;
+background:linear-gradient(135deg,#3aa44f,#267d38);
+font-weight:700;
+}
+
+.saveBtn:active{
+transform:scale(.98);
+}
+
+.stateBtn{
+width:100%;
+text-align:left;
+padding:22px;
+margin-top:14px;
+border:1px solid rgba(255,255,255,.05);
+}
+
+.stateTop{
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.stateLeft{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.emoji{
+font-size:40px;
+}
+
+.stateName{
+font-size:32px;
+font-weight:800;
+}
+
+.stateDesc{
+margin-top:6px;
+color:rgba(255,255,255,.82);
+font-size:18px;
+}
+
+.green{
+background:linear-gradient(135deg,#163c25,#214d2f);
+}
+
+.yellow{
+background:linear-gradient(135deg,#4a3d15,#65511b);
+}
+
+.red{
+background:linear-gradient(135deg,#412020,#5a2727);
+}
+
+.arrow{
+font-size:30px;
+opacity:.6;
+}
+
+.quickGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+margin-top:14px;
+}
+
+.quickBtn{
+padding:20px;
+text-align:left;
+border:1px solid rgba(255,255,255,.05);
+}
+
+.quickTitle{
+font-size:24px;
+font-weight:700;
+}
+
+.quickText{
+color:rgba(255,255,255,.75);
+margin-top:8px;
+}
+
+.quickRed{
+background:linear-gradient(135deg,#512626,#683030);
+}
+
+.quickGreen{
+background:linear-gradient(135deg,#183a24,#235132);
+}
+
+.badge{
+margin-top:14px;
+background:rgba(76,217,100,.1);
+border:1px solid rgba(76,217,100,.2);
+padding:16px;
+border-radius:18px;
+}
+
+.badgeTitle{
+color:var(--green);
+font-weight:700;
+}
+
+.badgeText{
+margin-top:4px;
+color:#dbe7ef;
+}
+
+.overlay{
+position:fixed;
+inset:0;
+background:#071018;
+z-index:100;
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+padding:30px;
+text-align:center;
+}
+
+.phase{
+font-size:40px;
+font-weight:800;
 margin-top:10px;
-border-radius:10px;
-padding:12px;
 }
 
-.hidden { display:none; }
+.timer{
+font-size:90px;
+font-weight:800;
+margin-top:12px;
+}
 
-.timer { font-size:42px; }
-.phase { font-size:20px; }
-.info { font-size:14px; opacity:0.8; }
+.sessionInfo{
+margin-top:20px;
+font-size:22px;
+color:var(--muted);
+max-width:520px;
+line-height:1.5;
+}
+
+.stopBtn{
+margin-top:40px;
+background:#2b3642;
+padding:18px 34px;
+font-size:20px;
+}
+
+.breathCircle{
+width:170px;
+height:170px;
+border-radius:50%;
+background:radial-gradient(circle,#3bd45a 0%,#1e7c35 70%);
+margin-bottom:24px;
+transition:2s ease-in-out;
+box-shadow:0 0 60px rgba(76,217,100,.25);
+}
+
+.expand{
+transform:scale(1.22);
+}
+
+@media(max-width:680px){
+
+h1{
+font-size:44px;
+}
+
+.stateName{
+font-size:28px;
+}
+
+.quickGrid{
+grid-template-columns:1fr;
+}
+
+.timer{
+font-size:72px;
+}
+}
+
 </style>
 </head>
 
 <body>
 
-<h2>VagusBuk</h2>
-
 <div class="container">
 
+<div class="header">
+<div class="logoWave">〰〰</div>
+<h1>VagusBuk</h1>
+<div class="subtitle">Für ein stabileres Nervensystem.</div>
+</div>
+
 <!-- HRV -->
-<div class="box">
-<b>HRV morgens</b><br>
-<input id="hrvInput" type="number" placeholder="z.B. 25">
-<button id="saveHRV">Speichern</button>
-<div id="hrvInfo" class="info"></div>
+<div class="card">
+
+<div class="flex">
+
+<div class="col">
+<div class="title">HRV morgens</div>
+
+<div class="big" id="todayHRV">--</div>
+
+<div class="hrText">
+Direkt nach dem Aufwachen messen.
 </div>
 
-<!-- STATE -->
-<div id="checkBox" class="box">
-<b>Wie ist es gerade?</b><br>
-<button id="btnGood" class="green">🟢 stabil</button>
-<button id="btnMid" class="yellow">🟡 kippt leicht</button>
-<button id="btnBad" class="red">🔴 kippt</button>
+<input id="hrvInput" type="number" placeholder="z.B. 41">
+
+<button class="saveBtn" id="saveBtn">
+Speichern
+</button>
 </div>
 
-<!-- CONTEXT -->
-<div id="contextBox" class="box hidden">
-<b>Was war gerade?</b><br>
-<button data-context="talk">💬 Gespräch</button>
-<button data-context="screen">📱 Bildschirm</button>
-<button data-context="thinking">🧠 Denken</button>
-<button data-context="tired">😴 müde</button>
-<button data-context="unknown">❓ egal</button>
+<div class="col">
+<div class="title">Trend</div>
+
+<div class="big" id="avgHRV">--</div>
+
+<div class="hrText" id="trendText">
+Noch keine Daten.
 </div>
 
-<!-- ACTION -->
-<div id="actionBox" class="box hidden">
-<b>Übungen</b><br>
-<button id="btnEmergency" class="red">Akut</button>
-<button id="btnHRV" class="green">5 Min Training</button>
-<button id="btnStop" class="gray">Abbrechen</button>
-<button id="btnReset" class="gray">Zurück</button>
+<div class="badge">
+<div class="badgeTitle" id="dayTitle">
+Heute neutral
 </div>
 
-<div id="timer" class="timer"></div>
-<div id="phase" class="phase"></div>
-<div id="info" class="info"></div>
+<div class="badgeText" id="dayText">
+Höre auf dein Gefühl.
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- STATES -->
+<div class="card">
+
+<div class="title">Wie ist es gerade?</div>
+
+<button class="stateBtn green" onclick="handleState('good')">
+
+<div class="stateTop">
+
+<div class="stateLeft">
+<div class="emoji">🙂</div>
+
+<div>
+<div class="stateName">STABIL</div>
+<div class="stateDesc">
+Ich fühle mich ruhig und stabil.
+</div>
+</div>
+</div>
+
+<div class="arrow">›</div>
+
+</div>
+
+</button>
+
+<button class="stateBtn yellow" onclick="handleState('mid')">
+
+<div class="stateTop">
+
+<div class="stateLeft">
+<div class="emoji">😕</div>
+
+<div>
+<div class="stateName">KIPPT LEICHT</div>
+<div class="stateDesc">
+Ich merke erste Überlastung.
+</div>
+</div>
+</div>
+
+<div class="arrow">›</div>
+
+</div>
+
+</button>
+
+<button class="stateBtn red" onclick="handleState('bad')">
+
+<div class="stateTop">
+
+<div class="stateLeft">
+<div class="emoji">😣</div>
+
+<div>
+<div class="stateName">KIPPT</div>
+<div class="stateDesc">
+Ich bin überreizt oder erschöpft.
+</div>
+</div>
+</div>
+
+<div class="arrow">›</div>
+
+</div>
+
+</button>
+
+</div>
+
+<!-- QUICK -->
+<div class="card">
+
+<div class="title">Schnellzugriff Übungen</div>
+
+<div class="quickGrid">
+
+<button class="quickBtn quickRed" onclick="startEmergency()">
+
+<div class="quickTitle">
+Akut runterfahren
+</div>
+
+<div class="quickText">
+Klopfen + Atmung
+</div>
+
+</button>
+
+<button class="quickBtn quickGreen" onclick="startHRV()">
+
+<div class="quickTitle">
+5 Min Training
+</div>
+
+<div class="quickText">
+Vagus + HRV stärken
+</div>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- SESSION -->
+<div class="overlay" id="overlay">
+
+<div class="breathCircle" id="circle"></div>
+
+<div class="phase" id="phase">
+Vorbereitung
+</div>
+
+<div class="timer" id="timer">
+60
+</div>
+
+<div class="sessionInfo" id="sessionInfo">
+Ruhig werden.
+</div>
+
+<button class="stopBtn" onclick="stopSession()">
+Abbrechen
+</button>
 
 </div>
 
 <script>
 
-// ---------- STATE
-let interval=null;
-let currentState=null;
-let audioReady=false;
-
+// --------------------- STORAGE
 let hrvData = JSON.parse(localStorage.getItem("vb_hrv")) || [];
 
-// ---------- UI
-function show(id){document.getElementById(id).classList.remove("hidden");}
-function hide(id){document.getElementById(id).classList.add("hidden");}
-function setPhase(t){document.getElementById("phase").innerText=t;}
-function setTimer(t){document.getElementById("timer").innerText=t;}
-function showInfo(t){document.getElementById("info").innerText=t;}
+// --------------------- AUDIO
+let audioReady = false;
 
-// ---------- AUDIO
 function unlockAudio(){
-if(audioReady)return;
-audioReady=true;
-speechSynthesis.speak(new SpeechSynthesisUtterance(" "));
-}
-function speak(t){
-if(!audioReady)return;
-speechSynthesis.cancel();
-let m=new SpeechSynthesisUtterance(t);
-m.lang="de-DE"
-speechSynthesis.speak(m);
+
+if(audioReady) return;
+
+audioReady = true;
+
+speechSynthesis.speak(
+new SpeechSynthesisUtterance(" ")
+);
 }
 
-// ---------- HRV LOGIK
+function speak(text){
+
+if(!audioReady) return;
+
+speechSynthesis.cancel();
+
+let msg = new SpeechSynthesisUtterance(text);
+
+msg.lang = "de-DE"
+msg.rate = 0.92;
+
+speechSynthesis.speak(msg);
+}
+
+// --------------------- HRV
 function saveHRV(){
-let val=parseInt(document.getElementById("hrvInput").value);
-if(!val)return;
 
-hrvData.push(val);
-hrvData=hrvData.slice(-14);
-localStorage.setItem("vb_hrv",JSON.stringify(hrvData));
+let val = parseInt(
+document.getElementById("hrvInput").value
+);
 
-updateHRVInfo();
-}
+if(!val) return;
 
-function getAvg(){
-if(hrvData.length===0)return null;
-return Math.round(hrvData.reduce((a,b)=>a+b,0)/hrvData.length);
-}
-
-function updateHRVInfo(){
-
-let avg=getAvg();
-if(!avg){
-document.getElementById("hrvInfo").innerText="Noch keine Daten."
-return;
-}
-
-let today=hrvData[hrvData.length-1];
-
-let msg="Ø: "+avg+" | Heute: "+today+" → "
-
-if(today < avg){
-msg+="ruhig bleiben"
-} else if(today > avg){
-msg+="Training sinnvoll"
-} else{
-msg+="normal"
-}
-
-document.getElementById("hrvInfo").innerText=msg;
-}
-
-// ---------- RESET
-function resetApp(){
-clearInterval(interval);
-speechSynthesis.cancel();
-
-show("checkBox");
-hide("contextBox");
-hide("actionBox");
-
-setPhase("");
-setTimer("");
-showInfo("Bereit.");
-}
-
-// ---------- STATE
-function handleState(s){
-unlockAudio();
-currentState=s;
-
-if(s==="good"){
-show("actionBox");
-showInfo("Stabil → Training möglich");
-return;
-}
-
-hide("checkBox");
-show("contextBox");
-}
-
-// ---------- CONTEXT
-function chooseContext(){
-hide("contextBox");
-show("actionBox");
-
-if(currentState==="mid") startMicro();
-if(currentState==="bad") startEmergency();
-}
-
-// ---------- MICRO
-function startMicro(){
-clearInterval(interval);
-let t=20;
-setPhase("Schultern lösen");
-
-interval=setInterval(()=>{
-t--; setTimer(t);
-if(t<=0) finish("ruhiger");
-},1000);
-}
-
-// ---------- EMERGENCY
-function startEmergency(){
-clearInterval(interval);
-let t=20;
-setPhase("Klopfen");
-
-interval=setInterval(()=>{
-t--; setTimer(t);
-if(t<=0) startBreath();
-},1000);
-}
-
-// ---------- BREATH
-function startBreath(){
-let t=40,pt=0;
-
-interval=setInterval(()=>{
-t--;pt++; setTimer(t);
-
-if(pt%10<4){setPhase("Ein");}
-else{setPhase("Aus");}
-
-if(t<=0) finish("beruhigt");
-
-},1000);
-}
-
-// ---------- HRV TRAINING
-function startHRV(){
-clearInterval(interval);
-let t=300,pt=0;
-
-interval=setInterval(()=>{
-t--;pt++; setTimer(t);
-
-if(pt%12<5){setPhase("Ein");}
-else{setPhase("Lang Aus");}
-
-if(t<=0) finish("trainiert");
-
-},1000);
-}
-
-// ---------- FINISH
-function finish(txt){
-clearInterval(interval);
-setPhase("Fertig");
-showInfo(txt);
-speak("Fertig");
-
-setTimeout(resetApp,2000);
-}
-
-// ---------- EVENTS
-document.getElementById("saveHRV").onclick=saveHRV;
-document.getElementById("btnGood").onclick=()=>handleState("good");
-document.getElementById("btnMid").onclick=()=>handleState("mid");
-document.getElementById("btnBad").onclick=()=>handleState("bad");
-
-document.querySelectorAll("[data-context]").forEach(b=>{
-b.onclick=chooseContext;
+hrvData.push({
+value:val,
+time:Date.now()
 });
 
-document.getElementById("btnEmergency").onclick=startEmergency;
-document.getElementById("btnHRV").onclick=startHRV;
-document.getElementById("btnStop").onclick=resetApp;
-document.getElementById("btnReset").onclick=resetApp;
+hrvData = hrvData.slice(-14);
 
-// INIT
-updateHRVInfo();
-resetApp();
+localStorage.setItem(
+"vb_hrv",
+JSON.stringify(hrvData)
+);
+
+updateHRV();
+}
+
+function updateHRV(){
+
+if(hrvData.length === 0) return;
+
+let today = hrvData[hrvData.length-1].value;
+
+let avg = Math.round(
+hrvData.reduce((a,b)=>a+b.value,0)
+/ hrvData.length
+);
+
+document.getElementById("todayHRV").innerText = today;
+document.getElementById("avgHRV").innerText = avg;
+
+let trend = document.getElementById("trendText");
+let dayTitle = document.getElementById("dayTitle");
+let dayText = document.getElementById("dayText");
+
+if(today > avg){
+
+trend.innerText =
+"Über deinem Durchschnitt."
+
+dayTitle.innerText =
+"Guter Trainingstag"
+
+dayText.innerText =
+"Heute ist dein System eher belastbar."
+
+} else if(today < avg){
+
+trend.innerText =
+"Unter deinem Durchschnitt."
+
+dayTitle.innerText =
+"Heute vorsichtig"
+
+dayText.innerText =
+"Heute eher Stabilität als Belastung."
+
+} else {
+
+trend.innerText =
+"Im normalen Bereich."
+
+dayTitle.innerText =
+"Heute neutral"
+
+dayText.innerText =
+"Normales Niveau."
+
+}
+}
+
+// --------------------- SESSION
+let interval = null;
+
+function openOverlay(){
+
+document.getElementById("overlay")
+.style.display = "flex"
+}
+
+function closeOverlay(){
+
+document.getElementById("overlay")
+.style.display = "none"
+}
+
+function setPhase(t){
+document.getElementById("phase").innerText=t;
+}
+
+function setTimer(t){
+document.getElementById("timer").innerText=t;
+}
+
+function setInfo(t){
+document.getElementById("sessionInfo").innerText=t;
+}
+
+function pulseIn(){
+
+document.getElementById("circle")
+.classList.add("expand");
+}
+
+function pulseOut(){
+
+document.getElementById("circle")
+.classList.remove("expand");
+}
+
+function stopSession(){
+
+clearInterval(interval);
+
+speechSynthesis.cancel();
+
+closeOverlay();
+}
+
+// --------------------- STATE
+function handleState(state){
+
+unlockAudio();
+
+if(state === "good"){
+
+startHRV();
+return;
+}
+
+if(state === "mid"){
+
+startMicro();
+return;
+}
+
+if(state === "bad"){
+
+startEmergency();
+}
+}
+
+// --------------------- MICRO
+function startMicro(){
+
+openOverlay();
+
+let t = 30;
+
+setPhase("Schultern lösen");
+setInfo(
+"Zieh deine Schultern leicht hoch und lass sie langsam fallen."
+);
+
+speak("Schultern hoch. Und lösen.");
+
+interval = setInterval(()=>{
+
+t--;
+
+setTimer(t);
+
+if(t <= 0){
+
+finishSession(
+"Etwas ruhiger."
+);
+}
+
+},1000);
+}
+
+// --------------------- EMERGENCY
+function startEmergency(){
+
+openOverlay();
+
+let t = 25;
+
+setPhase("Brustbein klopfen");
+setInfo(
+"Sanftes rhythmisches Klopfen hilft deinem Nervensystem Sicherheit zu spüren."
+);
+
+speak(
+"Klopfe jetzt sanft auf dein Brustbein."
+);
+
+interval = setInterval(()=>{
+
+t--;
+
+setTimer(t);
+
+if(t <= 0){
+
+clearInterval(interval);
+
+startBreathingRecovery();
+}
+
+},1000);
+}
+
+// --------------------- BREATH
+function startBreathingRecovery(){
+
+let t = 45;
+let cycle = 0;
+
+setInfo(
+"Längeres Ausatmen beruhigt den Körper."
+);
+
+interval = setInterval(()=>{
+
+t--;
+cycle++;
+
+setTimer(t);
+
+if(cycle % 10 < 4){
+
+setPhase("Einatmen");
+pulseIn();
+
+} else {
+
+setPhase("Ausatmen");
+pulseOut();
+}
+
+if(cycle % 10 === 1){
+speak("Ein");
+}
+
+if(cycle % 10 === 5){
+speak("Aus");
+}
+
+if(t <= 0){
+
+finishSession(
+"Nervensystem beruhigt."
+);
+}
+
+},1000);
+}
+
+// --------------------- HRV
+function startHRV(){
+
+unlockAudio();
+
+openOverlay();
+
+let t = 300;
+let cycle = 0;
+
+setInfo(
+"Langsame Atmung und Summen stärken vagale Aktivität."
+);
+
+speak(
+"Wir starten ruhig."
+);
+
+interval = setInterval(()=>{
+
+t--;
+cycle++;
+
+setTimer(formatTime(t));
+
+// Phase 1
+if(t > 200){
+
+if(cycle % 12 < 5){
+
+setPhase("Einatmen");
+pulseIn();
+
+} else {
+
+setPhase("Lang ausatmen");
+pulseOut();
+}
+}
+
+// Summen
+else if(t > 100){
+
+setPhase("Summen beim Ausatmen");
+pulseOut();
+
+if(cycle % 6 === 0){
+
+speak("Voooo");
+}
+}
+
+// Ruhe
+else{
+
+if(cycle % 12 < 5){
+
+setPhase("Einatmen");
+pulseIn();
+
+} else {
+
+setPhase("Lang ausatmen");
+pulseOut();
+}
+}
+
+if(t <= 0){
+
+finishSession(
+"Training abgeschlossen."
+);
+}
+
+},1000);
+}
+
+// --------------------- FINISH
+function finishSession(text){
+
+clearInterval(interval);
+
+setPhase("Fertig");
+setInfo(text);
+
+speak("Fertig.");
+
+setTimeout(()=>{
+
+closeOverlay();
+
+},2500);
+}
+
+// --------------------- HELPERS
+function formatTime(sec){
+
+let m = Math.floor(sec/60);
+let s = sec%60;
+
+return `${m}:${s.toString().padStart(2,"0")}`;
+}
+
+// --------------------- INIT
+updateHRV();
 
 </script>
 
