@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>VagusBuk A5.3</title>
+<title>VagusBuk A5.3 - Optimized</title>
 
 <style>
 
@@ -80,57 +80,98 @@ font-size:13px;
 margin-bottom:12px;
 }
 
-.hrvTop{
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
+/* HRV GRID STYLING */
+.hrvGrid {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+padding-bottom: 20px;
+margin-bottom: 20px;
+border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-.hrvValue{
-font-size:58px;
-font-weight:800;
-line-height:1;
+.hrvCol {
+flex: 1;
 }
 
-.avg{
-color:var(--muted);
-font-size:20px;
+.hrvLabel {
+font-size: 11px;
+color: var(--muted);
+text-transform: uppercase;
+margin-bottom: 8px;
 }
 
-.hrvText{
-margin-top:8px;
-font-size:20px;
+.hrvValueLarge {
+font-size: 64px;
+font-weight: 800;
+line-height: 1;
+margin-bottom: 8px;
+}
+
+.hrvStatus {
+display: flex;
+align-items: center;
+gap: 6px;
+font-size: 15px;
+transition: color 0.3s ease;
+}
+
+.hrvStatus.normal { color: var(--green); }
+.hrvStatus.low { color: var(--yellow); }
+
+.hrvAvgValue {
+font-size: 28px;
+font-weight: 600;
+margin-bottom: 4px;
+}
+
+.hrvAvgText {
+font-size: 14px;
+color: var(--muted);
 }
 
 .hrvInputRow{
 display:flex;
 gap:12px;
-margin-top:16px;
+margin-top:10px;
 }
 
 input{
 flex:1;
 border:none;
-border-radius:22px;
-padding:18px;
-font-size:32px;
+border-radius:18px;
+padding:16px;
+font-size:24px;
 color:white;
-background:#091723;
+background:#0d1823;
 outline:none;
-border:2px solid rgba(72,141,212,.55);
+border: 1px solid rgba(255,255,255,0.1);
+}
+
+input:focus {
+border-color: rgba(72,141,212,.5);
 }
 
 .saveBtn{
-width:160px;
+width:140px;
 border:none;
-border-radius:22px;
-background:
-linear-gradient(135deg,#3dc85d,#24823c);
+border-radius:18px;
+background: linear-gradient(135deg,#3dc85d,#24823c);
 color:white;
-font-size:22px;
+font-size:18px;
 font-weight:700;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+cursor: pointer;
 }
 
+.saveBtn:active {
+transform: scale(0.98);
+}
+
+/* STATES */
 .stateCard{
 border:none;
 width:100%;
@@ -178,26 +219,15 @@ font-size:34px;
 opacity:.6;
 }
 
-.green{
-background:
-linear-gradient(135deg,#1c6a37,#234d31);
-}
-
-.yellow{
-background:
-linear-gradient(135deg,#6c571a,#544516);
-}
-
-.red{
-background:
-linear-gradient(135deg,#6a2d2d,#512626);
-}
+.green{ background: linear-gradient(135deg,#1c6a37,#234d31); }
+.yellow{ background: linear-gradient(135deg,#6c571a,#544516); }
+.red{ background: linear-gradient(135deg,#6a2d2d,#512626); }
 
 .expandArea{
 max-height:0;
 overflow:hidden;
 transition:max-height .35s ease;
-background:rgba(0,0,0,.14);
+background:rgba(0,0,0,0.14);
 }
 
 .expandArea.open{
@@ -239,8 +269,7 @@ padding:18px;
 font-size:20px;
 font-weight:700;
 color:white;
-background:
-linear-gradient(135deg,#3ec95f,#23843b);
+background: linear-gradient(135deg,#3ec95f,#23843b);
 }
 
 .closeBtn{
@@ -271,15 +300,12 @@ z-index:999;
 width:180px;
 height:180px;
 border-radius:50%;
-background:
-radial-gradient(circle,#45d766 0%,#216f35 70%);
-box-shadow:0 0 70px rgba(69,215,102,.25);
+background: radial-gradient(circle,#45d766 0%,#216f35 70%);
+box-shadow:0 0 70px rgba(69,215,102,0.25);
 transition:2s ease-in-out;
 }
 
-.expand{
-transform:scale(1.18);
-}
+.expand{ transform:scale(1.18); }
 
 .phase{
 margin-top:30px;
@@ -312,35 +338,11 @@ font-size:18px;
 }
 
 @media(max-width:600px){
-
-.logo{
-font-size:40px;
-}
-
-.hrvValue{
-font-size:52px;
-}
-
-.stateTitle{
-font-size:28px;
-}
-
-.phase{
-font-size:32px;
-}
-
-.timer{
-font-size:70px;
-}
-
-.hrvInputRow{
-flex-direction:column;
-}
-
-.saveBtn{
-width:100%;
-padding:18px;
-}
+.logo{ font-size:40px; }
+.hrvValueLarge { font-size: 54px; }
+.stateTitle{ font-size:28px; }
+.hrvInputRow { flex-direction: column; }
+.saveBtn { width: 100%; padding: 18px; }
 }
 
 </style>
@@ -352,689 +354,291 @@ padding:18px;
 
 <div class="header">
 <div class="logo">VagusBuk</div>
-
-<div class="sub">
-Ruhigeres Nervensystem. Weniger Überlastung.
-</div>
+<div class="sub">Ruhigeres Nervensystem.</div>
 </div>
 
-<!-- HRV -->
 <div class="card">
-
-<div class="sectionTitle">
-HRV morgens
+<div class="sectionTitle">HRV morgens</div>
+<div class="hrvGrid">
+<div class="hrvCol">
+<div class="hrvLabel">Dein HRV heute</div>
+<div class="hrvValueLarge" id="todayHRV">--</div>
+<div class="hrvStatus" id="hrvStatus">
+<span id="statusIcon"></span>
+<span id="hrvText">Messung eintragen</span>
+</div>
 </div>
 
-<div class="hrvTop">
+<div style="width: 1px; background: rgba(255,255,255,0.1); align-self: stretch; margin: 0 20px;"></div>
 
-<div class="hrvValue" id="todayHRV">
---
+<div class="hrvCol">
+<div class="hrvLabel">Ø 7-Tage Durchschnitt</div>
+<div class="hrvAvgValue" id="avgHRV">Ø --</div>
+<div class="hrvAvgText" id="avgRangeText">Werte sammeln...</div>
+</div>
 </div>
 
-<div class="avg" id="avgHRV">
-Ø --
-</div>
-
-</div>
-
-<div class="hrvText" id="hrvText">
-Direkt nach dem Aufwachen messen.
-</div>
-
+<div class="inputSection">
+<div class="hrvLabel" style="margin-bottom: 10px;">Neuen Wert eingeben</div>
 <div class="hrvInputRow">
-
-<input
-type="number"
-id="hrvInput"
-placeholder="z.B. 41"
->
-
-<button
-class="saveBtn"
-onclick="saveHRV()"
->
-Speichern
+<input type="number" id="hrvInput" placeholder="z.B. 41">
+<button class="saveBtn" onclick="saveHRV()">
+💾 Speichern
 </button>
-
+</div>
+</div>
 </div>
 
-</div>
-
-<!-- STATES -->
 <div class="card">
-
-<div class="sectionTitle">
-Wie ist es gerade?
-</div>
-
-<!-- STABIL -->
+<div class="sectionTitle">Wie ist es gerade?</div>
 <div class="stateCard green">
-
-<div
-class="stateInner"
-onclick="toggleCard('stable')"
->
-
+<div class="stateInner" onclick="toggleCard('stable')">
 <div class="stateHeader">
-
 <div class="stateLeft">
-
 <div class="emoji">🙂</div>
-
 <div>
-<div class="stateTitle">
-Stabil
-</div>
-
-<div class="stateText">
-Ich fühle mich ruhig.
+<div class="stateTitle">Stabil</div>
+<div class="stateText">Ich fühle mich ruhig.</div>
 </div>
 </div>
-
-</div>
-
 <div class="arrow">›</div>
-
 </div>
-
 </div>
-
-<div
-class="expandArea"
-id="stable"
->
-
+<div class="expandArea" id="stable">
 <div class="expandContent">
-
-<div class="trainingTitle">
-5 Min HRV Training
-</div>
-
-<div class="trainingText">
-Langsame Atmung, Summen und längeres Ausatmen trainieren vagale Regulation.
-</div>
-
+<div class="trainingTitle">HRV Training</div>
+<div class="trainingText">Langsames Atmen festigt den Vagus-Tonus.</div>
 <div class="trainingList">
-<div>• 4 Sekunden einatmen</div>
-<div>• 6 Sekunden ausatmen</div>
-<div>• später Summen beim Ausatmen</div>
+<div>• 4s Ein / 6s Aus</div>
+<div>• Später Summen beim Ausatmen</div>
+</div>
+<button class="trainingBtn" onclick="startTraining('stable')">Starten</button>
+<button class="closeBtn" onclick="closeAll()">Schließen</button>
+</div>
+</div>
 </div>
 
-<button
-class="trainingBtn"
-onclick="startTraining('stable')"
->
-Training starten
-</button>
-
-<button
-class="closeBtn"
-onclick="closeAll()"
->
-Schließen
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- MID -->
 <div class="stateCard yellow">
-
-<div
-class="stateInner"
-onclick="toggleCard('mid')"
->
-
+<div class="stateInner" onclick="toggleCard('mid')">
 <div class="stateHeader">
-
 <div class="stateLeft">
-
 <div class="emoji">😕</div>
-
 <div>
-<div class="stateTitle">
-Kippt leicht
-</div>
-
-<div class="stateText">
-Erste Überlastung.
+<div class="stateTitle">Kippt leicht</div>
+<div class="stateText">Erste Überlastung.</div>
 </div>
 </div>
-
-</div>
-
 <div class="arrow">›</div>
-
 </div>
-
 </div>
-
-<div
-class="expandArea"
-id="mid"
->
-
+<div class="expandArea" id="mid">
 <div class="expandContent">
-
-<div class="trainingTitle">
-Kurz stabilisieren
+<div class="trainingTitle">Mini-Pause</div>
+<div class="trainingText">Druck rausnehmen, bevor das System umschaltet.</div>
+<button class="trainingBtn" onclick="startTraining('mid')">Übung starten</button>
+<button class="closeBtn" onclick="closeAll()">Schließen</button>
+</div>
+</div>
 </div>
 
-<div class="trainingText">
-Weniger Druck. Nervensystem beruhigen bevor Überlastung stärker wird.
-</div>
-
-<div class="trainingList">
-<div>• Schultern sinken lassen</div>
-<div>• langsames Ausatmen</div>
-<div>• ruhiger Blick</div>
-</div>
-
-<button
-class="trainingBtn"
-onclick="startTraining('mid')"
->
-Übung starten
-</button>
-
-<button
-class="closeBtn"
-onclick="closeAll()"
->
-Schließen
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- BAD -->
 <div class="stateCard red">
-
-<div
-class="stateInner"
-onclick="toggleCard('bad')"
->
-
+<div class="stateInner" onclick="toggleCard('bad')">
 <div class="stateHeader">
-
 <div class="stateLeft">
-
 <div class="emoji">😣</div>
-
 <div>
-<div class="stateTitle">
-Kippt
-</div>
-
-<div class="stateText">
-Ich bin überreizt.
+<div class="stateTitle">Kippt</div>
+<div class="stateText">Ich bin überreizt.</div>
 </div>
 </div>
-
-</div>
-
 <div class="arrow">›</div>
-
 </div>
-
 </div>
-
-<div
-class="expandArea"
-id="bad"
->
-
+<div class="expandArea" id="bad">
 <div class="expandContent">
-
-<div class="trainingTitle">
-Akut beruhigen
+<div class="trainingTitle">Notfall-Hilfe</div>
+<div class="trainingText">Körperreize beruhigen das Stammhirn.</div>
+<button class="trainingBtn" onclick="startTraining('bad')">Hilfe starten</button>
+<button class="closeBtn" onclick="closeAll()">Schließen</button>
+</div>
+</div>
+</div>
+</div>
 </div>
 
-<div class="trainingText">
-Körperreize helfen oft besser als starkes Atmen.
-</div>
-
-<div class="trainingList">
-<div>• Brustbein klopfen</div>
-<div>• langsames Ausatmen</div>
-<div>• Summen</div>
-</div>
-
-<button
-class="trainingBtn"
-onclick="startTraining('bad')"
->
-Hilfe starten
-</button>
-
-<button
-class="closeBtn"
-onclick="closeAll()"
->
-Schließen
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- SESSION -->
 <div class="overlay" id="overlay">
-
 <div class="circle" id="circle"></div>
-
-<div class="phase" id="phase">
-Vorbereitung
-</div>
-
-<div class="timer" id="timer">
-60
-</div>
-
-<div class="info" id="info">
-Ruhig werden.
-</div>
-
-<button
-class="stopBtn"
-onclick="stopTraining()"
->
-Abbrechen
-</button>
-
+<div class="phase" id="phase">Vorbereitung</div>
+<div class="timer" id="timer">60</div>
+<div class="info" id="info">Ruhig werden.</div>
+<button class="stopBtn" onclick="stopTraining()">Abbrechen</button>
 </div>
 
 <script>
-
-// ---------- STORAGE
-let hrvData =
-JSON.parse(localStorage.getItem("vb_hrv"))
-|| [];
+// ---------- DATEN & SPEICHER
+let hrvData = JSON.parse(localStorage.getItem("vb_hrv")) || [];
 
 // ---------- AUDIO
 let audioReady = false;
-
 function unlockAudio(){
-
 if(audioReady) return;
-
 audioReady = true;
-
-speechSynthesis.speak(
-new SpeechSynthesisUtterance(" ")
-);
+speechSynthesis.speak(new SpeechSynthesisUtterance(" "));
 }
 
 function speak(text){
-
 if(!audioReady) return;
-
 speechSynthesis.cancel();
-
-let msg =
-new SpeechSynthesisUtterance(text);
-
+let msg = new SpeechSynthesisUtterance(text);
 msg.lang = "de-DE"
 msg.rate = 0.92;
-
 speechSynthesis.speak(msg);
 }
 
-// ---------- HRV
+// ---------- HRV LOGIK (VERBESSERT)
 function saveHRV(){
-
-let val =
-parseInt(
-document.getElementById("hrvInput").value
-);
-
+let val = parseInt(document.getElementById("hrvInput").value);
 if(!val) return;
 
-hrvData.push({
-value:val,
-time:Date.now()
-});
+let todayStr = new Date().toLocaleDateString();
+// Bestehenden Eintrag von heute finden
+let existingIndex = hrvData.findIndex(d => new Date(d.time).toLocaleDateString() === todayStr);
 
+if (existingIndex !== -1) {
+hrvData[existingIndex].value = val;
+hrvData[existingIndex].time = Date.now();
+} else {
+hrvData.push({ value: val, time: Date.now() });
+}
+
+// Max 14 Tage vorhalten
 hrvData = hrvData.slice(-14);
-
-localStorage.setItem(
-"vb_hrv",
-JSON.stringify(hrvData)
-);
-
+localStorage.setItem("vb_hrv", JSON.stringify(hrvData));
+document.getElementById("hrvInput").value = ""
 updateHRV();
 }
 
 function updateHRV(){
-
 if(hrvData.length === 0) return;
 
-let today =
-hrvData[hrvData.length-1].value;
+let lastEntry = hrvData[hrvData.length - 1];
+let today = lastEntry.value;
+// Durchschnitt über exakt max. 7 Tage
+let last7 = hrvData.slice(-7);
+let avg = Math.round(last7.reduce((a,b) => a + b.value, 0) / last7.length);
 
-let avg = Math.round(
-hrvData.reduce((a,b)=>a+b.value,0)
-/ hrvData.length
-);
+document.getElementById("todayHRV").innerText = today;
+document.getElementById("avgHRV").innerText = "Ø " + avg;
 
-document.getElementById("todayHRV")
-.innerText = today;
+let txt = document.getElementById("hrvText");
+let icon = document.getElementById("statusIcon");
+let statusDiv = document.getElementById("hrvStatus");
+let rangeText = document.getElementById("avgRangeText");
 
-document.getElementById("avgHRV")
-.innerText = "Ø " + avg;
-
-let txt =
-document.getElementById("hrvText");
-
-if(today > avg){
-
-txt.innerText =
-"Heute eher belastbar."
-
-}else if(today < avg){
-
-txt.innerText =
-"Heute vorsichtiger bleiben."
-
-}else{
-
-txt.innerText =
-"Heute normales Niveau."
+// Status Logik mit 2-Punkte-Toleranzband
+if(today > avg + 2){
+txt.innerText = "Heute belastbar."
+icon.innerText = "✓ "
+statusDiv.className = "hrvStatus normal"
+} else if(today < avg - 2){
+txt.innerText = "Vorsichtiger bleiben."
+icon.innerText = "! "
+statusDiv.className = "hrvStatus low"
+} else {
+txt.innerText = "Normales Niveau."
+icon.innerText = "✓ "
+statusDiv.className = "hrvStatus normal"
 }
+rangeText.innerText = last7.length >= 7 ? "Im normalen Bereich." : "Sammle mehr Daten..."
 }
 
-// ---------- CARDS
+// ---------- INTERFACE & SESSION
 function closeAll(){
-
-document
-.querySelectorAll(".expandArea")
-.forEach(el=>{
-
-el.classList.remove("open");
-
-});
+document.querySelectorAll(".expandArea").forEach(el=>{ el.classList.remove("open"); });
 }
 
 function toggleCard(id){
-
 unlockAudio();
-
-let target =
-document.getElementById(id);
-
-let isOpen =
-target.classList.contains("open");
-
+let target = document.getElementById(id);
+let isOpen = target.classList.contains("open");
 closeAll();
-
-if(!isOpen){
-
-target.classList.add("open");
-}
+if(!isOpen) target.classList.add("open");
 }
 
-// ---------- SESSION
 let interval = null;
-
 function startTraining(mode){
-
-openOverlay();
-
-if(mode === "stable"){
-startStable();
-}
-
-if(mode === "mid"){
-startMid();
-}
-
-if(mode === "bad"){
-startBad();
-}
-}
-
-function openOverlay(){
-
-document.getElementById("overlay")
-.style.display = "flex"
-}
-
-function closeOverlay(){
-
-document.getElementById("overlay")
-.style.display = "none"
-}
-
-function setPhase(t){
-
-document.getElementById("phase")
-.innerText = t;
-}
-
-function setInfo(t){
-
-document.getElementById("info")
-.innerText = t;
-}
-
-function setTimer(t){
-
-document.getElementById("timer")
-.innerText = t;
-}
-
-function pulseIn(){
-
-document.getElementById("circle")
-.classList.add("expand");
-}
-
-function pulseOut(){
-
-document.getElementById("circle")
-.classList.remove("expand");
+document.getElementById("overlay").style.display = "flex"
+if(mode === "stable") startStable();
+if(mode === "mid") startMid();
+if(mode === "bad") startBad();
 }
 
 function stopTraining(){
-
 clearInterval(interval);
-
 speechSynthesis.cancel();
-
-closeOverlay();
+document.getElementById("overlay").style.display = "none"
 }
 
-// ---------- STABLE
 function startStable(){
-
-let t = 300;
-let cycle = 0;
-
-setInfo(
-"Langsames Atmen trainiert vagale Stabilität."
-);
-
-speak("Wir beginnen ruhig.");
-
+let t = 300; let cycle = 0;
+setInfo("Langsames Atmen trainiert vagale Stabilität.");
+speak("Wir beginnen.");
 interval = setInterval(()=>{
-
-t--;
-cycle++;
-
-setTimer(formatTime(t));
-
+t--; cycle++;
+document.getElementById("timer").innerText = formatTime(t);
 if(cycle % 10 < 4){
-
-setPhase("Einatmen");
-pulseIn();
-
-if(cycle % 10 === 1){
-
-speak("Ein");
+document.getElementById("phase").innerText = "Einatmen"
+document.getElementById("circle").classList.add("expand");
+if(cycle % 10 === 1) speak("Ein");
+} else {
+document.getElementById("phase").innerText = "Ausatmen"
+document.getElementById("circle").classList.remove("expand");
+if(cycle % 10 === 4) speak("Aus");
 }
-
-}else{
-
-setPhase("Ausatmen");
-pulseOut();
-
-if(cycle % 10 === 4){
-
-speak("Aus");
-}
-}
-
-if(t < 120){
-
-setPhase("Summen beim Ausatmen");
-
-if(cycle % 10 === 4){
-
-speak("Voooo");
-}
-}
-
-if(t <= 0){
-
-finishTraining(
-"Training abgeschlossen."
-);
-}
-
+if(t <= 0) finishTraining("Gut gemacht.");
 },1000);
 }
 
-// ---------- MID
 function startMid(){
-
-let t = 60;
-let cycle = 0;
-
-setInfo(
-"Überlastung früh beruhigen."
-);
-
-speak(
-"Schultern locker lassen."
-);
-
+let t = 60; let cycle = 0;
+setInfo("Überlastung früh stoppen.");
 interval = setInterval(()=>{
-
-t--;
-cycle++;
-
-setTimer(t);
-
-if(cycle % 10 < 4){
-
-setPhase("Einatmen");
-pulseIn();
-
-}else{
-
-setPhase("Lang ausatmen");
-pulseOut();
-}
-
-if(t <= 0){
-
-finishTraining(
-"Etwas ruhiger."
-);
-}
-
+t--; cycle++;
+document.getElementById("timer").innerText = t;
+if(cycle % 10 < 4){ document.getElementById("circle").classList.add("expand"); }
+else { document.getElementById("circle").classList.remove("expand"); }
+if(t <= 0) finishTraining("Etwas ruhiger.");
 },1000);
 }
 
-// ---------- BAD
 function startBad(){
-
 let t = 45;
-
-setInfo(
-"Körperreize helfen oft schneller als Druck über Atmung."
-);
-
-setPhase("Brustbein klopfen");
-
-speak(
-"Klopfe jetzt sanft auf dein Brustbein."
-);
-
+setInfo("Brustbein klopfen beruhigt akut.");
+speak("Klopfe sanft auf dein Brustbein.");
 interval = setInterval(()=>{
-
-t--;
-
-setTimer(t);
-
-if(t === 25){
-
-setPhase("Lang ausatmen");
-
-speak(
-"Langsam ausatmen."
-);
-}
-
-if(t === 12){
-
-setPhase("Summen");
-
-speak("Voooo");
-}
-
-if(t <= 0){
-
-finishTraining(
-"Akute Überreizung etwas reduziert."
-);
-}
-
+t--; document.getElementById("timer").innerText = t;
+if(t === 25) speak("Langsam ausatmen.");
+if(t <= 0) finishTraining("Akut beruhigt.");
 },1000);
 }
 
-// ---------- FINISH
 function finishTraining(text){
-
 clearInterval(interval);
-
-setPhase("Fertig");
-
-setInfo(text);
-
+document.getElementById("phase").innerText = "Fertig"
+document.getElementById("info").innerText = text;
 speak("Fertig.");
-
-setTimeout(()=>{
-
-closeOverlay();
-
-},2200);
+setTimeout(()=> stopTraining(), 2200);
 }
 
-// ---------- HELPER
 function formatTime(sec){
-
 let m = Math.floor(sec/60);
 let s = sec % 60;
-
 return `${m}:${s.toString().padStart(2,"0")}`;
 }
 
-// ---------- INIT
-updateHRV();
+function setInfo(t){ document.getElementById("info").innerText = t; }
 
+updateHRV();
 </script>
 
 </body>
