@@ -4,24 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>VagusBuk A5.2</title>
+<title>VagusBuk A5.3</title>
 
 <style>
 
 :root{
 --bg:#071018;
 --card:#101b27;
+--card2:#162433;
+
 --text:#eef3f7;
---muted:#93a4b5;
+--muted:#95a7ba;
 
---green:#45d163;
---greenBg:#193726;
+--green:#38c85b;
+--greenDark:#1d5f33;
 
---yellow:#ffd54d;
---yellowBg:#4d4015;
+--yellow:#e4bc44;
+--yellowDark:#695317;
 
---red:#ff6464;
---redBg:#492323;
+--red:#e26a6a;
+--redDark:#6b2c2c;
 }
 
 *{
@@ -31,10 +33,10 @@ box-sizing:border-box;
 
 body{
 margin:0;
-background:
-radial-gradient(circle at top,#10233a 0%,#071018 45%);
-color:var(--text);
 font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+background:
+radial-gradient(circle at top,#11243a 0%,#071018 45%);
+color:var(--text);
 }
 
 .container{
@@ -45,7 +47,7 @@ padding:20px 16px 120px;
 
 .header{
 text-align:center;
-margin-top:26px;
+margin-top:24px;
 margin-bottom:20px;
 }
 
@@ -56,96 +58,101 @@ letter-spacing:-2px;
 }
 
 .sub{
+margin-top:6px;
 color:var(--muted);
-margin-top:4px;
 font-size:17px;
 }
 
 .card{
-background:rgba(16,27,39,.9);
+background:rgba(16,27,39,.92);
 border:1px solid rgba(255,255,255,.05);
-border-radius:24px;
+border-radius:28px;
 padding:18px;
-margin-bottom:16px;
+margin-bottom:18px;
+overflow:hidden;
 }
 
-.smallTitle{
+.sectionTitle{
 color:var(--muted);
 text-transform:uppercase;
 letter-spacing:1px;
 font-size:13px;
-margin-bottom:10px;
+margin-bottom:12px;
 }
 
-.hrvRow{
+.hrvTop{
 display:flex;
-align-items:end;
 justify-content:space-between;
+align-items:flex-start;
 }
 
 .hrvValue{
-font-size:56px;
+font-size:58px;
 font-weight:800;
 line-height:1;
 }
 
-.hrvAvg{
-text-align:right;
+.avg{
 color:var(--muted);
-font-size:16px;
+font-size:20px;
 }
 
 .hrvText{
-margin-top:12px;
-font-size:18px;
+margin-top:8px;
+font-size:20px;
+}
+
+.hrvInputRow{
+display:flex;
+gap:12px;
+margin-top:16px;
 }
 
 input{
-width:100%;
-margin-top:14px;
-background:#09131d;
+flex:1;
 border:none;
+border-radius:22px;
+padding:18px;
+font-size:32px;
 color:white;
-border-radius:18px;
-padding:16px;
-font-size:28px;
+background:#091723;
+outline:none;
+border:2px solid rgba(72,141,212,.55);
 }
 
 .saveBtn{
-width:100%;
-margin-top:12px;
-border:none;
-border-radius:18px;
-padding:16px;
-font-size:18px;
-font-weight:700;
-background:linear-gradient(135deg,#39b953,#22853a);
-color:white;
-}
-
-.stateBtn{
-width:100%;
+width:160px;
 border:none;
 border-radius:22px;
-padding:22px;
-margin-top:12px;
+background:
+linear-gradient(135deg,#3dc85d,#24823c);
+color:white;
+font-size:22px;
+font-weight:700;
+}
+
+.stateCard{
+border:none;
+width:100%;
+border-radius:26px;
+margin-top:14px;
+overflow:hidden;
 text-align:left;
 color:white;
+transition:.25s ease;
 }
 
-.green{
-background:linear-gradient(135deg,#173824,#225234);
+.stateInner{
+padding:22px;
 }
 
-.yellow{
-background:linear-gradient(135deg,#4b3d12,#635018);
+.stateHeader{
+display:flex;
+align-items:center;
+justify-content:space-between;
 }
 
-.red{
-background:linear-gradient(135deg,#462121,#5f2c2c);
-}
-
-.stateTop{
+.stateLeft{
 display:flex;
 align-items:center;
 gap:16px;
@@ -156,52 +163,94 @@ font-size:34px;
 }
 
 .stateTitle{
-font-size:28px;
+font-size:32px;
 font-weight:800;
 }
 
 .stateText{
 margin-top:4px;
+font-size:17px;
 color:rgba(255,255,255,.82);
-font-size:16px;
 }
 
-.recommendation{
-margin-top:14px;
-background:#162534;
-border-radius:18px;
-padding:16px;
-display:none;
+.arrow{
+font-size:34px;
+opacity:.6;
 }
 
-.recTitle{
-font-size:14px;
-color:var(--muted);
-text-transform:uppercase;
-letter-spacing:1px;
+.green{
+background:
+linear-gradient(135deg,#1c6a37,#234d31);
 }
 
-.recMain{
-margin-top:8px;
+.yellow{
+background:
+linear-gradient(135deg,#6c571a,#544516);
+}
+
+.red{
+background:
+linear-gradient(135deg,#6a2d2d,#512626);
+}
+
+.expandArea{
+max-height:0;
+overflow:hidden;
+transition:max-height .35s ease;
+background:rgba(0,0,0,.14);
+}
+
+.expandArea.open{
+max-height:420px;
+}
+
+.expandContent{
+padding:0 22px 22px;
+}
+
+.trainingTitle{
+margin-top:10px;
 font-size:28px;
 font-weight:800;
 }
 
-.recText{
-margin-top:8px;
-color:#d6e0e7;
-line-height:1.5;
+.trainingText{
+margin-top:10px;
+color:#d9e3ea;
+line-height:1.55;
+font-size:17px;
 }
 
-.startBtn{
+.trainingList{
+margin-top:14px;
+}
+
+.trainingList div{
+margin-bottom:8px;
+color:#eef3f7;
+}
+
+.trainingBtn{
 width:100%;
-margin-top:16px;
+margin-top:18px;
 border:none;
 border-radius:18px;
 padding:18px;
 font-size:20px;
 font-weight:700;
-background:linear-gradient(135deg,#3ebd59,#25833b);
+color:white;
+background:
+linear-gradient(135deg,#3ec95f,#23843b);
+}
+
+.closeBtn{
+width:100%;
+margin-top:10px;
+border:none;
+border-radius:18px;
+padding:16px;
+font-size:17px;
+background:#203041;
 color:white;
 }
 
@@ -211,21 +260,21 @@ inset:0;
 background:#071018;
 display:none;
 flex-direction:column;
-align-items:center;
 justify-content:center;
+align-items:center;
 text-align:center;
 padding:30px;
 z-index:999;
 }
 
 .circle{
-width:170px;
-height:170px;
+width:180px;
+height:180px;
 border-radius:50%;
 background:
-radial-gradient(circle,#48db67 0%,#1f7c35 70%);
+radial-gradient(circle,#45d766 0%,#216f35 70%);
+box-shadow:0 0 70px rgba(69,215,102,.25);
 transition:2s ease-in-out;
-box-shadow:0 0 60px rgba(72,219,103,.25);
 }
 
 .expand{
@@ -246,19 +295,19 @@ font-weight:800;
 
 .info{
 margin-top:20px;
+max-width:520px;
 color:var(--muted);
-max-width:500px;
-line-height:1.5;
 font-size:20px;
+line-height:1.5;
 }
 
 .stopBtn{
-margin-top:40px;
+margin-top:36px;
 border:none;
-border-radius:18px;
-background:#243240;
+border-radius:20px;
+background:#223140;
 color:white;
-padding:18px 30px;
+padding:18px 28px;
 font-size:18px;
 }
 
@@ -269,7 +318,11 @@ font-size:40px;
 }
 
 .hrvValue{
-font-size:48px;
+font-size:52px;
+}
+
+.stateTitle{
+font-size:28px;
 }
 
 .phase{
@@ -278,6 +331,15 @@ font-size:32px;
 
 .timer{
 font-size:70px;
+}
+
+.hrvInputRow{
+flex-direction:column;
+}
+
+.saveBtn{
+width:100%;
+padding:18px;
 }
 }
 
@@ -290,33 +352,36 @@ font-size:70px;
 
 <div class="header">
 <div class="logo">VagusBuk</div>
+
 <div class="sub">
-Ruhiger. Stabiler. Weniger Überlastung.
+Ruhigeres Nervensystem. Weniger Überlastung.
 </div>
 </div>
 
 <!-- HRV -->
 <div class="card">
 
-<div class="smallTitle">
+<div class="sectionTitle">
 HRV morgens
 </div>
 
-<div class="hrvRow">
+<div class="hrvTop">
 
 <div class="hrvValue" id="todayHRV">
 --
 </div>
 
-<div class="hrvAvg" id="avgText">
-Noch keine Daten
+<div class="avg" id="avgHRV">
+Ø --
 </div>
 
 </div>
 
-<div class="hrvText" id="hrvMessage">
+<div class="hrvText" id="hrvText">
 Direkt nach dem Aufwachen messen.
 </div>
+
+<div class="hrvInputRow">
 
 <input
 type="number"
@@ -324,25 +389,35 @@ id="hrvInput"
 placeholder="z.B. 41"
 >
 
-<button class="saveBtn" id="saveBtn">
+<button
+class="saveBtn"
+onclick="saveHRV()"
+>
 Speichern
 </button>
 
 </div>
 
-<!-- STATE -->
+</div>
+
+<!-- STATES -->
 <div class="card">
 
-<div class="smallTitle">
+<div class="sectionTitle">
 Wie ist es gerade?
 </div>
 
-<button
-class="stateBtn green"
-onclick="chooseState('good')"
+<!-- STABIL -->
+<div class="stateCard green">
+
+<div
+class="stateInner"
+onclick="toggleCard('stable')"
 >
 
-<div class="stateTop">
+<div class="stateHeader">
+
+<div class="stateLeft">
 
 <div class="emoji">🙂</div>
 
@@ -358,14 +433,64 @@ Ich fühle mich ruhig.
 
 </div>
 
+<div class="arrow">›</div>
+
+</div>
+
+</div>
+
+<div
+class="expandArea"
+id="stable"
+>
+
+<div class="expandContent">
+
+<div class="trainingTitle">
+5 Min HRV Training
+</div>
+
+<div class="trainingText">
+Langsame Atmung, Summen und längeres Ausatmen trainieren vagale Regulation.
+</div>
+
+<div class="trainingList">
+<div>• 4 Sekunden einatmen</div>
+<div>• 6 Sekunden ausatmen</div>
+<div>• später Summen beim Ausatmen</div>
+</div>
+
+<button
+class="trainingBtn"
+onclick="startTraining('stable')"
+>
+Training starten
 </button>
 
 <button
-class="stateBtn yellow"
-onclick="chooseState('mid')"
+class="closeBtn"
+onclick="closeAll()"
+>
+Schließen
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- MID -->
+<div class="stateCard yellow">
+
+<div
+class="stateInner"
+onclick="toggleCard('mid')"
 >
 
-<div class="stateTop">
+<div class="stateHeader">
+
+<div class="stateLeft">
 
 <div class="emoji">😕</div>
 
@@ -381,14 +506,64 @@ Erste Überlastung.
 
 </div>
 
+<div class="arrow">›</div>
+
+</div>
+
+</div>
+
+<div
+class="expandArea"
+id="mid"
+>
+
+<div class="expandContent">
+
+<div class="trainingTitle">
+Kurz stabilisieren
+</div>
+
+<div class="trainingText">
+Weniger Druck. Nervensystem beruhigen bevor Überlastung stärker wird.
+</div>
+
+<div class="trainingList">
+<div>• Schultern sinken lassen</div>
+<div>• langsames Ausatmen</div>
+<div>• ruhiger Blick</div>
+</div>
+
+<button
+class="trainingBtn"
+onclick="startTraining('mid')"
+>
+Übung starten
 </button>
 
 <button
-class="stateBtn red"
-onclick="chooseState('bad')"
+class="closeBtn"
+onclick="closeAll()"
+>
+Schließen
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- BAD -->
+<div class="stateCard red">
+
+<div
+class="stateInner"
+onclick="toggleCard('bad')"
 >
 
-<div class="stateTop">
+<div class="stateHeader">
+
+<div class="stateLeft">
 
 <div class="emoji">😣</div>
 
@@ -404,29 +579,50 @@ Ich bin überreizt.
 
 </div>
 
-</button>
+<div class="arrow">›</div>
 
-<!-- Recommendation -->
-<div class="recommendation" id="recommendation">
-
-<div class="recTitle">
-Empfohlene Übung
 </div>
 
-<div class="recMain" id="recMain">
-Beruhigung
 </div>
 
-<div class="recText" id="recText">
-Ruhig werden.
+<div
+class="expandArea"
+id="bad"
+>
+
+<div class="expandContent">
+
+<div class="trainingTitle">
+Akut beruhigen
+</div>
+
+<div class="trainingText">
+Körperreize helfen oft besser als starkes Atmen.
+</div>
+
+<div class="trainingList">
+<div>• Brustbein klopfen</div>
+<div>• langsames Ausatmen</div>
+<div>• Summen</div>
 </div>
 
 <button
-class="startBtn"
-onclick="startRecommended()"
+class="trainingBtn"
+onclick="startTraining('bad')"
 >
-Übung starten
+Hilfe starten
 </button>
+
+<button
+class="closeBtn"
+onclick="closeAll()"
+>
+Schließen
+</button>
+
+</div>
+
+</div>
 
 </div>
 
@@ -453,7 +649,7 @@ Ruhig werden.
 
 <button
 class="stopBtn"
-onclick="stopSession()"
+onclick="stopTraining()"
 >
 Abbrechen
 </button>
@@ -462,28 +658,12 @@ Abbrechen
 
 <script>
 
-// ---------------- RESET OLD FORMAT
-try{
+// ---------- STORAGE
+let hrvData =
+JSON.parse(localStorage.getItem("vb_hrv"))
+|| [];
 
-const old = JSON.parse(
-localStorage.getItem("vb_hrv")
-);
-
-if(old && typeof old[0] === "number"){
-
-localStorage.removeItem("vb_hrv");
-}
-
-}catch(e){}
-
-// ---------------- STORAGE
-let hrvData = JSON.parse(
-localStorage.getItem("vb_hrv")
-) || [];
-
-let currentMode = null;
-
-// ---------------- AUDIO
+// ---------- AUDIO
 let audioReady = false;
 
 function unlockAudio(){
@@ -512,10 +692,11 @@ msg.rate = 0.92;
 speechSynthesis.speak(msg);
 }
 
-// ---------------- HRV
+// ---------- HRV
 function saveHRV(){
 
-let val = parseInt(
+let val =
+parseInt(
 document.getElementById("hrvInput").value
 );
 
@@ -538,13 +719,7 @@ updateHRV();
 
 function updateHRV(){
 
-if(hrvData.length === 0){
-
-document.getElementById("todayHRV")
-.innerText = "--"
-
-return;
-}
+if(hrvData.length === 0) return;
 
 let today =
 hrvData[hrvData.length-1].value;
@@ -557,86 +732,78 @@ hrvData.reduce((a,b)=>a+b.value,0)
 document.getElementById("todayHRV")
 .innerText = today;
 
-document.getElementById("avgText")
-.innerText =
-"Ø " + avg;
+document.getElementById("avgHRV")
+.innerText = "Ø " + avg;
 
-let msg =
-document.getElementById("hrvMessage");
+let txt =
+document.getElementById("hrvText");
 
 if(today > avg){
 
-msg.innerText =
+txt.innerText =
 "Heute eher belastbar."
 
-} else if(today < avg){
+}else if(today < avg){
 
-msg.innerText =
-"Heute vorsichtig bleiben."
+txt.innerText =
+"Heute vorsichtiger bleiben."
 
-} else {
+}else{
 
-msg.innerText =
+txt.innerText =
 "Heute normales Niveau."
 }
 }
 
-// ---------------- RECOMMEND
-function chooseState(state){
+// ---------- CARDS
+function closeAll(){
+
+document
+.querySelectorAll(".expandArea")
+.forEach(el=>{
+
+el.classList.remove("open");
+
+});
+}
+
+function toggleCard(id){
 
 unlockAudio();
 
-const box =
-document.getElementById(
-"recommendation"
-);
+let target =
+document.getElementById(id);
 
-box.style.display = "block"
+let isOpen =
+target.classList.contains("open");
 
-if(state === "good"){
+closeAll();
 
-currentMode = "training"
+if(!isOpen){
 
-document.getElementById("recMain")
-.innerText =
-"5 Min HRV Training"
-
-document.getElementById("recText")
-.innerText =
-"Langsames Atmen und Summen stärken die vagale Regulation."
-
-}
-
-if(state === "mid"){
-
-currentMode = "micro"
-
-document.getElementById("recMain")
-.innerText =
-"Kurze Stabilisierung"
-
-document.getElementById("recText")
-.innerText =
-"Schultern lösen und langsamer ausatmen."
-
-}
-
-if(state === "bad"){
-
-currentMode = "emergency"
-
-document.getElementById("recMain")
-.innerText =
-"Akut beruhigen"
-
-document.getElementById("recText")
-.innerText =
-"Klopfen + langsames Ausatmen helfen bei Überreizung."
+target.classList.add("open");
 }
 }
 
-// ---------------- SESSION
+// ---------- SESSION
 let interval = null;
+
+function startTraining(mode){
+
+openOverlay();
+
+if(mode === "stable"){
+startStable();
+}
+
+if(mode === "mid"){
+startMid();
+}
+
+if(mode === "bad"){
+startBad();
+}
+}
 
 function openOverlay(){
 
@@ -651,18 +818,21 @@ document.getElementById("overlay")
 }
 
 function setPhase(t){
-document.getElementById("phase")
-.innerText=t;
-}
 
-function setTimer(t){
-document.getElementById("timer")
-.innerText=t;
+document.getElementById("phase")
+.innerText = t;
 }
 
 function setInfo(t){
+
 document.getElementById("info")
-.innerText=t;
+.innerText = t;
+}
+
+function setTimer(t){
+
+document.getElementById("timer")
+.innerText = t;
 }
 
 function pulseIn(){
@@ -677,7 +847,7 @@ document.getElementById("circle")
 .classList.remove("expand");
 }
 
-function stopSession(){
+function stopTraining(){
 
 clearInterval(interval);
 
@@ -686,96 +856,78 @@ speechSynthesis.cancel();
 closeOverlay();
 }
 
-// ---------------- START
-function startRecommended(){
+// ---------- STABLE
+function startStable(){
 
-if(currentMode === "training"){
-startHRV();
-}
-
-if(currentMode === "micro"){
-startMicro();
-}
-
-if(currentMode === "emergency"){
-startEmergency();
-}
-}
-
-// ---------------- MICRO
-function startMicro(){
-
-openOverlay();
-
-let t = 30;
-
-setPhase("Schultern lösen");
-
-setInfo(
-"Lass deine Schultern langsam sinken."
-);
-
-speak(
-"Schultern lösen."
-);
-
-interval = setInterval(()=>{
-
-t--;
-
-setTimer(t);
-
-if(t <= 0){
-
-finishSession(
-"Etwas ruhiger."
-);
-}
-
-},1000);
-}
-
-// ---------------- EMERGENCY
-function startEmergency(){
-
-openOverlay();
-
-let t = 25;
-
-setPhase("Brustbein klopfen");
-
-setInfo(
-"Sanftes Klopfen hilft dem Nervensystem Sicherheit zu spüren."
-);
-
-speak(
-"Klopfe jetzt sanft auf dein Brustbein."
-);
-
-interval = setInterval(()=>{
-
-t--;
-
-setTimer(t);
-
-if(t <= 0){
-
-clearInterval(interval);
-
-startBreathingRecovery();
-}
-
-},1000);
-}
-
-// ---------------- BREATH
-function startBreathingRecovery(){
-
-let t = 45;
+let t = 300;
 let cycle = 0;
 
 setInfo(
-"Längeres Ausatmen beruhigt."
+"Langsames Atmen trainiert vagale Stabilität."
+);
+
+speak("Wir beginnen ruhig.");
+
+interval = setInterval(()=>{
+
+t--;
+cycle++;
+
+setTimer(formatTime(t));
+
+if(cycle % 10 < 4){
+
+setPhase("Einatmen");
+pulseIn();
+
+if(cycle % 10 === 1){
+
+speak("Ein");
+}
+
+}else{
+
+setPhase("Ausatmen");
+pulseOut();
+
+if(cycle % 10 === 4){
+
+speak("Aus");
+}
+}
+
+if(t < 120){
+
+setPhase("Summen beim Ausatmen");
+
+if(cycle % 10 === 4){
+
+speak("Voooo");
+}
+}
+
+if(t <= 0){
+
+finishTraining(
+"Training abgeschlossen."
+);
+}
+
+},1000);
+}
+
+// ---------- MID
+function startMid(){
+
+let t = 60;
+let cycle = 0;
+
+setInfo(
+"Überlastung früh beruhigen."
+);
+
+speak(
+"Schultern locker lassen."
 );
 
 interval = setInterval(()=>{
@@ -790,94 +942,71 @@ if(cycle % 10 < 4){
 setPhase("Einatmen");
 pulseIn();
 
-} else {
-
-setPhase("Ausatmen");
-pulseOut();
-}
-
-if(cycle % 10 === 1){
-
-speak("Ein");
-}
-
-if(cycle % 10 === 5){
-
-speak("Aus");
-}
-
-if(t <= 0){
-
-finishSession(
-"Beruhigt."
-);
-}
-
-},1000);
-}
-
-// ---------------- HRV
-function startHRV(){
-
-openOverlay();
-
-let t = 300;
-let cycle = 0;
-
-setInfo(
-"Langsame Atmung stärkt vagale Regulation."
-);
-
-speak(
-"Wir starten ruhig."
-);
-
-interval = setInterval(()=>{
-
-t--;
-cycle++;
-
-setTimer(formatTime(t));
-
-if(t > 100){
-
-if(cycle % 12 < 5){
-
-setPhase("Einatmen");
-pulseIn();
-
-} else {
+}else{
 
 setPhase("Lang ausatmen");
 pulseOut();
 }
 
-} else {
-
-setPhase(
-"Summen beim Ausatmen"
-);
-
-pulseOut();
-
-if(cycle % 6 === 0){
-
-speak("Voooo");
-}
-}
-
 if(t <= 0){
 
-finishSession(
-"Training abgeschlossen."
+finishTraining(
+"Etwas ruhiger."
 );
 }
 
 },1000);
 }
 
-// ---------------- FINISH
-function finishSession(text){
+// ---------- BAD
+function startBad(){
+
+let t = 45;
+
+setInfo(
+"Körperreize helfen oft schneller als Druck über Atmung."
+);
+
+setPhase("Brustbein klopfen");
+
+speak(
+"Klopfe jetzt sanft auf dein Brustbein."
+);
+
+interval = setInterval(()=>{
+
+t--;
+
+setTimer(t);
+
+if(t === 25){
+
+setPhase("Lang ausatmen");
+
+speak(
+"Langsam ausatmen."
+);
+}
+
+if(t === 12){
+
+setPhase("Summen");
+
+speak("Voooo");
+}
+
+if(t <= 0){
+
+finishTraining(
+"Akute Überreizung etwas reduziert."
+);
+}
+
+},1000);
+}
+
+// ---------- FINISH
+function finishTraining(text){
 
 clearInterval(interval);
 
@@ -894,19 +1023,16 @@ closeOverlay();
 },2200);
 }
 
-// ---------------- HELPER
+// ---------- HELPER
 function formatTime(sec){
 
 let m = Math.floor(sec/60);
-let s = sec%60;
+let s = sec % 60;
 
 return `${m}:${s.toString().padStart(2,"0")}`;
 }
 
-// ---------------- INIT
-document.getElementById("saveBtn")
-.onclick = saveHRV;
-
+// ---------- INIT
 updateHRV();
 
 </script>
