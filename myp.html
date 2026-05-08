@@ -5,24 +5,23 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>VagusBuk A5.5</title>
+<title>VagusBuk A6.0</title>
 
 <style>
 
 :root{
 --bg:#071018;
 --card:#101b27;
+--card2:#132235;
+
 --text:#eef3f7;
---muted:#8ea0b1;
+--muted:#8a9caf;
 
---green1:#2fb356;
---green2:#1f7f3c;
+--green:#2c9b4c;
+--yellow:#8a6a14;
+--red:#8d3d3d;
 
---yellow1:#8b6a16;
---yellow2:#6d5310;
-
---red1:#9f4141;
---red2:#733131;
+--border:rgba(255,255,255,.06);
 }
 
 *{
@@ -36,8 +35,6 @@ margin:0;
 padding:0;
 
 width:100%;
-max-width:100%;
-
 overflow-x:hidden;
 
 background:var(--bg);
@@ -51,13 +48,11 @@ color:var(--text);
 }
 
 body{
-position:relative;
-
 background:
 radial-gradient(
 circle at top,
-#10263d 0%,
-#071018 45%
+#0d2840 0%,
+#071018 42%
 );
 }
 
@@ -66,162 +61,135 @@ circle at top,
 width:100%;
 max-width:620px;
 
-margin:0 auto;
+margin:auto;
 
 padding:
-max(24px, env(safe-area-inset-top))
-16px
+max(18px, env(safe-area-inset-top))
+14px
 max(120px, env(safe-area-inset-bottom));
-
-overflow-x:hidden;
 }
 
 /* HEADER */
 
 .header{
-text-align:center;
-margin-top:36px;
-margin-bottom:26px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:flex-start;
+
+gap:12px;
+
+margin-top:12px;
+
+margin-bottom:20px;
 }
 
-.wave{
-color:#617387;
-font-size:34px;
+.logoWrap{
+min-width:0;
 }
 
 .logo{
 
-margin-top:6px;
-
-font-size:clamp(42px,12vw,64px);
+font-size:clamp(34px,10vw,52px);
 
 font-weight:800;
 
-letter-spacing:-3px;
+letter-spacing:-2px;
 
 line-height:1;
 }
 
 .sub{
 
-margin-top:12px;
+margin-top:6px;
 
 color:var(--muted);
 
-font-size:clamp(16px,4vw,22px);
+font-size:15px;
 
 line-height:1.4;
 }
 
-/* CARDS */
+/* HRV COMPACT */
 
-.card{
+.hrvBox{
 
-width:100%;
+min-width:108px;
 
 background:
-rgba(12,22,34,.92);
+rgba(14,24,38,.82);
 
 border:
-1px solid rgba(255,255,255,.05);
+1px solid var(--border);
 
-border-radius:28px;
+border-radius:22px;
 
-padding:20px;
+padding:12px 14px;
 
-margin-bottom:18px;
-
-overflow:hidden;
-}
-
-/* HRV */
-
-.hrvTop{
-
-display:flex;
-
-justify-content:space-between;
-
-gap:18px;
-
-flex-wrap:wrap;
-}
-
-.hrvMain{
-flex:1 1 220px;
-}
-
-.hrvSide{
-flex:0 1 120px;
 text-align:right;
 }
 
-.label{
+.hrvLabel{
 
 color:var(--muted);
 
-text-transform:uppercase;
+font-size:11px;
 
 letter-spacing:1px;
 
-font-size:13px;
+text-transform:uppercase;
 }
 
 .hrvValue{
 
-margin-top:6px;
+margin-top:4px;
 
-font-size:clamp(52px,16vw,74px);
+font-size:42px;
 
 font-weight:800;
 
 line-height:1;
 }
 
-.avgValue{
+.hrvTrend{
 
 margin-top:6px;
 
-font-size:clamp(22px,7vw,32px);
+color:#dce5ee;
 
-font-weight:700;
+font-size:13px;
 }
 
-.hrvText{
+/* CARD */
 
-margin-top:10px;
+.card{
 
-line-height:1.4;
+background:
+rgba(12,22,34,.9);
 
-font-size:18px;
+border:
+1px solid var(--border);
 
-color:#dfe7ee;
+border-radius:24px;
+
+padding:18px;
+
+margin-bottom:16px;
 }
 
-.trend{
+/* HRV ENTRY */
 
-margin-top:10px;
+.entryRow{
 
-font-size:16px;
-
-color:#d7e0e8;
-}
-
-/* INPUT */
-
-.editWrap{
-
-display:none;
+display:flex;
 
 gap:10px;
 
-margin-top:18px;
+align-items:center;
 
 flex-wrap:wrap;
-}
-
-.editWrap.open{
-display:flex;
 }
 
 .hrvInput{
@@ -230,92 +198,77 @@ flex:1;
 
 min-width:0;
 
-height:58px;
+height:54px;
 
 border:none;
 
-border-radius:18px;
+border-radius:16px;
 
-background:#091521;
+background:#081521;
+
+color:white;
+
+padding:0 16px;
+
+font-size:24px;
+
+outline:none;
+}
+
+.saveBtn{
+
+height:54px;
+
+border:none;
+
+border-radius:16px;
+
+background:
+linear-gradient(
+135deg,
+#35c65f,
+#22863e
+);
 
 color:white;
 
 padding:0 18px;
 
-font-size:26px;
-
-outline:none;
-
-border:
-1px solid rgba(80,150,220,.22);
-}
-
-.btn{
-
-border:none;
-
-border-radius:18px;
-
-color:white;
-
-cursor:pointer;
+font-size:16px;
 
 font-weight:700;
 }
 
-.primaryBtn{
-
-background:
-linear-gradient(
-135deg,
-var(--green1),
-var(--green2)
-);
-
-height:58px;
-
-padding:0 24px;
-
-font-size:18px;
-}
-
-.secondaryBtn{
-
-margin-top:16px;
-
-background:#1b2b3d;
-
-padding:14px 18px;
-
-font-size:16px;
-}
-
-/* STATES */
+/* STATUS */
 
 .sectionTitle{
 
 color:var(--muted);
 
+font-size:12px;
+
 text-transform:uppercase;
 
 letter-spacing:1px;
 
-font-size:13px;
-
 margin-bottom:14px;
 }
 
-.state{
+.statusList{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.statusBtn{
 
 width:100%;
 
 border:none;
 
-border-radius:26px;
+border-radius:20px;
 
-padding:20px;
-
-margin-bottom:14px;
+padding:16px;
 
 color:white;
 
@@ -328,8 +281,8 @@ overflow:hidden;
 background:
 linear-gradient(
 135deg,
-#236c39,
-#1d4d2b
+#246c39,
+#1c4d2a
 );
 }
 
@@ -337,8 +290,8 @@ linear-gradient(
 background:
 linear-gradient(
 135deg,
-#715613,
-#5a4410
+#7b5d12,
+#5d470e
 );
 }
 
@@ -346,12 +299,12 @@ linear-gradient(
 background:
 linear-gradient(
 135deg,
-#743434,
-#572828
+#803939,
+#5d2929
 );
 }
 
-.stateRow{
+.statusTop{
 
 display:flex;
 
@@ -359,52 +312,48 @@ justify-content:space-between;
 
 align-items:center;
 
-gap:14px;
+gap:12px;
 }
 
-.stateLeft{
+.statusLeft{
 
 display:flex;
 
 align-items:center;
 
-gap:16px;
+gap:14px;
 
 min-width:0;
 }
 
 .emoji{
-font-size:34px;
+font-size:28px;
 }
 
-.stateTitle{
+.statusTitle{
 
-font-size:clamp(24px,7vw,36px);
+font-size:clamp(22px,7vw,30px);
 
 font-weight:800;
 
-line-height:1.1;
+line-height:1;
 }
 
-.stateDesc{
+.statusDesc{
 
-margin-top:5px;
+margin-top:4px;
 
-font-size:18px;
+font-size:16px;
 
 color:rgba(255,255,255,.82);
-
-line-height:1.35;
 }
 
 .arrow{
-
-font-size:28px;
-
+font-size:24px;
 opacity:.55;
 }
 
-/* PANEL */
+/* TRAINING PANEL */
 
 .panel{
 
@@ -412,11 +361,11 @@ display:none;
 
 margin-top:12px;
 
-background:#0d1823;
+background:#0d1824;
 
-border-radius:24px;
+border-radius:20px;
 
-padding:22px;
+padding:18px;
 }
 
 .panel.open{
@@ -425,86 +374,95 @@ display:block;
 
 .panelTitle{
 
-font-size:clamp(28px,8vw,40px);
+font-size:30px;
 
 font-weight:800;
 }
 
 .panelText{
 
-margin-top:14px;
+margin-top:10px;
 
-line-height:1.6;
+line-height:1.55;
 
-font-size:18px;
+color:#dce4ec;
 
-color:#d9e2ea;
+font-size:17px;
 }
 
-.list{
+.trainingList{
 
 margin-top:18px;
 }
 
-.list div{
+.trainingList div{
 
 margin-bottom:10px;
 
-line-height:1.5;
+color:#edf2f7;
 
-color:#eef3f7;
+line-height:1.5;
 }
 
 .warning{
 
-margin-top:18px;
+margin-top:16px;
 
-background:#281818;
+background:#2a1919;
 
-border:
-1px solid rgba(255,90,90,.14);
+border-radius:16px;
 
-border-radius:18px;
+padding:14px;
 
-padding:16px;
-
-color:#ffd2d2;
+color:#ffd6d6;
 
 line-height:1.5;
+
+display:none;
+}
+
+.panelBtns{
+
+display:flex;
+
+gap:10px;
+
+margin-top:20px;
+}
+
+.startBtn,
+.backBtn{
+
+flex:1;
+
+height:56px;
+
+border:none;
+
+border-radius:16px;
+
+color:white;
+
+font-size:17px;
+
+font-weight:700;
 }
 
 .startBtn{
 
-width:100%;
-
-margin-top:22px;
-
-padding:18px;
-
-font-size:20px;
-
 background:
 linear-gradient(
 135deg,
-var(--green1),
-var(--green2)
+#35c65f,
+#22863e
 );
 }
 
-.closeBtn{
-
-width:100%;
-
-margin-top:12px;
-
-padding:16px;
-
-font-size:17px;
-
-background:#1b2b3d;
+.backBtn{
+background:#1c2c3f;
 }
 
-/* OVERLAY */
+/* TRAINING OVERLAY */
 
 .overlay{
 
@@ -519,14 +477,15 @@ display:none;
 flex-direction:column;
 
 justify-content:center;
+
 align-items:center;
 
 text-align:center;
 
 padding:
-max(30px, env(safe-area-inset-top))
-22px
-max(40px, env(safe-area-inset-bottom));
+max(24px, env(safe-area-inset-top))
+20px
+max(36px, env(safe-area-inset-bottom));
 
 z-index:999;
 }
@@ -541,25 +500,25 @@ border-radius:50%;
 background:
 radial-gradient(
 circle,
-#47d86a 0%,
-#216f35 72%
+#48d86b 0%,
+#236f36 72%
 );
 
-box-shadow:
-0 0 80px rgba(71,216,106,.22);
-
 transition:2s ease-in-out;
+
+box-shadow:
+0 0 80px rgba(71,216,106,.25);
 }
 
 .expand{
-transform:scale(1.18);
+transform:scale(1.16);
 }
 
 .phase{
 
-margin-top:30px;
+margin-top:28px;
 
-font-size:clamp(30px,8vw,42px);
+font-size:clamp(28px,8vw,40px);
 
 font-weight:800;
 }
@@ -568,7 +527,7 @@ font-weight:800;
 
 margin-top:10px;
 
-font-size:clamp(64px,18vw,96px);
+font-size:clamp(64px,18vw,92px);
 
 font-weight:800;
 
@@ -577,26 +536,38 @@ line-height:1;
 
 .info{
 
-margin-top:22px;
-
-max-width:520px;
+margin-top:18px;
 
 color:var(--muted);
 
+font-size:18px;
+
 line-height:1.6;
 
-font-size:clamp(18px,5vw,24px);
+max-width:480px;
 }
 
 .stopBtn{
 
-margin-top:34px;
+margin-top:30px;
 
-background:#213140;
+width:100%;
 
-padding:16px 26px;
+max-width:280px;
+
+height:56px;
+
+border:none;
+
+border-radius:16px;
+
+background:#1c2c3f;
+
+color:white;
 
 font-size:17px;
+
+font-weight:700;
 }
 
 </style>
@@ -606,11 +577,11 @@ font-size:17px;
 
 <div class="container">
 
+<!-- HEADER -->
+
 <div class="header">
 
-<div class="wave">
-〰〰
-</div>
+<div class="logoWrap">
 
 <div class="logo">
 VagusBuk
@@ -622,16 +593,10 @@ HRV-Training & Nervensystem-Regulation
 
 </div>
 
-<!-- HRV -->
+<div class="hrvBox">
 
-<div class="card">
-
-<div class="hrvTop">
-
-<div class="hrvMain">
-
-<div class="label">
-HRV heute
+<div class="hrvLabel">
+HRV
 </div>
 
 <div
@@ -642,49 +607,25 @@ id="todayHRV"
 </div>
 
 <div
-class="hrvText"
-id="hrvText"
->
-Direkt morgens messen.
-</div>
-
-</div>
-
-<div class="hrvSide">
-
-<div class="label">
-Ø 7 Tage
-</div>
-
-<div
-class="avgValue"
-id="avgHRV"
->
---
-</div>
-
-<div
-class="trend"
+class="hrvTrend"
 id="trend"
 >
-Noch kein Trend
+kein Trend
 </div>
 
 </div>
 
 </div>
 
-<button
-class="btn secondaryBtn"
-onclick="toggleEdit()"
->
-HRV eintragen
-</button>
+<!-- HRV -->
 
-<div
-class="editWrap"
-id="editWrap"
->
+<div class="card">
+
+<div class="sectionTitle">
+HRV morgens eintragen
+</div>
+
+<div class="entryRow">
 
 <input
 type="number"
@@ -694,7 +635,7 @@ placeholder="z.B. 41"
 >
 
 <button
-class="btn primaryBtn"
+class="saveBtn"
 onclick="saveHRV()"
 >
 Speichern
@@ -704,7 +645,7 @@ Speichern
 
 </div>
 
-<!-- STATES -->
+<!-- STATUS -->
 
 <div class="card">
 
@@ -712,14 +653,16 @@ Speichern
 Wie ist es gerade?
 </div>
 
+<div class="statusList">
+
 <button
-class="state green"
+class="statusBtn green"
 onclick="openPanel('green')"
 >
 
-<div class="stateRow">
+<div class="statusTop">
 
-<div class="stateLeft">
+<div class="statusLeft">
 
 <div class="emoji">
 🙂
@@ -727,11 +670,11 @@ onclick="openPanel('green')"
 
 <div>
 
-<div class="stateTitle">
+<div class="statusTitle">
 Stabil
 </div>
 
-<div class="stateDesc">
+<div class="statusDesc">
 Ruhig und belastbar.
 </div>
 
@@ -748,13 +691,13 @@ Ruhig und belastbar.
 </button>
 
 <button
-class="state yellow"
+class="statusBtn yellow"
 onclick="openPanel('yellow')"
 >
 
-<div class="stateRow">
+<div class="statusTop">
 
-<div class="stateLeft">
+<div class="statusLeft">
 
 <div class="emoji">
 😕
@@ -762,11 +705,11 @@ onclick="openPanel('yellow')"
 
 <div>
 
-<div class="stateTitle">
+<div class="statusTitle">
 Kippt leicht
 </div>
 
-<div class="stateDesc">
+<div class="statusDesc">
 Erste Überlastung.
 </div>
 
@@ -783,13 +726,13 @@ Erste Überlastung.
 </button>
 
 <button
-class="state red"
+class="statusBtn red"
 onclick="openPanel('red')"
 >
 
-<div class="stateRow">
+<div class="statusTop">
 
-<div class="stateLeft">
+<div class="statusLeft">
 
 <div class="emoji">
 😣
@@ -797,11 +740,11 @@ onclick="openPanel('red')"
 
 <div>
 
-<div class="stateTitle">
+<div class="statusTitle">
 Kippt
 </div>
 
-<div class="stateDesc">
+<div class="statusDesc">
 Überreizt oder erschöpft.
 </div>
 
@@ -816,6 +759,8 @@ Kippt
 </div>
 
 </button>
+
+</div>
 
 <!-- PANEL -->
 
@@ -837,31 +782,34 @@ id="panelText"
 </div>
 
 <div
-class="list"
-id="panelList"
+class="trainingList"
+id="trainingList"
 >
 </div>
 
 <div
 class="warning"
 id="warning"
-style="display:none"
 >
 </div>
 
+<div class="panelBtns">
+
 <button
-class="btn startBtn"
+class="startBtn"
 id="startBtn"
 >
 Training starten
 </button>
 
 <button
-class="btn closeBtn"
+class="backBtn"
 onclick="closePanel()"
 >
 Zurück
 </button>
+
+</div>
 
 </div>
 
@@ -892,7 +840,7 @@ Vorbereitung
 class="timer"
 id="timer"
 >
-60
+0:00
 </div>
 
 <div
@@ -903,7 +851,7 @@ Ruhig werden.
 </div>
 
 <button
-class="btn stopBtn"
+class="stopBtn"
 onclick="stopTraining()"
 >
 Abbrechen
@@ -921,13 +869,6 @@ localStorage.getItem("vb_hrv")
 let interval = null;
 
 /* HRV */
-
-function toggleEdit(){
-
-document
-.getElementById("editWrap")
-.classList.toggle("open");
-}
 
 function saveHRV(){
 
@@ -950,13 +891,11 @@ localStorage.setItem(
 JSON.stringify(hrvData)
 );
 
-updateHRV();
-
 document.getElementById(
 "hrvInput"
 ).value = ""
 
-toggleEdit();
+updateHRV();
 }
 
 function updateHRV(){
@@ -964,52 +903,11 @@ function updateHRV(){
 if(hrvData.length === 0) return;
 
 let today =
-hrvData[hrvData.length - 1].value;
-
-let recent =
-hrvData.slice(-7);
-
-let avg =
-Math.round(
-
-recent.reduce(
-(a,b)=>a+b.value,
-0
-) / recent.length
-
-);
+hrvData[hrvData.length-1].value;
 
 document.getElementById(
 "todayHRV"
 ).innerText = today;
-
-document.getElementById(
-"avgHRV"
-).innerText = avg;
-
-let text =
-document.getElementById(
-"hrvText"
-);
-
-if(today >= 45){
-
-text.innerText =
-"Nervensystem heute eher stabil."
-
-}else if(today >= 30){
-
-text.innerText =
-"Heute moderate Belastbarkeit."
-
-}else{
-
-text.innerText =
-"Heute vorsichtiger bleiben."
-}
-
-let trend =
-document.getElementById("trend");
 
 if(hrvData.length >= 4){
 
@@ -1021,18 +919,21 @@ hrvData[hrvData.length-4].value;
 
 if(last > old){
 
-trend.innerText =
-"↗ HRV steigt"
+document.getElementById(
+"trend"
+).innerText = "↗ steigt"
 
 }else if(last < old){
 
-trend.innerText =
-"↘ HRV sinkt"
+document.getElementById(
+"trend"
+).innerText = "↘ sinkt"
 
 }else{
 
-trend.innerText =
-"→ stabil"
+document.getElementById(
+"trend"
+).innerText = "→ stabil"
 }
 }
 }
@@ -1053,7 +954,7 @@ let text =
 document.getElementById("panelText");
 
 let list =
-document.getElementById("panelList");
+document.getElementById("trainingList");
 
 let warning =
 document.getElementById("warning");
@@ -1071,21 +972,22 @@ hrvData.length
 if(type === "green"){
 
 title.innerText =
-"HRV Aufbau"
+"HRV-Aufbau"
 
 text.innerText =
-"Ruhige Atmung und verlängertes Ausatmen fördern vagale Aktivität."
+"Ziel ist langfristig mehr vagale Stabilität und bessere Erholung."
 
 list.innerHTML = `
 <div>• 4 Sekunden einatmen</div>
 <div>• 6 Sekunden ausatmen</div>
 <div>• später Summen</div>
-<div>• Dauer: 3–5 Minuten</div>
+<div>• 3–5 Minuten Training</div>
 `;
 
 if(hrv < 30){
 
-warning.style.display = "block"
+warning.style.display =
+"block"
 
 warning.innerText =
 "HRV heute niedrig. Ruhig und ohne Leistungsdruck trainieren."
@@ -1101,13 +1003,13 @@ title.innerText =
 "Frühe Stabilisierung"
 
 text.innerText =
-"Überlastung früh beruhigen bevor das Nervensystem stärker kippt."
+"Leichte Überlastung früh beruhigen."
 
 list.innerHTML = `
-<div>• langsames Ausatmen</div>
+<div>• langsam ausatmen</div>
 <div>• Schultern lockern</div>
-<div>• ruhiger Blick</div>
-<div>• Dauer: 60 Sekunden</div>
+<div>• Blick beruhigen</div>
+<div>• 60 Sekunden</div>
 `;
 
 startBtn.onclick =
@@ -1120,13 +1022,13 @@ title.innerText =
 "Akute Beruhigung"
 
 text.innerText =
-"Körperreize helfen oft besser als intensive Atemübungen."
+"Körperreize statt intensiver Atemfokussierung."
 
 list.innerHTML = `
 <div>• Brustbein klopfen</div>
 <div>• langsam ausatmen</div>
 <div>• Summen</div>
-<div>• Dauer: 45 Sekunden</div>
+<div>• 45 Sekunden</div>
 `;
 
 startBtn.onclick =
@@ -1150,189 +1052,87 @@ document
 .style.display = "flex"
 
 if(type === "green"){
-startGreen();
+runTraining(180);
 }
 
 if(type === "yellow"){
-startYellow();
+runTraining(60);
 }
 
 if(type === "red"){
-startRed();
+runTraining(45);
 }
+}
+
+function runTraining(seconds){
+
+let t = seconds;
+let cycle = 0;
+
+interval = setInterval(()=>{
+
+t--;
+cycle++;
+
+updateTimer(t);
+
+if(cycle % 10 < 4){
+
+setPhase("Einatmen");
+expand(true);
+
+}else{
+
+setPhase("Ausatmen");
+expand(false);
+}
+
+if(t < 60){
+
+setInfo(
+"Summen beim Ausatmen."
+);
+}
+
+if(t <= 0){
+
+finishTraining();
+}
+
+},1000);
 }
 
 function stopTraining(){
 
 clearInterval(interval);
 
+speechSynthesis.cancel();
+
+document
+.getElementById("overlay")
+.style.display = "none"
+}
+
+function finishTraining(){
+
+clearInterval(interval);
+
+setPhase("Fertig");
+
+setInfo(
+"Training abgeschlossen."
+);
+
+setTimeout(()=>{
+
 document
 .getElementById("overlay")
 .style.display = "none"
 
-speechSynthesis.cancel();
-}
-
-/* GREEN */
-
-function startGreen(){
-
-let t = 300;
-let cycle = 0;
-
-let hrv =
-hrvData.length
-? hrvData[hrvData.length-1].value
-: 40;
-
-if(hrv < 30){
-t = 180;
-}
-
-interval = setInterval(()=>{
-
-t--;
-cycle++;
-
-updateTimer(t);
-
-if(cycle % 10 < 4){
-
-setPhase("Einatmen");
-
-expand(true);
-
-speak("Ein");
-
-}else{
-
-setPhase("Ausatmen");
-
-expand(false);
-
-speak("Aus");
-}
-
-if(t < 120){
-
-setInfo(
-"Summen beim Ausatmen."
-);
-
-if(cycle % 10 === 4){
-
-speak("Voooo");
-}
-}
-
-if(t <= 0){
-
-finishTraining(
-"Training abgeschlossen."
-);
-}
-
-},1000);
-}
-
-/* YELLOW */
-
-function startYellow(){
-
-let t = 60;
-let cycle = 0;
-
-setInfo(
-"Langsam ruhiger werden."
-);
-
-interval = setInterval(()=>{
-
-t--;
-cycle++;
-
-updateTimer(t);
-
-if(cycle % 10 < 4){
-
-setPhase("Einatmen");
-expand(true);
-
-}else{
-
-setPhase("Lang ausatmen");
-expand(false);
-}
-
-if(t <= 0){
-
-finishTraining(
-"Etwas stabiler."
-);
-}
-
-},1000);
-}
-
-/* RED */
-
-function startRed(){
-
-let t = 45;
-
-setPhase(
-"Brustbein klopfen"
-);
-
-setInfo(
-"Nur sanft und ruhig."
-);
-
-interval = setInterval(()=>{
-
-t--;
-
-updateTimer(t);
-
-if(t === 25){
-
-setPhase(
-"Lang ausatmen"
-);
-}
-
-if(t === 10){
-
-setPhase(
-"Summen"
-);
-}
-
-if(t <= 0){
-
-finishTraining(
-"Überreizung reduziert."
-);
-}
-
-},1000);
+},1800);
 }
 
 /* HELPERS */
-
-function setPhase(t){
-
-document
-.getElementById("phase")
-.innerText = t;
-}
-
-function setInfo(t){
-
-document
-.getElementById("info")
-.innerText = t;
-}
 
 function updateTimer(sec){
 
@@ -1350,6 +1150,20 @@ document
 .padStart(2,"0")}`;
 }
 
+function setPhase(t){
+
+document
+.getElementById("phase")
+.innerText = t;
+}
+
+function setInfo(t){
+
+document
+.getElementById("info")
+.innerText = t;
+}
+
 function expand(state){
 
 let c =
@@ -1364,38 +1178,6 @@ c.classList.add("expand");
 c.classList.remove("expand");
 }
 }
-
-function finishTraining(text){
-
-clearInterval(interval);
-
-setPhase("Fertig");
-
-setInfo(text);
-
-setTimeout(()=>{
-
-document
-.getElementById("overlay")
-.style.display = "none"
-
-},2000);
-}
-
-function speak(text){
-
-speechSynthesis.cancel();
-
-let msg =
-new SpeechSynthesisUtterance(text);
-
-msg.lang = "de-DE"
-msg.rate = .92;
-
-speechSynthesis.speak(msg);
-}
-
-/* INIT */
 
 updateHRV();
 
