@@ -5,21 +5,19 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>VagusBuk A5.4</title>
+<title>VagusBuk A5.5</title>
 
 <style>
 
 :root{
 --bg:#071018;
 --card:#101b27;
---card2:#162433;
-
 --text:#eef3f7;
---muted:#8fa2b5;
+--muted:#90a2b4;
 
---green:#38c85b;
---yellow:#d9b03e;
---red:#d86464;
+--green:#39c85d;
+--yellow:#ddb347;
+--red:#da6666;
 }
 
 *{
@@ -30,15 +28,17 @@ box-sizing:border-box;
 body{
 margin:0;
 font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+
 background:
 radial-gradient(circle at top,#11243a 0%,#071018 45%);
+
 color:var(--text);
 }
 
 .container{
 max-width:620px;
 margin:auto;
-padding:24px 18px 120px;
+padding:22px 18px 120px;
 }
 
 /* HEADER */
@@ -50,84 +50,110 @@ margin-bottom:24px;
 }
 
 .wave{
+font-size:34px;
 color:#607286;
-font-size:36px;
 }
 
 .logo{
+margin-top:6px;
 font-size:54px;
 font-weight:800;
 letter-spacing:-3px;
-margin-top:4px;
 }
 
 .sub{
-margin-top:8px;
+margin-top:10px;
 color:var(--muted);
 font-size:18px;
 }
 
-/* MINI HRV */
+/* HRV */
 
-.hrvMini{
+.hrvCard{
 background:rgba(12,22,34,.92);
+
 border:1px solid rgba(255,255,255,.05);
 
-border-radius:24px;
+border-radius:28px;
 
-padding:18px 20px;
-
-display:flex;
-justify-content:space-between;
-align-items:center;
+padding:20px;
 
 margin-bottom:18px;
 }
 
-.hrvLeft{
+.hrvTop{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+}
+
+.hrvMain{
 display:flex;
 flex-direction:column;
 }
 
 .hrvLabel{
 color:var(--muted);
-font-size:13px;
+
 text-transform:uppercase;
+
 letter-spacing:1px;
+
+font-size:13px;
 }
 
 .hrvValue{
 margin-top:4px;
-font-size:34px;
+
+font-size:56px;
 font-weight:800;
+
+letter-spacing:-2px;
 }
 
-.hrvText{
-margin-top:4px;
-color:#dce5ed;
-font-size:16px;
+.hrvStatus{
+margin-top:8px;
+
+font-size:17px;
+
+color:#dbe5ec;
 }
 
-.hrvBtn{
-border:none;
-background:#1b2a3a;
-color:white;
+.hrvSide{
+text-align:right;
+}
 
-border-radius:16px;
+.avgLabel{
+color:var(--muted);
 
-padding:12px 18px;
+font-size:12px;
+
+text-transform:uppercase;
+
+letter-spacing:1px;
+}
+
+.avgValue{
+margin-top:5px;
+
+font-size:24px;
+font-weight:700;
+}
+
+.trend{
+margin-top:10px;
 
 font-size:15px;
-}
 
-/* HRV EDIT */
+color:#d6e0e8;
+}
 
 .hrvEdit{
 display:none;
 
-margin-top:14px;
-
 gap:10px;
+
+margin-top:18px;
 }
 
 .hrvEdit.open{
@@ -139,19 +165,21 @@ flex:1;
 
 height:56px;
 
-background:#09131d;
-
-border:1px solid rgba(90,150,230,.25);
+border:none;
 
 border-radius:18px;
 
-color:white;
+background:#09131d;
 
-padding:0 18px;
+color:white;
 
 font-size:24px;
 
+padding:0 18px;
+
 outline:none;
+
+border:1px solid rgba(90,150,230,.25);
 }
 
 .saveBtn{
@@ -162,28 +190,44 @@ border-radius:18px;
 background:
 linear-gradient(
 135deg,
-#3cc95d,
+#3dc85d,
 #24843b
 );
 
 color:white;
 
-font-size:17px;
+font-size:16px;
 font-weight:700;
 
-padding:0 20px;
+padding:0 22px;
 }
 
-/* MAIN CARD */
+.smallBtn{
+margin-top:16px;
+
+border:none;
+
+background:#1b2a3a;
+
+color:white;
+
+border-radius:16px;
+
+padding:12px 18px;
+
+font-size:15px;
+}
+
+/* MAIN */
 
 .mainCard{
 background:rgba(12,22,34,.92);
 
 border:1px solid rgba(255,255,255,.05);
 
-border-radius:30px;
+border-radius:28px;
 
-padding:20px;
+padding:18px;
 }
 
 .sectionLabel{
@@ -195,31 +239,25 @@ letter-spacing:1px;
 
 font-size:13px;
 
-margin-bottom:16px;
+margin-bottom:14px;
 }
 
 /* STATES */
 
 .state{
-border:none;
-
 width:100%;
 
-text-align:left;
+border:none;
 
 border-radius:24px;
+
+text-align:left;
 
 padding:22px;
 
 margin-bottom:14px;
 
 color:white;
-
-transition:.2s;
-}
-
-.state:active{
-transform:scale(.99);
 }
 
 .green{
@@ -227,7 +265,7 @@ background:
 linear-gradient(
 135deg,
 #1d6a38,
-#224d31
+#234d31
 );
 }
 
@@ -235,7 +273,7 @@ linear-gradient(
 background:
 linear-gradient(
 135deg,
-#6a5619,
+#6a5719,
 #554415
 );
 }
@@ -245,14 +283,14 @@ background:
 linear-gradient(
 135deg,
 #6a2d2d,
-#522626
+#512626
 );
 }
 
 .stateRow{
 display:flex;
-align-items:center;
 justify-content:space-between;
+align-items:center;
 }
 
 .stateLeft{
@@ -271,17 +309,19 @@ font-weight:800;
 }
 
 .stateDesc{
-margin-top:3px;
-color:rgba(255,255,255,.82);
+margin-top:4px;
+
 font-size:16px;
+
+color:rgba(255,255,255,.82);
 }
 
 .arrow{
-font-size:32px;
+font-size:30px;
 opacity:.5;
 }
 
-/* TRAINING PANEL */
+/* PANEL */
 
 .trainingPanel{
 display:none;
@@ -307,7 +347,7 @@ font-weight:800;
 .trainingText{
 margin-top:12px;
 
-color:#d8e3ea;
+color:#d7e1e8;
 
 line-height:1.55;
 
@@ -320,7 +360,24 @@ margin-top:16px;
 
 .trainingList div{
 margin-bottom:10px;
-color:#edf3f8;
+}
+
+.warning{
+margin-top:18px;
+
+background:#261717;
+
+border:1px solid rgba(255,100,100,.15);
+
+border-radius:18px;
+
+padding:16px;
+
+color:#ffd4d4;
+
+line-height:1.45;
+
+font-size:15px;
 }
 
 .startBtn{
@@ -334,17 +391,17 @@ border-radius:20px;
 
 padding:18px;
 
-font-size:20px;
-font-weight:700;
-
-color:white;
-
 background:
 linear-gradient(
 135deg,
 #3dc85d,
 #24843b
 );
+
+color:white;
+
+font-size:20px;
+font-weight:700;
 }
 
 .backBtn{
@@ -418,7 +475,7 @@ font-weight:800;
 }
 
 .timer{
-margin-top:8px;
+margin-top:10px;
 
 font-size:78px;
 font-weight:800;
@@ -471,7 +528,7 @@ font-size:32px;
 }
 
 .timer{
-font-size:68px;
+font-size:66px;
 }
 }
 
@@ -495,16 +552,18 @@ VagusBuk
 </div>
 
 <div class="sub">
-Weniger Überlastung. Mehr Stabilität.
+HRV-Training & Nervensystem-Regulation
 </div>
 
 </div>
 
 <!-- HRV -->
 
-<div class="hrvMini">
+<div class="hrvCard">
 
-<div class="hrvLeft">
+<div class="hrvTop">
+
+<div class="hrvMain">
 
 <div class="hrvLabel">
 HRV heute
@@ -518,22 +577,44 @@ id="todayHRV"
 </div>
 
 <div
-class="hrvText"
-id="hrvText"
+class="hrvStatus"
+id="hrvStatus"
 >
 Direkt morgens messen.
 </div>
 
 </div>
 
-<button
-class="hrvBtn"
-onclick="toggleHRVEdit()"
+<div class="hrvSide">
+
+<div class="avgLabel">
+Ø 7 Tage
+</div>
+
+<div
+class="avgValue"
+id="avgHRV"
 >
-ändern
-</button>
+--
+</div>
+
+<div
+class="trend"
+id="trendText"
+>
+Noch kein Trend
+</div>
 
 </div>
+
+</div>
+
+<button
+class="smallBtn"
+onclick="toggleHRVEdit()"
+>
+HRV eintragen
+</button>
 
 <div
 class="hrvEdit"
@@ -556,6 +637,8 @@ Speichern
 
 </div>
 
+</div>
+
 <!-- MAIN -->
 
 <div class="mainCard">
@@ -564,11 +647,9 @@ Speichern
 Wie ist es gerade?
 </div>
 
-<!-- STABLE -->
-
 <button
 class="state green"
-onclick="openTraining('stable')"
+onclick="openTraining('green')"
 >
 
 <div class="stateRow">
@@ -600,8 +681,6 @@ Ruhig und belastbar.
 </div>
 
 </button>
-
-<!-- YELLOW -->
 
 <button
 class="state yellow"
@@ -638,8 +717,6 @@ Erste Überlastung.
 
 </button>
 
-<!-- RED -->
-
 <button
 class="state red"
 onclick="openTraining('red')"
@@ -675,7 +752,7 @@ Kippt
 
 </button>
 
-<!-- TRAINING -->
+<!-- PANEL -->
 
 <div
 class="trainingPanel"
@@ -698,6 +775,13 @@ id="trainingText"
 <div
 class="trainingList"
 id="trainingList"
+>
+</div>
+
+<div
+class="warning"
+id="warningBox"
+style="display:none"
 >
 </div>
 
@@ -825,7 +909,7 @@ value:val,
 time:Date.now()
 });
 
-hrvData = hrvData.slice(-14);
+hrvData = hrvData.slice(-30);
 
 localStorage.setItem(
 "vb_hrv",
@@ -848,12 +932,16 @@ if(hrvData.length === 0) return;
 let today =
 hrvData[hrvData.length - 1].value;
 
-let avg = Math.round(
+let recent =
+hrvData.slice(-7);
 
-hrvData.reduce(
+let avg =
+Math.round(
+
+recent.reduce(
 (a,b)=>a+b.value,
 0
-) / hrvData.length
+) / recent.length
 
 );
 
@@ -861,27 +949,65 @@ document.getElementById(
 "todayHRV"
 ).innerText = today;
 
-let txt =
-document.getElementById("hrvText");
+document.getElementById(
+"avgHRV"
+).innerText = avg;
 
-if(today > avg){
+let status =
+document.getElementById(
+"hrvStatus"
+);
 
-txt.innerText =
-"Heute eher belastbar."
+if(today >= 45){
 
-}else if(today < avg){
+status.innerText =
+"Nervensystem heute eher stabil."
 
-txt.innerText =
-"Heute vorsichtiger bleiben."
+}else if(today >= 30){
+
+status.innerText =
+"Heute moderate Belastbarkeit."
 
 }else{
 
-txt.innerText =
-"Heute normales Niveau."
+status.innerText =
+"Heute vorsichtiger bleiben."
+}
+
+/* TREND */
+
+let trend =
+document.getElementById(
+"trendText"
+);
+
+if(hrvData.length >= 4){
+
+let last =
+hrvData[hrvData.length-1].value;
+
+let older =
+hrvData[hrvData.length-4].value;
+
+if(last > older){
+
+trend.innerText =
+"↗ HRV steigt"
+
+}else if(last < older){
+
+trend.innerText =
+"↘ HRV sinkt"
+
+}else{
+
+trend.innerText =
+"→ stabil"
+}
 }
 }
 
-/* TRAINING PANEL */
+/* PANEL */
 
 function openTraining(type){
 
@@ -914,54 +1040,83 @@ document.getElementById(
 "startBtn"
 );
 
-if(type === "stable"){
+let warn =
+document.getElementById(
+"warningBox"
+);
+
+warn.style.display = "none"
+
+let today =
+hrvData.length
+? hrvData[hrvData.length-1].value
+: null;
+
+/* GREEN */
+
+if(type === "green"){
 
 title.innerText =
-"5 Min HRV Training"
+"HRV Aufbau"
 
 text.innerText =
-"Langsame Atmung mit längerer Ausatmung trainiert vagale Stabilität."
+"Längeres Ausatmen und ruhiges Summen trainieren vagale Regulation."
 
 list.innerHTML = `
-<div>• 4 Sekunden einatmen</div>
-<div>• 6 Sekunden ausatmen</div>
-<div>• später Summen beim Ausatmen</div>
+<div>• 4 Sek. einatmen</div>
+<div>• 6 Sek. ausatmen</div>
+<div>• später Summen</div>
+<div>• Dauer: 5 Minuten</div>
 `;
 
-btn.onclick =
-()=>startTraining("stable");
+if(today && today < 30){
+
+warn.style.display = "block"
+
+warn.innerText =
+"HRV aktuell niedrig. Heute ruhig und ohne Leistungsdruck trainieren."
 }
+
+btn.onclick =
+()=>startTraining("green");
+}
+
+/* YELLOW */
 
 if(type === "yellow"){
 
 title.innerText =
-"Kurz stabilisieren"
+"Stabilisierung"
 
 text.innerText =
-"Überlastung früh beruhigen bevor das Nervensystem stärker kippt."
+"Nervensystem früh beruhigen bevor Stress stärker wird."
 
 list.innerHTML = `
-<div>• Schultern sinken lassen</div>
 <div>• langsames Ausatmen</div>
-<div>• Blick ruhig halten</div>
+<div>• Schultern sinken lassen</div>
+<div>• ruhiger Blick</div>
+<div>• Dauer: 1 Minute</div>
 `;
 
 btn.onclick =
 ()=>startTraining("yellow");
 }
 
+/* RED */
+
 if(type === "red"){
 
 title.innerText =
-"Akut beruhigen"
+"Akute Beruhigung"
 
 text.innerText =
-"Körperreize helfen oft besser als starke Atemtechniken."
+"Körperreize helfen oft besser als intensive Atemübungen."
 
 list.innerHTML = `
 <div>• Brustbein klopfen</div>
 <div>• langsames Ausatmen</div>
 <div>• Summen</div>
+<div>• Dauer: 45 Sekunden</div>
 `;
 
 btn.onclick =
@@ -984,8 +1139,8 @@ function startTraining(type){
 
 openOverlay();
 
-if(type === "stable"){
-startStable();
+if(type === "green"){
+startGreen();
 }
 
 if(type === "yellow"){
@@ -1055,12 +1210,20 @@ speechSynthesis.cancel();
 closeOverlay();
 }
 
-/* STABLE */
+/* GREEN */
 
-function startStable(){
+function startGreen(){
 
-let t = 300;
+let today =
+hrvData.length
+? hrvData[hrvData.length-1].value
+: 40;
+
+let duration =
+today < 30 ? 180 : 300;
+
 let cycle = 0;
+let t = duration;
 
 setInfo(
 "Ruhige Atmung trainiert den Vagus langfristig."
@@ -1102,7 +1265,7 @@ speak("Aus");
 }
 }
 
-if(t < 120){
+if(t < duration / 2){
 
 setPhase(
 "Summen beim Ausatmen"
@@ -1216,7 +1379,7 @@ speak("Voooo");
 if(t <= 0){
 
 finishTraining(
-"Akute Überlastung etwas reduziert."
+"Akute Überlastung reduziert."
 );
 }
 
