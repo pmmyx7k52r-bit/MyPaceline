@@ -5,15 +5,22 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>VagusBuk 6.1.2</title>
+<title>VagusBuk 6.1.2.1</title>
 
 <style>
 
 :root{
 --bg:#071018;
 --card:#101b27;
+--card2:#132235;
+
 --text:#eef3f7;
 --muted:#8fa1b2;
+
+--green:#2f9d51;
+--yellow:#8c6915;
+--red:#8a3f3f;
+
 --border:rgba(255,255,255,.06);
 }
 
@@ -44,8 +51,8 @@ body{
 background:
 radial-gradient(
 circle at top,
-#0d2942 0%,
-#071018 45%
+#0e2942 0%,
+#071018 42%
 );
 }
 
@@ -248,8 +255,8 @@ font-size:24px;
 
 outline:none;
 
--webkit-appearance:none;
 appearance:none;
+-webkit-appearance:none;
 }
 
 .hrvInput::placeholder{
@@ -299,7 +306,7 @@ margin-top:14px;
 
 flex:1;
 
-min-height:10px;
+min-height:12px;
 
 border-radius:12px 12px 6px 6px;
 
@@ -791,7 +798,7 @@ Trage morgens deine HRV ein.
 
 </div>
 
-<!-- HRV INPUT -->
+<!-- INPUT -->
 
 <div class="card">
 
@@ -1088,104 +1095,223 @@ onclick="closeFeedback()"
 
 <script>
 
-let hrvData =
-JSON.parse(
-localStorage.getItem("vb_hrv")
-) || [];
-
+let hrvData = [];
 let interval = null;
 
-/* SAVE */
+/* STORAGE */
 
-function saveHRV(){
+function loadStorage(){
 
-let input =
-document.getElementById("hrvInput");
+try{
 
-let val =
-parseInt(input.value);
+const raw =
+localStorage.getItem("vb_hrv");
 
-if(isNaN(val)){
+if(!raw){
 
-input.focus();
+hrvData = [];
 return;
 }
 
-hrvData.push({
-value:val,
-time:Date.now()
-});
+const parsed =
+JSON.parse(raw);
 
-hrvData = hrvData.slice(-30);
+if(Array.isArray(parsed)){
+
+hrvData = parsed;
+
+}else{
+
+hrvData = [];
+}
+
+}catch(e){
+
+console.log(
+"Storage beschädigt"
+);
+
+hrvData = [];
+}
+}
+
+function saveStorage(){
+
+try{
 
 localStorage.setItem(
 "vb_hrv",
 JSON.stringify(hrvData)
 );
 
-input.value = ""
+}catch(e){
 
-updateHRV();
+console.log(
+"Storage Fehler"
+);
+}
 }
 
-/* UPDATE */
+/* SAVE HRV */
 
-function updateHRV(){
+function saveHRV(){
 
-if(hrvData.length === 0) return;
-
-let today =
-hrvData[hrvData.length-1].value;
-
+const input =
 document.getElementById(
-"todayHRV"
-).innerText = today;
+"hrvInput"
+);
 
-updateTrend(today);
-updateToday(today);
+const value =
+parseInt(
+input.value.trim()
+);
+
+if(isNaN(value)){
+
+input.focus();
+return;
+}
+
+if(value < 1 || value > 250){
+
+alert(
+"Bitte gültigen HRV-Wert eingeben."
+);
+
+return;
+}
+
+hrvData.push({
+
+value:value,
+time:Date.now()
+
+});
+
+hrvData =
+hrvData.slice(-30);
+
+saveStorage();
+
+updateUI();
+
+input.value = ""
+
+const btn =
+document.querySelector(
+".saveBtn"
+);
+
+btn.innerText =
+"Gespeichert"
+
+setTimeout(()=>{
+
+btn.innerText =
+"Speichern"
+
+},1000);
+}
+
+/* UI */
+
+function updateUI(){
+
+updateHRVBox();
+updateToday();
 updateGraph();
 }
 
-function updateTrend(today){
+/* HRV */
 
-if(hrvData.length < 4) return;
+function updateHRVBox(){
 
-let old =
-hrvData[hrvData.length-4].value;
+if(hrvData.length === 0){
 
-if(today > old){
+document.getElementById(
+"todayHRV"
+).innerText = "--"
 
 document.getElementById(
 "trend"
-).innerText = "↗ steigt"
+).innerText =
+"kein Trend"
 
-}else if(today < old){
-
-document.getElementById(
-"trend"
-).innerText = "↘ sinkt"
-
-}else{
-
-document.getElementById(
-"trend"
-).innerText = "→ stabil"
-}
+return;
 }
 
-function updateToday(hrv){
+const latest =
+hrvData[
+hrvData.length - 1
+].value;
 
-let state =
+document.getElementById(
+"todayHRV"
+).innerText = latest;
+
+if(hrvData.length < 4){
+
+document.getElementById(
+"trend"
+).innerText =
+"sammelt Daten"
+
+return;
+}
+
+const old =
+hrvData[
+hrvData.length - 4
+].value;
+
+let trend = "→ stabil"
+
+if(latest > old){
+
+trend = "↗ steigt"
+}
+
+if(latest < old){
+
+trend = "↘ sinkt"
+}
+
+document.getElementById(
+"trend"
+).innerText = trend;
+}
+
+/* TODAY */
+
+function updateToday(){
+
+const state =
 document.getElementById(
 "todayState"
 );
 
-let text =
+const text =
 document.getElementById(
 "todayText"
 );
 
-if(hrv < 25){
+if(hrvData.length === 0){
+
+state.innerText =
+"Noch keine Daten"
+
+text.innerText =
+"Trage morgens deine HRV ein."
+
+return;
+}
+
+const latest =
+hrvData[
+hrvData.length - 1
+].value;
+
+if(latest < 25){
 
 state.innerText =
 "⚠ empfindliches Nervensystem"
@@ -1193,7 +1319,7 @@ state.innerText =
 text.innerText =
 "Heute eher kurze Regulation."
 
-}else if(hrv < 40){
+}else if(latest < 40){
 
 state.innerText =
 "⚠ mittlere Belastbarkeit"
@@ -1211,39 +1337,49 @@ text.innerText =
 }
 }
 
+/* GRAPH */
+
 function updateGraph(){
 
-let graph =
-document.getElementById("graph");
+const graph =
+document.getElementById(
+"graph"
+);
 
 graph.innerHTML = ""
 
-let recent =
+const recent =
 hrvData.slice(-7);
 
 recent.forEach(item=>{
 
-let bar =
+const bar =
 document.createElement("div");
 
-bar.className = "bar"
+bar.className =
+"bar"
+
+const height =
+Math.max(
+12,
+item.value * 2
+);
 
 bar.style.height =
-`${item.value * 2}px`;
+`${height}px`;
 
-let value =
+const label =
 document.createElement("div");
 
-value.className =
+label.className =
 "barValue"
 
-value.innerText =
+label.innerText =
 item.value;
 
-bar.appendChild(value);
+bar.appendChild(label);
 
 graph.appendChild(bar);
-
 });
 }
 
@@ -1251,38 +1387,61 @@ graph.appendChild(bar);
 
 function openPanel(type){
 
-let panel =
-document.getElementById("panel");
+const panel =
+document.getElementById(
+"panel"
+);
 
-panel.classList.add("open");
+panel.classList.add(
+"open"
+);
 
-let title =
-document.getElementById("panelTitle");
+const title =
+document.getElementById(
+"panelTitle"
+);
 
-let text =
-document.getElementById("panelText");
+const text =
+document.getElementById(
+"panelText"
+);
 
-let list =
-document.getElementById("trainingList");
+const list =
+document.getElementById(
+"trainingList"
+);
 
-let warning =
-document.getElementById("warning");
+const warning =
+document.getElementById(
+"warning"
+);
 
-let startBtn =
-document.getElementById("startBtn");
+const startBtn =
+document.getElementById(
+"startBtn"
+);
 
-warning.style.display = "none"
+warning.style.display =
+"none"
 
-let hrv =
-hrvData.length
-? hrvData[hrvData.length-1].value
-: 30;
+let hrv = 30;
+
+if(hrvData.length){
+
+hrv =
+hrvData[
+hrvData.length - 1
+].value;
+}
 
 let duration = 180;
 
 if(hrv < 25){
+
 duration = 90;
+
 }else if(hrv > 45){
+
 duration = 300;
 }
 
@@ -1292,11 +1451,11 @@ title.innerText =
 "HRV-Aufbau"
 
 text.innerText =
-`Empfohlene Dauer heute: ${duration/60} Minuten`;
+`Empfohlene Dauer: ${duration / 60} Minuten`;
 
 list.innerHTML = `
-<div>• Ball wächst beim Einatmen</div>
-<div>• Ball schrumpft beim Ausatmen</div>
+<div>• langsame Atmung</div>
+<div>• Ball folgt dem Atem</div>
 <div>• längere Ausatmung</div>
 <div>• optional Summen</div>
 `;
@@ -1320,7 +1479,7 @@ title.innerText =
 "Frühe Stabilisierung"
 
 text.innerText =
-"Leichte Überlastung früh beruhigen."
+"Überlastung früh beruhigen."
 
 list.innerHTML = `
 <div>• langsamer Rhythmus</div>
@@ -1354,4 +1513,169 @@ startBtn.onclick =
 function closePanel(){
 
 document
-.getElementById("
+.getElementById("panel")
+.classList.remove("open");
+}
+
+/* TRAINING */
+
+function startTraining(seconds){
+
+document
+.getElementById("overlay")
+.style.display = "flex"
+
+let remaining =
+seconds;
+
+let cycle = 0;
+
+updateTimer(remaining);
+
+clearInterval(interval);
+
+interval =
+setInterval(()=>{
+
+remaining--;
+cycle++;
+
+updateTimer(remaining);
+
+if(cycle % 10 < 4){
+
+setPhase(
+"Einatmen"
+);
+
+expand(true);
+
+}else{
+
+setPhase(
+"Ausatmen"
+);
+
+expand(false);
+}
+
+if(remaining < 60){
+
+setInfo(
+"Optional beim Ausatmen summen."
+);
+}
+
+if(remaining <= 0){
+
+finishTraining();
+}
+
+},1000);
+}
+
+function stopTraining(){
+
+clearInterval(interval);
+
+document
+.getElementById("overlay")
+.style.display = "none"
+}
+
+function finishTraining(){
+
+clearInterval(interval);
+
+setPhase("Fertig");
+
+setInfo(
+"Kurz nachspüren."
+);
+
+setTimeout(()=>{
+
+document
+.getElementById("overlay")
+.style.display = "none"
+
+document
+.getElementById("feedback")
+.style.display = "flex"
+
+},1800);
+}
+
+/* FEEDBACK */
+
+function closeFeedback(){
+
+document
+.getElementById("feedback")
+.style.display = "none"
+}
+
+/* HELPERS */
+
+function updateTimer(sec){
+
+const m =
+Math.floor(sec / 60);
+
+const s =
+sec % 60;
+
+document
+.getElementById("timer")
+.innerText =
+`${m}:${String(s).padStart(2,"0")}`;
+}
+
+function setPhase(text){
+
+document
+.getElementById("phase")
+.innerText = text;
+}
+
+function setInfo(text){
+
+document
+.getElementById("info")
+.innerText = text;
+}
+
+function expand(state){
+
+const circle =
+document.getElementById(
+"circle"
+);
+
+if(state){
+
+circle.style.width =
+"220px"
+
+circle.style.height =
+"220px"
+
+}else{
+
+circle.style.width =
+"60px"
+
+circle.style.height =
+"60px"
+}
+}
+
+/* INIT */
+
+loadStorage();
+updateUI();
+
+</script>
+
+</body>
+</html>
