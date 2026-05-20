@@ -5,22 +5,15 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>VagusBuk A6.0</title>
+<title>VagusBuk 6.1.2</title>
 
 <style>
 
 :root{
 --bg:#071018;
 --card:#101b27;
---card2:#132235;
-
 --text:#eef3f7;
---muted:#8a9caf;
-
---green:#2c9b4c;
---yellow:#8a6a14;
---red:#8d3d3d;
-
+--muted:#8fa1b2;
 --border:rgba(255,255,255,.06);
 }
 
@@ -51,15 +44,15 @@ body{
 background:
 radial-gradient(
 circle at top,
-#0d2840 0%,
-#071018 42%
+#0d2942 0%,
+#071018 45%
 );
 }
 
 .container{
 
 width:100%;
-max-width:620px;
+max-width:640px;
 
 margin:auto;
 
@@ -81,13 +74,9 @@ align-items:flex-start;
 
 gap:12px;
 
-margin-top:12px;
+margin-top:10px;
 
-margin-bottom:20px;
-}
-
-.logoWrap{
-min-width:0;
+margin-bottom:18px;
 }
 
 .logo{
@@ -103,28 +92,26 @@ line-height:1;
 
 .sub{
 
-margin-top:6px;
+margin-top:5px;
 
 color:var(--muted);
 
-font-size:15px;
+font-size:14px;
 
-line-height:1.4;
+line-height:1.45;
 }
-
-/* HRV COMPACT */
 
 .hrvBox{
 
-min-width:108px;
+min-width:110px;
 
 background:
-rgba(14,24,38,.82);
+rgba(12,22,34,.92);
 
 border:
 1px solid var(--border);
 
-border-radius:22px;
+border-radius:20px;
 
 padding:12px 14px;
 
@@ -137,9 +124,9 @@ color:var(--muted);
 
 font-size:11px;
 
-letter-spacing:1px;
-
 text-transform:uppercase;
+
+letter-spacing:1px;
 }
 
 .hrvValue{
@@ -157,9 +144,9 @@ line-height:1;
 
 margin-top:6px;
 
-color:#dce5ee;
-
 font-size:13px;
+
+color:#dce5ee;
 }
 
 /* CARD */
@@ -167,7 +154,7 @@ font-size:13px;
 .card{
 
 background:
-rgba(12,22,34,.9);
+rgba(12,22,34,.92);
 
 border:
 1px solid var(--border);
@@ -179,15 +166,62 @@ padding:18px;
 margin-bottom:16px;
 }
 
-/* HRV ENTRY */
+.sectionTitle{
+
+color:var(--muted);
+
+font-size:12px;
+
+text-transform:uppercase;
+
+letter-spacing:1px;
+
+margin-bottom:14px;
+}
+
+/* TODAY */
+
+.todayBox{
+
+border-radius:20px;
+
+padding:18px;
+
+background:
+linear-gradient(
+135deg,
+#1b3146,
+#132131
+);
+}
+
+.todayState{
+
+font-size:28px;
+
+font-weight:800;
+
+line-height:1.2;
+}
+
+.todayText{
+
+margin-top:10px;
+
+line-height:1.55;
+
+color:#dce5ee;
+
+font-size:17px;
+}
+
+/* INPUT */
 
 .entryRow{
 
 display:flex;
 
 gap:10px;
-
-align-items:center;
 
 flex-wrap:wrap;
 }
@@ -198,7 +232,7 @@ flex:1;
 
 min-width:0;
 
-height:54px;
+height:56px;
 
 border:none;
 
@@ -213,11 +247,18 @@ padding:0 16px;
 font-size:24px;
 
 outline:none;
+
+-webkit-appearance:none;
+appearance:none;
+}
+
+.hrvInput::placeholder{
+color:#718396;
 }
 
 .saveBtn{
 
-height:54px;
+height:56px;
 
 border:none;
 
@@ -239,20 +280,55 @@ font-size:16px;
 font-weight:700;
 }
 
-/* STATUS */
+/* GRAPH */
 
-.sectionTitle{
+.graph{
 
-color:var(--muted);
+display:flex;
+
+align-items:flex-end;
+
+gap:8px;
+
+height:120px;
+
+margin-top:14px;
+}
+
+.bar{
+
+flex:1;
+
+min-height:10px;
+
+border-radius:12px 12px 6px 6px;
+
+background:
+linear-gradient(
+180deg,
+#4ad96f,
+#236f36
+);
+
+position:relative;
+}
+
+.barValue{
+
+position:absolute;
+
+top:-24px;
+
+width:100%;
+
+text-align:center;
 
 font-size:12px;
 
-text-transform:uppercase;
-
-letter-spacing:1px;
-
-margin-bottom:14px;
+color:#dce5ee;
 }
+
+/* STATUS */
 
 .statusList{
 display:flex;
@@ -273,8 +349,6 @@ padding:16px;
 color:white;
 
 text-align:left;
-
-overflow:hidden;
 }
 
 .green{
@@ -290,8 +364,8 @@ linear-gradient(
 background:
 linear-gradient(
 135deg,
-#7b5d12,
-#5d470e
+#7c5d13,
+#5e470f
 );
 }
 
@@ -311,8 +385,6 @@ display:flex;
 justify-content:space-between;
 
 align-items:center;
-
-gap:12px;
 }
 
 .statusLeft{
@@ -322,8 +394,6 @@ display:flex;
 align-items:center;
 
 gap:14px;
-
-min-width:0;
 }
 
 .emoji{
@@ -335,8 +405,6 @@ font-size:28px;
 font-size:clamp(22px,7vw,30px);
 
 font-weight:800;
-
-line-height:1;
 }
 
 .statusDesc{
@@ -345,7 +413,7 @@ margin-top:4px;
 
 font-size:16px;
 
-color:rgba(255,255,255,.82);
+color:rgba(255,255,255,.84);
 }
 
 .arrow{
@@ -353,7 +421,7 @@ font-size:24px;
 opacity:.55;
 }
 
-/* TRAINING PANEL */
+/* PANEL */
 
 .panel{
 
@@ -398,8 +466,6 @@ margin-top:18px;
 .trainingList div{
 
 margin-bottom:10px;
-
-color:#edf2f7;
 
 line-height:1.5;
 }
@@ -462,7 +528,7 @@ linear-gradient(
 background:#1c2c3f;
 }
 
-/* TRAINING OVERLAY */
+/* TRAINING */
 
 .overlay{
 
@@ -492,26 +558,24 @@ z-index:999;
 
 .circle{
 
-width:min(180px,52vw);
-height:min(180px,52vw);
+width:60px;
+height:60px;
 
 border-radius:50%;
 
 background:
 radial-gradient(
 circle,
-#48d86b 0%,
-#236f36 72%
+#57e07b 0%,
+#236f36 75%
 );
 
-transition:2s ease-in-out;
+transition:
+width 4s linear,
+height 4s linear;
 
 box-shadow:
 0 0 80px rgba(71,216,106,.25);
-}
-
-.expand{
-transform:scale(1.16);
 }
 
 .phase{
@@ -570,6 +634,90 @@ font-size:17px;
 font-weight:700;
 }
 
+/* FEEDBACK */
+
+.feedback{
+
+display:none;
+
+position:fixed;
+
+inset:0;
+
+background:#071018;
+
+z-index:1000;
+
+justify-content:center;
+
+align-items:center;
+
+padding:24px;
+}
+
+.feedbackCard{
+
+width:100%;
+
+max-width:420px;
+
+background:#101b27;
+
+border-radius:26px;
+
+padding:24px;
+
+border:
+1px solid var(--border);
+
+text-align:center;
+}
+
+.feedbackTitle{
+
+font-size:30px;
+
+font-weight:800;
+}
+
+.feedbackBtns{
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+margin-top:24px;
+}
+
+.feedbackBtn{
+
+border:none;
+
+border-radius:18px;
+
+padding:18px;
+
+color:white;
+
+font-size:18px;
+
+font-weight:700;
+}
+
+.good{
+background:#236f36;
+}
+
+.same{
+background:#7c5d13;
+}
+
+.bad{
+background:#803939;
+}
+
 </style>
 </head>
 
@@ -577,18 +725,16 @@ font-weight:700;
 
 <div class="container">
 
-<!-- HEADER -->
-
 <div class="header">
 
-<div class="logoWrap">
+<div>
 
 <div class="logo">
 VagusBuk
 </div>
 
 <div class="sub">
-HRV-Training & Nervensystem-Regulation
+Adaptives HRV- & Nervensystem-Training
 </div>
 
 </div>
@@ -617,7 +763,35 @@ kein Trend
 
 </div>
 
-<!-- HRV -->
+<!-- TODAY -->
+
+<div class="card">
+
+<div class="sectionTitle">
+Heute
+</div>
+
+<div class="todayBox">
+
+<div
+class="todayState"
+id="todayState"
+>
+Noch keine Daten
+</div>
+
+<div
+class="todayText"
+id="todayText"
+>
+Trage morgens deine HRV ein.
+</div>
+
+</div>
+
+</div>
+
+<!-- HRV INPUT -->
 
 <div class="card">
 
@@ -628,11 +802,13 @@ HRV morgens eintragen
 <div class="entryRow">
 
 <input
-type="number"
 class="hrvInput"
 id="hrvInput"
+inputmode="numeric"
+pattern="[0-9]*"
+autocomplete="off"
 placeholder="z.B. 41"
->
+/>
 
 <button
 class="saveBtn"
@@ -642,6 +818,21 @@ Speichern
 </button>
 
 </div>
+
+</div>
+
+<!-- GRAPH -->
+
+<div class="card">
+
+<div class="sectionTitle">
+HRV Verlauf (7 Tage)
+</div>
+
+<div
+class="graph"
+id="graph"
+></div>
 
 </div>
 
@@ -675,7 +866,7 @@ Stabil
 </div>
 
 <div class="statusDesc">
-Ruhig und belastbar.
+Aufbau & Training
 </div>
 
 </div>
@@ -710,7 +901,7 @@ Kippt leicht
 </div>
 
 <div class="statusDesc">
-Erste Überlastung.
+Früh stabilisieren
 </div>
 
 </div>
@@ -745,7 +936,7 @@ Kippt
 </div>
 
 <div class="statusDesc">
-Überreizt oder erschöpft.
+Akut beruhigen
 </div>
 
 </div>
@@ -762,8 +953,6 @@ Kippt
 
 </div>
 
-<!-- PANEL -->
-
 <div
 class="panel"
 id="panel"
@@ -772,26 +961,22 @@ id="panel"
 <div
 class="panelTitle"
 id="panelTitle"
->
-</div>
+></div>
 
 <div
 class="panelText"
 id="panelText"
->
-</div>
+></div>
 
 <div
 class="trainingList"
 id="trainingList"
->
-</div>
+></div>
 
 <div
 class="warning"
 id="warning"
->
-</div>
+></div>
 
 <div class="panelBtns">
 
@@ -817,7 +1002,7 @@ Zurück
 
 </div>
 
-<!-- OVERLAY -->
+<!-- TRAINING -->
 
 <div
 class="overlay"
@@ -847,7 +1032,7 @@ id="timer"
 class="info"
 id="info"
 >
-Ruhig werden.
+Folge nur der Bewegung.
 </div>
 
 <button
@@ -856,6 +1041,48 @@ onclick="stopTraining()"
 >
 Abbrechen
 </button>
+
+</div>
+
+<!-- FEEDBACK -->
+
+<div
+class="feedback"
+id="feedback"
+>
+
+<div class="feedbackCard">
+
+<div class="feedbackTitle">
+Wie fühlst du dich jetzt?
+</div>
+
+<div class="feedbackBtns">
+
+<button
+class="feedbackBtn good"
+onclick="closeFeedback()"
+>
+🙂 stabiler
+</button>
+
+<button
+class="feedbackBtn same"
+onclick="closeFeedback()"
+>
+😐 gleich
+</button>
+
+<button
+class="feedbackBtn bad"
+onclick="closeFeedback()"
+>
+😣 schlechter
+</button>
+
+</div>
+
+</div>
 
 </div>
 
@@ -868,16 +1095,21 @@ localStorage.getItem("vb_hrv")
 
 let interval = null;
 
-/* HRV */
+/* SAVE */
 
 function saveHRV(){
 
-let val =
-parseInt(
-document.getElementById("hrvInput").value
-);
+let input =
+document.getElementById("hrvInput");
 
-if(!val) return;
+let val =
+parseInt(input.value);
+
+if(isNaN(val)){
+
+input.focus();
+return;
+}
 
 hrvData.push({
 value:val,
@@ -891,12 +1123,12 @@ localStorage.setItem(
 JSON.stringify(hrvData)
 );
 
-document.getElementById(
-"hrvInput"
-).value = ""
+input.value = ""
 
 updateHRV();
 }
+
+/* UPDATE */
 
 function updateHRV(){
 
@@ -909,21 +1141,25 @@ document.getElementById(
 "todayHRV"
 ).innerText = today;
 
-if(hrvData.length >= 4){
+updateTrend(today);
+updateToday(today);
+updateGraph();
+}
 
-let last =
-hrvData[hrvData.length-1].value;
+function updateTrend(today){
+
+if(hrvData.length < 4) return;
 
 let old =
 hrvData[hrvData.length-4].value;
 
-if(last > old){
+if(today > old){
 
 document.getElementById(
 "trend"
 ).innerText = "↗ steigt"
 
-}else if(last < old){
+}else if(today < old){
 
 document.getElementById(
 "trend"
@@ -936,6 +1172,79 @@ document.getElementById(
 ).innerText = "→ stabil"
 }
 }
+
+function updateToday(hrv){
+
+let state =
+document.getElementById(
+"todayState"
+);
+
+let text =
+document.getElementById(
+"todayText"
+);
+
+if(hrv < 25){
+
+state.innerText =
+"⚠ empfindliches Nervensystem"
+
+text.innerText =
+"Heute eher kurze Regulation."
+
+}else if(hrv < 40){
+
+state.innerText =
+"⚠ mittlere Belastbarkeit"
+
+text.innerText =
+"Sanfter Aufbau sinnvoll."
+
+}else{
+
+state.innerText =
+"✓ gute vagale Stabilität"
+
+text.innerText =
+"Heute eignet sich längeres Training."
+}
+}
+
+function updateGraph(){
+
+let graph =
+document.getElementById("graph");
+
+graph.innerHTML = ""
+
+let recent =
+hrvData.slice(-7);
+
+recent.forEach(item=>{
+
+let bar =
+document.createElement("div");
+
+bar.className = "bar"
+
+bar.style.height =
+`${item.value * 2}px`;
+
+let value =
+document.createElement("div");
+
+value.className =
+"barValue"
+
+value.innerText =
+item.value;
+
+bar.appendChild(value);
+
+graph.appendChild(bar);
+
+});
 }
 
 /* PANEL */
@@ -967,7 +1276,15 @@ warning.style.display = "none"
 let hrv =
 hrvData.length
 ? hrvData[hrvData.length-1].value
-: 40;
+: 30;
+
+let duration = 180;
+
+if(hrv < 25){
+duration = 90;
+}else if(hrv > 45){
+duration = 300;
+}
 
 if(type === "green"){
 
@@ -975,26 +1292,26 @@ title.innerText =
 "HRV-Aufbau"
 
 text.innerText =
-"Ziel ist langfristig mehr vagale Stabilität und bessere Erholung."
+`Empfohlene Dauer heute: ${duration/60} Minuten`;
 
 list.innerHTML = `
-<div>• 4 Sekunden einatmen</div>
-<div>• 6 Sekunden ausatmen</div>
-<div>• später Summen</div>
-<div>• 3–5 Minuten Training</div>
+<div>• Ball wächst beim Einatmen</div>
+<div>• Ball schrumpft beim Ausatmen</div>
+<div>• längere Ausatmung</div>
+<div>• optional Summen</div>
 `;
 
-if(hrv < 30){
+if(hrv < 25){
 
 warning.style.display =
 "block"
 
 warning.innerText =
-"HRV heute niedrig. Ruhig und ohne Leistungsdruck trainieren."
+"Heute vorsichtig trainieren."
 }
 
 startBtn.onclick =
-()=>startTraining("green");
+()=>startTraining(duration);
 }
 
 if(type === "yellow"){
@@ -1006,14 +1323,13 @@ text.innerText =
 "Leichte Überlastung früh beruhigen."
 
 list.innerHTML = `
-<div>• langsam ausatmen</div>
-<div>• Schultern lockern</div>
-<div>• Blick beruhigen</div>
-<div>• 60 Sekunden</div>
+<div>• langsamer Rhythmus</div>
+<div>• Fokus auf Bewegung</div>
+<div>• keine Anstrengung</div>
 `;
 
 startBtn.onclick =
-()=>startTraining("yellow");
+()=>startTraining(60);
 }
 
 if(type === "red"){
@@ -1022,166 +1338,20 @@ title.innerText =
 "Akute Beruhigung"
 
 text.innerText =
-"Körperreize statt intensiver Atemfokussierung."
+"Körper zuerst beruhigen."
 
 list.innerHTML = `
 <div>• Brustbein klopfen</div>
 <div>• langsam ausatmen</div>
-<div>• Summen</div>
-<div>• 45 Sekunden</div>
+<div>• später Summen</div>
 `;
 
 startBtn.onclick =
-()=>startTraining("red");
+()=>startTraining(45);
 }
 }
 
 function closePanel(){
 
 document
-.getElementById("panel")
-.classList.remove("open");
-}
-
-/* TRAINING */
-
-function startTraining(type){
-
-document
-.getElementById("overlay")
-.style.display = "flex"
-
-if(type === "green"){
-runTraining(180);
-}
-
-if(type === "yellow"){
-runTraining(60);
-}
-
-if(type === "red"){
-runTraining(45);
-}
-}
-
-function runTraining(seconds){
-
-let t = seconds;
-let cycle = 0;
-
-interval = setInterval(()=>{
-
-t--;
-cycle++;
-
-updateTimer(t);
-
-if(cycle % 10 < 4){
-
-setPhase("Einatmen");
-expand(true);
-
-}else{
-
-setPhase("Ausatmen");
-expand(false);
-}
-
-if(t < 60){
-
-setInfo(
-"Summen beim Ausatmen."
-);
-}
-
-if(t <= 0){
-
-finishTraining();
-}
-
-},1000);
-}
-
-function stopTraining(){
-
-clearInterval(interval);
-
-speechSynthesis.cancel();
-
-document
-.getElementById("overlay")
-.style.display = "none"
-}
-
-function finishTraining(){
-
-clearInterval(interval);
-
-setPhase("Fertig");
-
-setInfo(
-"Training abgeschlossen."
-);
-
-setTimeout(()=>{
-
-document
-.getElementById("overlay")
-.style.display = "none"
-
-},1800);
-}
-
-/* HELPERS */
-
-function updateTimer(sec){
-
-let m =
-Math.floor(sec / 60);
-
-let s =
-sec % 60;
-
-document
-.getElementById("timer")
-.innerText =
-`${m}:${s
-.toString()
-.padStart(2,"0")}`;
-}
-
-function setPhase(t){
-
-document
-.getElementById("phase")
-.innerText = t;
-}
-
-function setInfo(t){
-
-document
-.getElementById("info")
-.innerText = t;
-}
-
-function expand(state){
-
-let c =
-document.getElementById("circle");
-
-if(state){
-
-c.classList.add("expand");
-
-}else{
-
-c.classList.remove("expand");
-}
-}
-
-updateHRV();
-
-</script>
-
-</body>
-</html>
+.getElementById("
