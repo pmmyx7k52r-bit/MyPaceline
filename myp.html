@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>VagusBuk 6.2.1</title>
+<title>VagusBuk 6.3</title>
 
 <style>
 
@@ -25,7 +25,7 @@ color:white;
 
 body{
 background:
-radial-gradient(circle at top,#0c3157 0%,#031221 45%,#020b14 100%);
+radial-gradient(circle at top,#0d3359 0%,#041524 45%,#020b14 100%);
 }
 
 .app{
@@ -58,14 +58,14 @@ line-height:.9;
 margin-top:12px;
 font-size:20px;
 line-height:1.4;
-color:#9fb0c3;
+color:#9db0c3;
 }
 
 .card{
 background:
 linear-gradient(
 180deg,
-rgba(9,23,38,.94),
+rgba(8,22,38,.94),
 rgba(4,14,26,.96)
 );
 
@@ -78,17 +78,17 @@ padding:22px;
 
 margin-bottom:18px;
 
-box-shadow:
-0 10px 40px rgba(0,0,0,.3);
-
 overflow:hidden;
+
+box-shadow:
+0 10px 40px rgba(0,0,0,.28);
 }
 
 .sectionTitle{
 font-size:14px;
 letter-spacing:2px;
 text-transform:uppercase;
-color:#8fa4b7;
+color:#8ea4b8;
 margin-bottom:18px;
 }
 
@@ -100,7 +100,7 @@ HRV
 display:flex;
 justify-content:space-between;
 align-items:flex-start;
-gap:18px;
+gap:16px;
 }
 
 .hrvBig{
@@ -111,7 +111,7 @@ line-height:.9;
 
 .hrvAverage{
 text-align:right;
-color:#91a4b7;
+color:#93a7ba;
 }
 
 .hrvAverage span{
@@ -138,8 +138,8 @@ gap:12px;
 flex:1;
 height:60px;
 border-radius:20px;
-border:2px solid rgba(48,108,176,.7);
-background:#041524;
+border:2px solid rgba(53,118,191,.6);
+background:#031423;
 padding:0 20px;
 font-size:32px;
 color:white;
@@ -147,7 +147,7 @@ outline:none;
 }
 
 .hrvInput::placeholder{
-color:#6d8297;
+color:#6b8196;
 }
 
 .saveBtn{
@@ -162,7 +162,7 @@ color:white;
 background:
 linear-gradient(
 135deg,
-#39cf67,
+#3bd46a,
 #238b43
 );
 }
@@ -191,7 +191,7 @@ height:100%;
 .barValue{
 font-size:14px;
 margin-bottom:8px;
-color:#dbe5ef;
+color:#dce5ef;
 }
 
 .bar{
@@ -201,19 +201,19 @@ border-radius:18px 18px 8px 8px;
 background:
 linear-gradient(
 180deg,
-#52e174,
-#249144
+#54e276,
+#249043
 );
 }
 
 .barDay{
 margin-top:8px;
 font-size:12px;
-color:#7d92a7;
+color:#7d91a5;
 }
 
 /* =========================================================
-HEUTE
+TODAY
 ========================================================= */
 
 .todayBadge{
@@ -230,7 +230,7 @@ background:rgba(255,255,255,.08);
 }
 
 .todayState{
-font-size:42px;
+font-size:40px;
 font-weight:900;
 line-height:1;
 letter-spacing:-2px;
@@ -240,7 +240,7 @@ letter-spacing:-2px;
 margin-top:14px;
 font-size:22px;
 line-height:1.4;
-color:#dce6ef;
+color:#dce5ef;
 }
 
 .infoBox{
@@ -254,14 +254,14 @@ background:rgba(255,255,255,.04);
 font-size:13px;
 letter-spacing:1px;
 text-transform:uppercase;
-color:#9fb2c5;
+color:#9db1c4;
 margin-bottom:10px;
 }
 
 .infoContent{
 font-size:17px;
 line-height:1.7;
-color:#edf4fa;
+color:#eef4fa;
 }
 
 .warningBox{
@@ -280,7 +280,7 @@ border:
 font-size:13px;
 letter-spacing:1px;
 text-transform:uppercase;
-color:#ffbcbc;
+color:#ffbbbb;
 margin-bottom:10px;
 }
 
@@ -299,18 +299,18 @@ background:
 linear-gradient(
 135deg,
 rgba(40,108,176,.18),
-rgba(24,67,110,.12)
+rgba(25,67,109,.12)
 );
 
 border:
-1px solid rgba(85,145,220,.14);
+1px solid rgba(86,146,220,.14);
 }
 
 .trainingLabel{
 font-size:13px;
 letter-spacing:1px;
 text-transform:uppercase;
-color:#9eb1c3;
+color:#9db1c4;
 }
 
 .trainingDuration{
@@ -332,8 +332,8 @@ color:white;
 background:
 linear-gradient(
 135deg,
-#39cf67,
-#238b43
+#39d067,
+#228941
 );
 }
 
@@ -354,7 +354,7 @@ padding:24px;
 background:
 radial-gradient(
 circle at center,
-#0c3157,
+#0d355b,
 #020b14
 );
 }
@@ -382,13 +382,29 @@ font-weight:700;
 .overlayTitle{
 font-size:34px;
 font-weight:900;
-margin-bottom:16px;
+margin-bottom:10px;
 }
 
-.breathText{
-font-size:28px;
+.breathPhase{
+font-size:30px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.breathHint{
+font-size:18px;
+color:#c9d7e4;
 margin-bottom:34px;
-color:#dce6ef;
+text-align:center;
+line-height:1.5;
+min-height:54px;
+}
+
+.ballWrap{
+height:240px;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .ball{
@@ -399,26 +415,47 @@ border-radius:50%;
 background:
 radial-gradient(
 circle at 30% 30%,
-#84f9ff,
-#2fa0ff
+#87fbff,
+#2da0ff
 );
 
 box-shadow:
-0 0 60px rgba(86,196,255,.6);
+0 0 70px rgba(86,196,255,.65);
+
+transform:scale(.7);
 
 transition:
-transform 4s linear;
+transform 4s ease-in-out,
+background 2s ease;
 }
 
 .timer{
 margin-top:42px;
-font-size:52px;
+font-size:54px;
 font-weight:900;
 }
 
-/* =========================================================
-RESPONSIVE
-========================================================= */
+.phaseBar{
+margin-top:18px;
+width:220px;
+height:8px;
+border-radius:999px;
+overflow:hidden;
+background:rgba(255,255,255,.08);
+}
+
+.phaseProgress{
+height:100%;
+width:0%;
+background:
+linear-gradient(
+90deg,
+#5adfff,
+#4de073
+);
+
+transition:width .2s linear;
+}
 
 @media(max-width:560px){
 
@@ -469,7 +506,7 @@ VagusBuk
 </div>
 
 <div class="subtitle">
-Adaptive HRV- & Nervensystem-Regulation
+Parasympathisches HRV- & Nervensystem-Training
 </div>
 
 </div>
@@ -540,24 +577,15 @@ HEUTE
 Heute
 </div>
 
-<div
-class="todayBadge"
-id="todayBadge"
->
+<div class="todayBadge" id="todayBadge">
 Analyse
 </div>
 
-<div
-class="todayState"
-id="todayState"
->
+<div class="todayState" id="todayState">
 Noch keine Daten
 </div>
 
-<div
-class="todayText"
-id="todayText"
->
+<div class="todayText" id="todayText">
 Bitte HRV eintragen.
 </div>
 
@@ -567,10 +595,7 @@ Bitte HRV eintragen.
 Heute sinnvoll
 </div>
 
-<div
-class="infoContent"
-id="planContent"
->
+<div class="infoContent" id="planContent">
 –
 </div>
 
@@ -582,10 +607,7 @@ id="planContent"
 Heute vermeiden
 </div>
 
-<div
-class="warningContent"
-id="avoidContent"
->
+<div class="warningContent" id="avoidContent">
 –
 </div>
 
@@ -597,10 +619,7 @@ id="avoidContent"
 Empfohlenes Training
 </div>
 
-<div
-class="trainingDuration"
-id="trainingDuration"
->
+<div class="trainingDuration" id="trainingDuration">
 –
 </div>
 
@@ -622,10 +641,7 @@ Training starten
 OVERLAY
 ========================================================= -->
 
-<div
-class="overlay"
-id="overlay"
->
+<div class="overlay" id="overlay">
 
 <button
 class="backBtn"
@@ -638,22 +654,30 @@ Zurück
 Vagus-Training
 </div>
 
-<div
-class="breathText"
-id="breathText"
->
+<div class="breathPhase" id="breathPhase">
 Einatmen
 </div>
 
-<div
-class="ball"
-id="ball"
-></div>
+<div class="breathHint" id="breathHint">
+Langsam durch die Nase einatmen
+</div>
+
+<div class="ballWrap">
+
+<div class="ball" id="ball"></div>
+
+</div>
+
+<div class="phaseBar">
 
 <div
-class="timer"
-id="timer"
->
+class="phaseProgress"
+id="phaseProgress"
+></div>
+
+</div>
+
+<div class="timer" id="timer">
 0:00
 </div>
 
@@ -662,14 +686,14 @@ id="timer"
 <script>
 
 /* =========================================================
-DATEN LADEN
+ALTE DATEN ÜBERNEHMEN
 ========================================================= */
 
 let hrvData = [];
 
 function loadExistingHRVData(){
 
-const possibleKeys = [
+const keys = [
 
 "vagusbuk_hrv",
 "hrvData",
@@ -681,16 +705,14 @@ const possibleKeys = [
 
 ];
 
-for(const key of possibleKeys){
+for(const key of keys){
 
 try{
 
 const raw =
 localStorage.getItem(key);
 
-if(!raw){
-continue;
-}
+if(!raw) continue;
 
 const parsed =
 JSON.parse(raw);
@@ -698,7 +720,7 @@ JSON.parse(raw);
 if(
 Array.isArray(parsed)
 &&
-parsed.length > 0
+parsed.length
 ){
 
 if(
@@ -746,7 +768,8 @@ GLOBAL
 let recommendedTraining = 180;
 
 let trainingInterval;
-let breathingInterval;
+let breathInterval;
+let progressInterval;
 
 /* =========================================================
 SAVE
@@ -760,11 +783,7 @@ document.getElementById("hrvInput");
 const value =
 parseInt(input.value);
 
-if(
-isNaN(value)
-||
-value <= 0
-){
+if(isNaN(value) || value <= 0){
 return;
 }
 
@@ -773,9 +792,9 @@ value:value,
 date:Date.now()
 });
 
-if(hrvData.length > 7){
-hrvData.shift();
-}
+/* WICHTIG:
+Keine alten Werte mehr löschen
+*/
 
 localStorage.setItem(
 "vagusbuk_hrv",
@@ -815,7 +834,7 @@ document.getElementById("hrvInfo");
 const avg =
 document.getElementById("avgValue");
 
-if(hrvData.length === 0){
+if(!hrvData.length){
 
 big.innerText = "--"
 
@@ -834,12 +853,19 @@ hrvData.length - 1
 
 big.innerText = latest;
 
+/* =========================================================
+LETZTE 7 TAGE NUR FÜR SCHNITT
+========================================================= */
+
+const recent =
+hrvData.slice(-7);
+
 const average =
 Math.round(
-hrvData.reduce(
+recent.reduce(
 (a,b)=>a+b.value,
 0
-) / hrvData.length
+) / recent.length
 );
 
 avg.innerText = average;
@@ -937,7 +963,7 @@ text.innerText =
 "Heute Stabilisierung statt Aufbau."
 
 plan.innerHTML = `
-• langsame Atmung<br>
+• langsame Ausatmung<br>
 • Reize reduzieren<br>
 • Summen möglich<br>
 • Brustbein-Klopfen
@@ -950,12 +976,12 @@ avoid.innerHTML = `
 `;
 
 duration.innerText =
-"1–2 Minuten Regulation"
+"2 Minuten Regulation"
 
 btn.innerText =
 "Beruhigung starten"
 
-recommendedTraining = 90;
+recommendedTraining = 120;
 
 return;
 }
@@ -983,7 +1009,7 @@ plan.innerHTML = `
 
 avoid.innerHTML = `
 • Überforderung<br>
-• schnelle Atemmuster<br>
+• hektische Reize<br>
 • zu lange Sessions
 `;
 
@@ -1013,13 +1039,13 @@ text.innerText =
 plan.innerHTML = `
 • längere Regulation<br>
 • vagale Aktivierung<br>
-• langsame tiefe Atmung<br>
+• tiefe ruhige Atmung<br>
 • Summen möglich
 `;
 
 avoid.innerHTML = `
 • hektische Überlastung<br>
-• zu spätes Training
+• spätes Training
 `;
 
 duration.innerText =
@@ -1042,7 +1068,10 @@ document.getElementById("chart");
 
 chart.innerHTML = ""
 
-hrvData.forEach((item,index)=>{
+const recent =
+hrvData.slice(-7);
+
+recent.forEach((item,index)=>{
 
 const wrap =
 document.createElement("div");
@@ -1092,6 +1121,7 @@ chart.appendChild(wrap);
 
 /* =========================================================
 TRAINING
+4-2-6-2
 ========================================================= */
 
 function startRecommendedTraining(){
@@ -1117,40 +1147,104 @@ updateTimer(remaining);
 const ball =
 document.getElementById("ball");
 
-const text =
-document.getElementById("breathText");
+const phase =
+document.getElementById("breathPhase");
 
-let inhale = true;
+const hint =
+document.getElementById("breathHint");
 
-function breathe(){
+const progress =
+document.getElementById("phaseProgress");
 
-if(inhale){
+/* =========================================================
+PHASEN
+========================================================= */
 
-text.innerText =
-"Einatmen"
+const phases = [
 
-ball.style.transform =
-"scale(1.8)"
+{
+name:"Einatmen",
+hint:"Langsam durch die Nase einatmen",
+duration:4,
+scale:1.8,
+color:"#2da0ff"
+},
 
-}else{
+{
+name:"Halten",
+hint:"Kurz ruhig bleiben",
+duration:2,
+scale:1.8,
+color:"#5adfff"
+},
 
-text.innerText =
-"Ausatmen"
+{
+name:"Ausatmen",
+hint:"Langsam und vollständig ausatmen",
+duration:6,
+scale:.7,
+color:"#4de073"
+},
 
-ball.style.transform =
-"scale(.7)"
+{
+name:"Ruhe",
+hint:"Kurz entspannen",
+duration:2,
+scale:.7,
+color:"#7de7ff"
 }
 
-inhale = !inhale;
+];
+
+let phaseIndex = 0;
+
+function runPhase(){
+
+const current =
+phases[phaseIndex];
+
+phase.innerText =
+current.name;
+
+hint.innerText =
+current.hint;
+
+ball.style.transform =
+`scale(${current.scale})`;
+
+ball.style.background =
+`radial-gradient(circle at 30% 30%, #87fbff, ${current.color})`;
+
+progress.style.transition =
+"none"
+
+progress.style.width =
+"0%"
+
+setTimeout(()=>{
+
+progress.style.transition =
+`width ${current.duration}s linear`;
+
+progress.style.width =
+"100%"
+
+},50);
+
+phaseIndex++;
+
+if(phaseIndex >= phases.length){
+phaseIndex = 0;
 }
 
-breathe();
-
-breathingInterval =
-setInterval(
-breathe,
-4000
+breathInterval =
+setTimeout(
+runPhase,
+current.duration * 1000
 );
+}
+
+runPhase();
 
 trainingInterval =
 setInterval(()=>{
@@ -1183,13 +1277,9 @@ document.getElementById(
 
 function stopTraining(){
 
-clearInterval(
-trainingInterval
-);
+clearInterval(trainingInterval);
 
-clearInterval(
-breathingInterval
-);
+clearTimeout(breathInterval);
 
 document.getElementById(
 "overlay"
