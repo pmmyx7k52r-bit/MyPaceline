@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-<title>VagusBuk 7.5</title>
+<title>VagusBuk 7.5.2</title>
 
 <style>
 
@@ -17,22 +17,33 @@ margin:0;
 padding:0;
 box-sizing:border-box;
 -webkit-tap-highlight-color:transparent;
-min-width:0;
 }
 
 html,body{
 width:100%;
-max-width:100%;
 overflow-x:hidden;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+sans-serif;
+
 background:#020912;
 color:white;
 }
 
 body{
 background:
-radial-gradient(circle at top, rgba(52,108,176,.35), transparent 32%),
-linear-gradient(180deg,#07121d 0%, #030912 100%);
+radial-gradient(circle at top,
+rgba(48,109,184,.28),
+transparent 30%),
+linear-gradient(
+180deg,
+#06111c 0%,
+#020912 100%
+);
+
 min-height:100vh;
 }
 
@@ -44,8 +55,9 @@ APP
 width:100%;
 max-width:520px;
 margin:0 auto;
-padding:18px 14px 120px;
-overflow-x:hidden;
+padding:
+18px 14px
+120px;
 }
 
 /* =========================================================
@@ -58,9 +70,9 @@ margin-bottom:14px;
 
 .wave{
 text-align:center;
-font-size:20px;
-opacity:.18;
-margin-bottom:4px;
+font-size:18px;
+opacity:.12;
+margin-bottom:6px;
 }
 
 .logo{
@@ -73,12 +85,12 @@ line-height:.95;
 .subtitle{
 margin-top:8px;
 font-size:15px;
-line-height:1.45;
-color:#93a7ba;
+line-height:1.4;
+color:#8da3b6;
 }
 
 /* =========================================================
-CARDS
+CARD
 ========================================================= */
 
 .card{
@@ -87,16 +99,17 @@ position:relative;
 background:
 linear-gradient(
 180deg,
-rgba(8,20,33,.78),
-rgba(5,13,24,.92)
+rgba(7,20,35,.82),
+rgba(5,13,24,.96)
 );
 
-backdrop-filter:blur(16px);
--webkit-backdrop-filter:blur(16px);
+border:
+1px solid rgba(255,255,255,.05);
 
-border:1px solid rgba(255,255,255,.05);
+border-radius:28px;
 
-border-radius:26px;
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
 
 padding:16px;
 
@@ -105,7 +118,7 @@ margin-bottom:12px;
 overflow:hidden;
 
 box-shadow:
-0 10px 30px rgba(0,0,0,.34),
+0 10px 30px rgba(0,0,0,.32),
 inset 0 1px 0 rgba(255,255,255,.03);
 }
 
@@ -122,14 +135,20 @@ STATUS HERO
 ========================================================= */
 
 .heroCard{
-padding:20px;
+padding:22px;
+min-height:210px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
 }
 
 .heroGlow{
 position:absolute;
-inset:-35%;
-opacity:.16;
-filter:blur(80px);
+inset:-40%;
+
+filter:blur(90px);
+opacity:.2;
+
 pointer-events:none;
 }
 
@@ -138,72 +157,138 @@ display:inline-flex;
 align-items:center;
 justify-content:center;
 
-height:30px;
-
-padding:0 12px;
+height:32px;
+padding:0 14px;
 
 border-radius:999px;
 
 font-size:12px;
 font-weight:800;
 
-background:rgba(255,255,255,.08);
+background:
+rgba(255,255,255,.08);
 
-margin-bottom:14px;
+margin-bottom:18px;
 }
 
 .heroTitle{
-font-size:30px;
+font-size:34px;
 font-weight:900;
-line-height:1.08;
 letter-spacing:-2px;
+line-height:1.05;
+position:relative;
+z-index:2;
 }
 
 .heroText{
-margin-top:10px;
-font-size:17px;
+margin-top:12px;
+
+font-size:18px;
 line-height:1.45;
-color:#dbe5ef;
+
+color:#d8e4ef;
+
+position:relative;
+z-index:2;
+}
+
+.heroBottom{
+margin-top:18px;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:14px;
+}
+
+.heroEnergy{
+font-size:13px;
+color:#b3c2d0;
+line-height:1.45;
+}
+
+.heroPulse{
+width:76px;
+height:76px;
+
+border-radius:50%;
+
+background:
+radial-gradient(circle at 35% 35%,
+#d6f8ff,
+#4fb9ff);
+
+box-shadow:
+0 0 45px rgba(74,188,255,.35);
+
+animation:
+pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse{
+
+0%{
+transform:scale(.92);
+opacity:.85;
+}
+
+50%{
+transform:scale(1.08);
+opacity:1;
+}
+
+100%{
+transform:scale(.92);
+opacity:.85;
+}
+
 }
 
 /* =========================================================
-STATS
+KPI BAR
 ========================================================= */
 
-.statsGrid{
-display:grid;
-grid-template-columns:1fr 1fr 1fr;
-gap:10px;
-}
-
-.statBox{
-background:rgba(255,255,255,.04);
-border:1px solid rgba(255,255,255,.04);
-
-border-radius:20px;
-
+.kpiCard{
 padding:14px;
 }
 
-.statLabel{
+.kpiGrid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+}
+
+.kpi{
+padding:14px;
+border-radius:22px;
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.04);
+}
+
+.kpiLabel{
 font-size:10px;
-letter-spacing:1px;
+letter-spacing:1.5px;
 text-transform:uppercase;
-color:#8da3b7;
+color:#8ea4b8;
 margin-bottom:8px;
 }
 
-.statValue{
-font-size:28px;
+.kpiValue{
+font-size:36px;
 font-weight:900;
 letter-spacing:-2px;
+line-height:1;
 }
 
-.statHint{
-margin-top:6px;
+.kpiHint{
+margin-top:8px;
 font-size:12px;
 line-height:1.35;
-color:#aab9c7;
+color:#b2c1cf;
 }
 
 /* =========================================================
@@ -217,36 +302,43 @@ gap:10px;
 
 .hrvInput{
 flex:1;
-height:52px;
+
+height:56px;
 
 border:none;
 outline:none;
 
-border-radius:18px;
+border-radius:20px;
 
 background:
 rgba(8,24,40,.92);
 
-border:2px solid rgba(90,144,208,.22);
+border:
+2px solid rgba(90,144,208,.22);
 
 padding:0 16px;
 
-font-size:22px;
-font-weight:800;
+font-size:24px;
+font-weight:900;
 
 color:white;
 }
 
+.hrvInput:focus{
+border-color:
+rgba(111,179,255,.7);
+}
+
 .hrvInput::placeholder{
-color:#71869a;
+color:#6d8296;
 }
 
 .saveBtn{
-height:52px;
-padding:0 18px;
+height:56px;
+padding:0 20px;
 
 border:none;
-border-radius:18px;
+border-radius:20px;
 
 font-size:15px;
 font-weight:800;
@@ -254,7 +346,11 @@ font-weight:800;
 color:white;
 
 background:
-linear-gradient(135deg,#49e174,#248845);
+linear-gradient(
+135deg,
+#4ae178,
+#248845
+);
 
 cursor:pointer;
 }
@@ -263,144 +359,152 @@ cursor:pointer;
 CHART
 ========================================================= */
 
+.chartCard{
+padding-bottom:20px;
+}
+
 .chart{
-height:84px;
+height:130px;
+
 display:flex;
 align-items:flex-end;
 gap:8px;
-margin-top:4px;
 }
 
 .barWrap{
 flex:1;
+
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:flex-end;
+
 height:100%;
 }
 
 .barValue{
 font-size:10px;
-margin-bottom:5px;
-color:#d9e3ec;
+margin-bottom:6px;
+color:#dce6ef;
 }
 
 .bar{
 width:100%;
-border-radius:8px 8px 3px 3px;
+
+border-radius:12px 12px 5px 5px;
 
 background:
-linear-gradient(180deg,#70f08e,#2b9348);
+linear-gradient(
+180deg,
+#76f394,
+#299447
+);
 
 box-shadow:
-0 5px 16px rgba(68,221,107,.22);
+0 8px 18px rgba(65,216,108,.18);
 
-transition:height .4s ease;
+transition:
+height .4s ease,
+transform .3s ease;
+}
+
+.bar.today{
+background:
+linear-gradient(
+180deg,
+#8fe5ff,
+#3699ff
+);
+
+box-shadow:
+0 10px 22px rgba(73,183,255,.30);
+
+transform:scale(1.04);
 }
 
 .barLabel{
-margin-top:5px;
+margin-top:6px;
 font-size:10px;
-color:#8ea2b5;
+color:#90a5b8;
 }
 
 /* =========================================================
-DETAILS
+TODAY PANEL
 ========================================================= */
 
-.expandBox{
-margin-top:12px;
-
-border-radius:20px;
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,255,255,.04);
-
-overflow:hidden;
+.todayCard{
+padding:18px;
 }
 
-.expandBox summary{
-list-style:none;
-cursor:pointer;
-
-padding:16px;
-
-font-size:15px;
-font-weight:700;
-
-color:#dfe9f2;
-}
-
-.expandBox summary::-webkit-details-marker{
-display:none;
-}
-
-.expandContent{
-padding:0 16px 16px;
+.todayText{
+font-size:18px;
+line-height:1.6;
+color:#edf4fb;
+margin-bottom:18px;
 }
 
 .infoGrid{
 display:grid;
-grid-template-columns:1fr;
 gap:10px;
 }
 
 .infoBox{
 padding:14px;
-border-radius:18px;
+
+border-radius:20px;
 
 background:
-rgba(255,255,255,.03);
+rgba(255,255,255,.04);
 }
 
 .infoLabel{
 font-size:10px;
 letter-spacing:1px;
 text-transform:uppercase;
-color:#8fa5b9;
+color:#8ea4b8;
 margin-bottom:8px;
 }
 
 .infoText{
 font-size:14px;
 line-height:1.55;
-color:#eef4fb;
+color:#edf5fd;
 }
 
 /* =========================================================
-BOTTOM ACTIONS
+BOTTOM BAR
 ========================================================= */
 
-.bottomBar{
+.bottomWrap{
 position:fixed;
 
 left:0;
 right:0;
 bottom:0;
 
-padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+padding:
+12px 14px
+calc(14px + env(safe-area-inset-bottom));
 
-background:
-rgba(5,12,20,.92);
-
-backdrop-filter:blur(20px);
--webkit-backdrop-filter:blur(20px);
-
-border-top:
-1px solid rgba(255,255,255,.06);
-
-z-index:900;
+z-index:999;
 }
 
-.bottomGrid{
-width:100%;
+.bottomBar{
 max-width:520px;
-
 margin:0 auto;
+
+padding:10px;
+
+border-radius:28px;
+
+background:
+rgba(6,14,24,.84);
+
+backdrop-filter:blur(22px);
+-webkit-backdrop-filter:blur(22px);
+
+border:
+1px solid rgba(255,255,255,.06);
 
 display:grid;
 grid-template-columns:1fr 1fr 1fr;
@@ -408,7 +512,7 @@ gap:10px;
 }
 
 .actionBtn{
-height:56px;
+height:58px;
 
 border:none;
 border-radius:20px;
@@ -422,17 +526,29 @@ cursor:pointer;
 
 .trainBtn{
 background:
-linear-gradient(135deg,#43da6f,#258a46);
+linear-gradient(
+135deg,
+#45dd72,
+#258847
+);
 }
 
 .recoveryBtn{
 background:
-linear-gradient(135deg,#5589e5,#355cb0);
+linear-gradient(
+135deg,
+#588de8,
+#355cb1
+);
 }
 
 .sosBtn{
 background:
-linear-gradient(135deg,#c95555,#7c2323);
+linear-gradient(
+135deg,
+#db6464,
+#7d2323
+);
 }
 
 /* =========================================================
@@ -452,7 +568,7 @@ padding:24px;
 
 overflow:hidden;
 
-z-index:999;
+z-index:1000;
 }
 
 .modeScreen.active{
@@ -461,31 +577,39 @@ display:flex;
 
 .trainingMode{
 background:
-radial-gradient(circle at center,#123b64 0%,#030912 100%);
+radial-gradient(circle at center,
+#10395f 0%,
+#020912 100%);
 }
 
 .recoveryMode{
 background:
-radial-gradient(circle at center,#0f2236 0%,#020912 100%);
+radial-gradient(circle at center,
+#102638 0%,
+#020912 100%);
 }
 
 .sosMode{
 background:
-radial-gradient(circle at center,#2c0d0d 0%,#01060a 100%);
+radial-gradient(circle at center,
+#2d0f0f 0%,
+#01060a 100%);
 }
 
 .modeBack{
 position:absolute;
-top:52px;
+
+top:54px;
 left:18px;
 
 height:44px;
 padding:0 16px;
 
 border:none;
-border-radius:15px;
+border-radius:16px;
 
-background:rgba(255,255,255,.08);
+background:
+rgba(255,255,255,.08);
 
 color:white;
 
@@ -494,29 +618,44 @@ font-weight:700;
 }
 
 .modeTitle{
-font-size:30px;
+font-size:32px;
 font-weight:900;
-margin-bottom:12px;
+margin-bottom:14px;
 }
 
 .modePhase{
-font-size:28px;
-font-weight:800;
+font-size:30px;
+font-weight:900;
 margin-bottom:10px;
 }
 
 .modeHint{
-font-size:17px;
-line-height:1.45;
+font-size:18px;
+line-height:1.5;
 text-align:center;
-color:#d2dde7;
+
+color:#d5dfe8;
+
 max-width:320px;
-min-height:52px;
+min-height:54px;
 }
 
 /* =========================================================
 BREATH ENGINE
 ========================================================= */
+
+.ballWrap{
+position:relative;
+
+width:260px;
+height:260px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+margin-top:20px;
+}
 
 .ballAura{
 position:absolute;
@@ -527,39 +666,49 @@ height:240px;
 border-radius:50%;
 
 background:
-radial-gradient(circle,
-rgba(90,190,255,.22),
-transparent 70%);
+radial-gradient(
+circle,
+rgba(90,190,255,.24),
+transparent 70%
+);
 
 filter:blur(35px);
 
-animation:aura 8s ease-in-out infinite;
+animation:
+aura 8s ease-in-out infinite;
 }
 
 @keyframes aura{
-0%{ transform:scale(.9); opacity:.22; }
-50%{ transform:scale(1.08); opacity:.34; }
-100%{ transform:scale(.9); opacity:.22; }
+
+0%{
+transform:scale(.92);
+opacity:.2;
 }
 
-.ballWrap{
-position:relative;
+50%{
+transform:scale(1.1);
+opacity:.35;
+}
 
-height:220px;
+100%{
+transform:scale(.92);
+opacity:.2;
+}
 
-display:flex;
-align-items:center;
-justify-content:center;
 }
 
 .ball{
-width:min(88px,22vw);
-height:min(88px,22vw);
+width:100px;
+height:100px;
 
 border-radius:50%;
 
 background:
-radial-gradient(circle at 30% 30%,#c7fcff,#41baff);
+radial-gradient(
+circle at 30% 30%,
+#d4fbff,
+#44bbff
+);
 
 box-shadow:
 0 0 70px rgba(75,189,255,.34);
@@ -568,21 +717,21 @@ transform:scale(.7);
 
 transition:
 transform 4s ease-in-out,
-background 2s ease,
 box-shadow 2s ease;
 }
 
 .phaseBar{
-width:210px;
+width:220px;
 height:8px;
 
 border-radius:999px;
 
 overflow:hidden;
 
-background:rgba(255,255,255,.08);
+background:
+rgba(255,255,255,.08);
 
-margin-top:12px;
+margin-top:22px;
 }
 
 .phaseProgress{
@@ -590,12 +739,17 @@ height:100%;
 width:0%;
 
 background:
-linear-gradient(90deg,#7be8ff,#4ce072);
+linear-gradient(
+90deg,
+#7be8ff,
+#4ce072
+);
 }
 
 .timer{
 margin-top:26px;
-font-size:48px;
+
+font-size:52px;
 font-weight:900;
 letter-spacing:-2px;
 }
@@ -604,14 +758,19 @@ letter-spacing:-2px;
 MOBILE
 ========================================================= */
 
-@media(max-width:560px){
-
-.statsGrid{
-grid-template-columns:1fr;
-}
+@media(max-width:420px){
 
 .heroTitle{
 font-size:28px;
+}
+
+.kpiValue{
+font-size:30px;
+}
+
+.heroPulse{
+width:64px;
+height:64px;
 }
 
 }
@@ -623,17 +782,31 @@ font-size:28px;
 
 <div class="app">
 
+<!-- HEADER -->
+
 <div class="hero">
-<div class="wave">〰〰</div>
-<div class="logo">VagusBuk</div>
+
+<div class="wave">
+〰〰
+</div>
+
+<div class="logo">
+VagusBuk
+</div>
+
 <div class="subtitle">
 HRV- & Nervensystem-Regulation
 </div>
+
 </div>
+
+<!-- HERO -->
 
 <div class="card heroCard">
 
 <div class="heroGlow" id="heroGlow"></div>
+
+<div>
 
 <div class="heroBadge" id="heroBadge">
 Analyse
@@ -649,33 +822,77 @@ Bitte zuerst HRV eintragen.
 
 </div>
 
-<div class="statsGrid">
+<div class="heroBottom">
 
-<div class="statBox">
-<div class="statLabel">HRV Heute</div>
-<div class="statValue" id="hrvValue">--</div>
-<div class="statHint" id="trendText">
+<div class="heroEnergy" id="heroEnergy">
+Noch keine Regulationsdaten vorhanden.
+</div>
+
+<div class="heroPulse"></div>
+
+</div>
+
+</div>
+
+<!-- KPI -->
+
+<div class="card kpiCard">
+
+<div class="kpiGrid">
+
+<div class="kpi">
+
+<div class="kpiLabel">
+HRV Heute
+</div>
+
+<div class="kpiValue" id="hrvValue">
+--
+</div>
+
+<div class="kpiHint" id="trendText">
 Analyse läuft
 </div>
+
 </div>
 
-<div class="statBox">
-<div class="statLabel">Ø 7 Tage</div>
-<div class="statValue" id="avgValue">--</div>
-<div class="statHint">
+<div class="kpi">
+
+<div class="kpiLabel">
+Ø 7 Tage
+</div>
+
+<div class="kpiValue" id="avgValue">
+--
+</div>
+
+<div class="kpiHint">
 Persönlicher Schnitt
 </div>
+
 </div>
 
-<div class="statBox">
-<div class="statLabel">Zustand</div>
-<div class="statValue" id="stateEmoji">🧠</div>
-<div class="statHint" id="stateText">
+<div class="kpi">
+
+<div class="kpiLabel">
+Zustand
+</div>
+
+<div class="kpiValue" id="stateEmoji">
+🧠
+</div>
+
+<div class="kpiHint" id="stateText">
 Keine Daten
 </div>
+
 </div>
 
 </div>
+
+</div>
+
+<!-- INPUT -->
 
 <div class="card">
 
@@ -703,7 +920,9 @@ Speichern
 
 </div>
 
-<div class="card">
+<!-- CHART -->
+
+<div class="card chartCard">
 
 <div class="sectionTitle">
 Verlauf
@@ -713,51 +932,55 @@ Verlauf
 
 </div>
 
-<div class="card">
+<!-- TODAY -->
 
-<details class="expandBox">
+<div class="card todayCard">
 
-<summary>
-Heute sinnvoll anzeigen
-</summary>
+<div class="sectionTitle">
+Heute beachten
+</div>
 
-<div class="expandContent">
+<div class="todayText" id="todayText">
+Noch keine Einschätzung möglich.
+</div>
 
 <div class="infoGrid">
 
 <div class="infoBox">
+
 <div class="infoLabel">
 Tun
 </div>
+
 <div class="infoText" id="planText">
 –
 </div>
+
 </div>
 
 <div class="infoBox">
+
 <div class="infoLabel">
 Vermeiden
 </div>
+
 <div class="infoText" id="avoidText">
 –
 </div>
-</div>
 
 </div>
 
 </div>
 
-</details>
-
 </div>
 
 </div>
 
-<!-- BOTTOM BAR -->
+<!-- BOTTOM -->
+
+<div class="bottomWrap">
 
 <div class="bottomBar">
-
-<div class="bottomGrid">
 
 <button
 class="actionBtn trainBtn"
@@ -909,7 +1132,8 @@ STATE
 
 const State = {
 mode:"idle",
-audioReady:false
+audioReady:false,
+running:false
 };
 
 /* =========================================================
@@ -973,39 +1197,27 @@ const Storage = {
 key:"vagusbuk_hrv",
 
 today(){
-return new Date().toISOString().slice(0,10);
+return new Date()
+.toISOString()
+.slice(0,10);
 },
 
 load(){
 
-const keys = [
-"vagusbuk_hrv",
-"hrvData",
-"vagusbukData",
-"vagus_hrv"
-];
-
-for(const key of keys){
-
 try{
 
 const raw =
-localStorage.getItem(key);
+localStorage.getItem(this.key);
 
-if(!raw) continue;
+return raw
+? JSON.parse(raw)
+: [];
 
-const parsed =
-JSON.parse(raw);
-
-if(Array.isArray(parsed)){
-return parsed;
-}
-
-}catch(e){}
-
-}
+}catch(e){
 
 return [];
+
+}
 
 },
 
@@ -1069,8 +1281,10 @@ date:Date.now()
 }
 
 if(this.hrvData.length > 30){
+
 this.hrvData =
 this.hrvData.slice(-30);
+
 }
 
 Storage.save(this.hrvData);
@@ -1104,8 +1318,16 @@ data.slice(-7);
 if(!last7.length) return null;
 
 return Math.round(
-last7.reduce((a,b)=>a+b.value,0)
-/ last7.length
+
+last7.reduce(
+(a,b)=>a+b.value,
+0
+)
+
+/
+
+last7.length
+
 );
 
 },
@@ -1113,9 +1335,9 @@ last7.reduce((a,b)=>a+b.value,0)
 render(data){
 
 const latest =
-data.length ?
-data[data.length-1].value :
-null;
+data.length
+? data[data.length-1].value
+: null;
 
 const avg =
 this.average(data);
@@ -1147,11 +1369,17 @@ document.getElementById("stateEmoji");
 const stateText =
 document.getElementById("stateText");
 
+const todayText =
+document.getElementById("todayText");
+
 const plan =
 document.getElementById("planText");
 
 const avoid =
 document.getElementById("avoidText");
+
+const energy =
+document.getElementById("heroEnergy");
 
 if(latest === null){
 
@@ -1166,15 +1394,15 @@ return;
 }
 
 const low =
-avg ?
-latest < avg * .9 :
-latest < 35;
+avg
+? latest < avg * .9
+: latest < 35;
 
 const mid =
-avg ?
-latest >= avg * .9 &&
-latest < avg * 1.05 :
-latest < 45;
+avg
+? latest >= avg * .9 &&
+latest < avg * 1.05
+: latest < 45;
 
 if(low){
 
@@ -1185,13 +1413,16 @@ heroBadge.style.background =
 "rgba(180,60,60,.22)"
 
 heroGlow.style.background =
-"radial-gradient(circle,#ff5f5f,transparent 60%)"
+"radial-gradient(circle,#ff6262,transparent 60%)"
 
 heroTitle.innerText =
 "⚠ Nervensystem belastet"
 
 heroText.innerText =
-"Heute Reize reduzieren."
+"Heute möglichst wenig Reizdruck."
+
+energy.innerText =
+"Geringe Regulationsreserve erkannt."
 
 trendText.innerText =
 "deutlich niedriger"
@@ -1201,6 +1432,9 @@ stateEmoji.innerText =
 
 stateText.innerText =
 "Belastet"
+
+todayText.innerText =
+"Heute geringe Belastbarkeit. Langsame Atmung und Reizreduktion sind sinnvoll."
 
 plan.innerHTML =
 "• Recovery nutzen<br>• lange Ausatmung<br>• Summen"
@@ -1229,7 +1463,10 @@ heroTitle.innerText =
 "⚠ Mittlere Belastbarkeit"
 
 heroText.innerText =
-"Heute ruhiger bleiben."
+"Heute etwas ruhiger bleiben."
+
+energy.innerText =
+"Teilweise reduzierte Regulationskapazität."
 
 trendText.innerText =
 "leicht reduziert"
@@ -1239,6 +1476,9 @@ stateEmoji.innerText =
 
 stateText.innerText =
 "Vorsichtig"
+
+todayText.innerText =
+"Heute besser mit ruhigem Tempo arbeiten und Reizwechsel reduzieren."
 
 plan.innerHTML =
 "• ruhige 4/6 Atmung<br>• Recovery"
@@ -1267,6 +1507,9 @@ heroTitle.innerText =
 heroText.innerText =
 "Heute eignet sich Training."
 
+energy.innerText =
+"Regulationssystem wirkt stabilisiert."
+
 trendText.innerText =
 "stabil"
 
@@ -1275,6 +1518,9 @@ stateEmoji.innerText =
 
 stateText.innerText =
 "Stabil"
+
+todayText.innerText =
+"Heute eignet sich vorsichtiges Atemtraining und ruhige Aktivität."
 
 plan.innerHTML =
 "• Training vertiefen<br>• Nasenatmung"
@@ -1296,7 +1542,7 @@ chart.innerHTML = ""
 const weekdays =
 ["So","Mo","Di","Mi","Do","Fr","Sa"];
 
-data.slice(-7).forEach(item=>{
+data.slice(-7).forEach((item,index,array)=>{
 
 const wrap =
 document.createElement("div");
@@ -1319,8 +1565,15 @@ document.createElement("div");
 bar.className =
 "bar"
 
+if(index === array.length - 1){
+bar.classList.add("today");
+}
+
 bar.style.height =
-Math.max(18,item.value*1.1)+"px"
+Math.max(
+18,
+item.value * 1.5
+)+"px"
 
 const label =
 document.createElement("div");
@@ -1357,6 +1610,7 @@ timeout:null,
 stopAll(){
 
 State.mode = "idle"
+State.running = false;
 
 clearInterval(this.interval);
 clearTimeout(this.timeout);
@@ -1393,7 +1647,7 @@ phases:[
 name:"Einatmen",
 hint:"Langsam durch die Nase einatmen",
 duration:4,
-scale:1.5,
+scale:1.55,
 voice:"Ein"
 },
 
@@ -1401,7 +1655,7 @@ voice:"Ein"
 name:"Halten",
 hint:"Kurz ruhig bleiben",
 duration:2,
-scale:1.5,
+scale:1.55,
 voice:"Halten"
 },
 
@@ -1471,7 +1725,7 @@ phases:[
 name:"Einatmen",
 hint:"Kurz ruhig einatmen",
 duration:3,
-scale:1.2,
+scale:1.18,
 voice:"Ein"
 },
 
@@ -1498,10 +1752,15 @@ voice:"Pause"
 
 start(type){
 
+if(State.running) return;
+
+State.running = true;
+
 AudioEngine.unlock();
 
 ModeManager.stopAll();
 
+State.running = true;
 State.mode = type;
 
 const cfg =
@@ -1529,21 +1788,27 @@ document.getElementById(cfg.progressId);
 
 const phaseTitle =
 document.getElementById(
+
 type === "training"
 ? "phaseText"
 : type + "Phase"
+
 );
 
 const phaseHint =
 document.getElementById(
+
 type === "training"
 ? "phaseHint"
 : type + "Hint"
+
 );
 
 const run = ()=>{
 
-if(State.mode !== type) return;
+if(State.mode !== type){
+return;
+}
 
 const phase =
 cfg.phases[index];
@@ -1566,14 +1831,14 @@ progress.style.transition =
 
 progress.style.width = "0%"
 
-setTimeout(()=>{
+requestAnimationFrame(()=>{
 
 progress.style.transition =
 `width ${phase.duration}s linear`;
 
 progress.style.width = "100%"
 
-},40);
+});
 
 index =
 (index + 1)
@@ -1635,6 +1900,10 @@ INIT
 ========================================================= */
 
 App.render();
+
+document
+.getElementById("hrvInput")
+.focus();
 
 </script>
 
