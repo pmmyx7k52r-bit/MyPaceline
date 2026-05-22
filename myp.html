@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-<title>VagusBuk 7.3.1.1</title>
+<title>VagusBuk 7.4</title>
 
 <style>
+
 /* =========================================================
 RESET
 ========================================================= */
+
 *{
 margin:0;
 padding:0;
@@ -20,19 +22,22 @@ box-sizing:border-box;
 html,body{
 width:100%;
 overflow-x:hidden;
-background:#020b14;
 font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+background:#04111d;
 color:white;
 }
 
 body{
 background:
-radial-gradient(circle at top, #143d67 0%, #071a2c 42%, #020b14 100%);
+radial-gradient(circle at top, rgba(34,87,150,.55), transparent 35%),
+linear-gradient(180deg,#06111d 0%,#04101a 100%);
+min-height:100vh;
 }
 
 /* =========================================================
 APP
 ========================================================= */
+
 .app{
 width:100%;
 max-width:560px;
@@ -43,274 +48,355 @@ padding:22px 16px 120px;
 /* =========================================================
 HEADER
 ========================================================= */
+
 .hero{
-margin-bottom:22px;
+margin-bottom:18px;
 }
 
-.logoWave{
+.wave{
 text-align:center;
 font-size:26px;
-opacity:.22;
-margin-bottom:6px;
+opacity:.25;
+margin-bottom:4px;
 }
 
 .logo{
 font-size:58px;
 font-weight:900;
-letter-spacing:-3px;
-line-height:.92;
+letter-spacing:-4px;
+line-height:.9;
 }
 
 .subtitle{
-margin-top:14px;
-font-size:20px;
+margin-top:10px;
+font-size:18px;
 line-height:1.5;
-color:#9db2c5;
+color:#9cb1c5;
 }
 
 /* =========================================================
-CARD
+CARDS
 ========================================================= */
+
 .card{
-background:
-linear-gradient(180deg,
-rgba(8,20,35,.96),
-rgba(3,11,20,.98));
-border:1px solid rgba(255,255,255,.05);
-border-radius:30px;
-padding:22px;
-margin-bottom:18px;
+background:rgba(5,16,28,.72);
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.06);
+
+border-radius:28px;
+
+padding:20px;
+
+margin-bottom:16px;
+
 box-shadow:
-0 10px 40px rgba(0,0,0,.28),
-inset 0 1px 0 rgba(255,255,255,.04);
+0 12px 40px rgba(0,0,0,.35),
+inset 0 1px 0 rgba(255,255,255,.03);
 }
 
 .sectionTitle{
-font-size:13px;
+font-size:12px;
 letter-spacing:2px;
 text-transform:uppercase;
-color:#89a0b4;
-margin-bottom:18px;
+color:#88a0b7;
+margin-bottom:16px;
 }
 
 /* =========================================================
-HRV
+HRV TOP
 ========================================================= */
-.hrvTop{
+
+.hrvRow{
 display:flex;
 justify-content:space-between;
 align-items:flex-start;
 gap:18px;
 }
 
+.hrvMain{
+display:flex;
+flex-direction:column;
+}
+
+.hrvLabel{
+font-size:14px;
+color:#8da5bc;
+margin-bottom:4px;
+}
+
+.hrvValueRow{
+display:flex;
+align-items:flex-end;
+gap:12px;
+}
+
 .hrvValue{
-font-size:88px;
+font-size:68px;
 font-weight:900;
 line-height:.9;
+letter-spacing:-3px;
+}
+
+.hrvTrend{
+font-size:16px;
+font-weight:700;
+padding:8px 12px;
+border-radius:999px;
+background:rgba(255,255,255,.06);
+color:#b8cadb;
+margin-bottom:8px;
+}
+
+.avgBox{
+text-align:right;
+}
+
+.avgLabel{
+font-size:13px;
+color:#89a0b5;
+}
+
+.avgValue{
+font-size:36px;
+font-weight:900;
+margin-top:4px;
 }
 
 .hrvInfo{
 margin-top:14px;
-font-size:22px;
-line-height:1.4;
-color:#dce5ef;
-max-width:220px;
-}
-
-.hrvAverage{
-text-align:right;
-color:#8ea4b8;
-font-size:18px;
-}
-
-.hrvAverage span{
-display:block;
-margin-top:8px;
-font-size:44px;
-font-weight:900;
-color:white;
+font-size:19px;
+line-height:1.5;
+color:#dbe5ef;
 }
 
 /* =========================================================
 INPUT
 ========================================================= */
-.inputRow{
+
+.inputWrap{
+margin-top:18px;
 display:flex;
-flex-direction:column;
-gap:14px;
-margin-top:22px;
+gap:10px;
 }
 
 .hrvInput{
-width:100%;
-height:64px;
+flex:1;
+height:56px;
 border:none;
 outline:none;
-border-radius:22px;
-background:#071828;
-padding:0 20px;
-font-size:34px;
+border-radius:18px;
+
+background:rgba(8,24,40,.9);
+
+border:2px solid rgba(86,140,206,.32);
+
+padding:0 18px;
+
+font-size:26px;
 font-weight:800;
+
 color:white;
-border:2px solid rgba(77,129,187,.45);
 }
 
 .hrvInput::placeholder{
-color:#6f8398;
+color:#6f8599;
 }
 
 .saveBtn{
-width:100%;
-height:64px;
+height:56px;
+padding:0 22px;
 border:none;
-border-radius:22px;
-font-size:22px;
+border-radius:18px;
+
+font-size:17px;
 font-weight:800;
+
 color:white;
+
 background:
-linear-gradient(135deg,#4ae072,#259646);
+linear-gradient(135deg,#44e06f,#238742);
+
 cursor:pointer;
 }
 
 /* =========================================================
 CHART
 ========================================================= */
+
 .chart{
-height:200px;
+margin-top:20px;
+
+height:120px;
+
 display:flex;
 align-items:flex-end;
-gap:10px;
-margin-top:30px;
+gap:8px;
 }
 
 .barWrap{
 flex:1;
-height:100%;
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:flex-end;
+height:100%;
 }
 
 .barValue{
-font-size:14px;
-margin-bottom:8px;
-color:#e8eef4;
-font-weight:700;
+font-size:12px;
+margin-bottom:6px;
+color:#d7e1eb;
 }
 
 .bar{
 width:100%;
-border-radius:18px 18px 10px 10px;
+border-radius:14px;
 background:
-linear-gradient(180deg,#62ea82,#2d974b);
-min-height:28px;
-transition:height .4s ease;
+linear-gradient(180deg,#62eb84,#2a9349);
+
+box-shadow:
+0 6px 20px rgba(66,216,104,.25);
 }
 
 .barLabel{
-margin-top:10px;
-font-size:12px;
-color:#8ca0b3;
+margin-top:6px;
+font-size:11px;
+color:#8297aa;
 }
 
 /* =========================================================
 STATUS
 ========================================================= */
+
+.statusCard{
+position:relative;
+overflow:hidden;
+}
+
+.statusGlow{
+position:absolute;
+inset:-30%;
+opacity:.18;
+filter:blur(70px);
+pointer-events:none;
+}
+
 .statusBadge{
 display:inline-flex;
 align-items:center;
 justify-content:center;
+
 height:34px;
+
 padding:0 14px;
+
 border-radius:999px;
+
 font-size:13px;
 font-weight:700;
-background:rgba(255,255,255,.08);
-margin-bottom:16px;
+
+margin-bottom:14px;
 }
 
 .statusTitle{
-font-size:38px;
+font-size:34px;
 font-weight:900;
-line-height:1.08;
+line-height:1.1;
 letter-spacing:-2px;
 }
 
 .statusText{
-margin-top:14px;
-font-size:21px;
+margin-top:12px;
+font-size:19px;
 line-height:1.5;
-color:#dce5ef;
+color:#dce6ef;
+}
+
+.infoGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:18px;
 }
 
 .infoBox{
-margin-top:18px;
-padding:18px;
+padding:16px;
 border-radius:22px;
 background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.04);
 }
 
 .infoLabel{
-font-size:12px;
+font-size:11px;
 letter-spacing:1px;
 text-transform:uppercase;
-color:#92a9bc;
+color:#8da5bc;
 margin-bottom:10px;
 }
 
 .infoText{
-font-size:17px;
-line-height:1.7;
-color:#eef4fa;
+font-size:15px;
+line-height:1.6;
+color:#edf4fb;
 }
 
 /* =========================================================
 BUTTONS
 ========================================================= */
-.actionButtons{
-display:flex;
-flex-direction:column;
-gap:14px;
-margin-top:24px;
+
+.actionGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:22px;
 }
 
-.primaryBtn,
-.recoveryBtn,
-.sosBtn{
-width:100%;
-height:62px;
+.actionBtn{
+height:58px;
 border:none;
-border-radius:22px;
-font-size:20px;
+border-radius:20px;
+
+font-size:17px;
 font-weight:800;
+
 color:white;
 cursor:pointer;
 }
 
-.primaryBtn{
-background:linear-gradient(135deg,#3dd66c,#238d43);
+.trainBtn{
+background:
+linear-gradient(135deg,#3dd86a,#238742);
 }
 
 .recoveryBtn{
-background:linear-gradient(135deg,#4f86df,#32569a);
+background:
+linear-gradient(135deg,#4f86e4,#335cb0);
 }
 
 .sosBtn{
-background:linear-gradient(135deg,#c14d4d,#7b2424);
+grid-column:1/3;
+
+background:
+linear-gradient(135deg,#c75151,#7d2323);
 }
 
 /* =========================================================
-MODE SCREENS
+MODES
 ========================================================= */
+
 .modeScreen{
 position:fixed;
 inset:0;
+
 display:none;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-padding:28px;
+
+padding:24px;
+
 z-index:999;
 }
 
@@ -320,30 +406,36 @@ display:flex;
 
 .trainingMode{
 background:
-radial-gradient(circle at center,#103d66,#020b14);
+radial-gradient(circle at center,#123d67 0%,#04101b 100%);
 }
 
 .recoveryMode{
 background:
-radial-gradient(circle at center,#0c1a2a,#020b14);
+radial-gradient(circle at center,#12253c 0%,#040d17 100%);
 }
 
 .sosMode{
 background:
-radial-gradient(circle at center,#230c0c,#020b14);
+radial-gradient(circle at center,#3b1111 0%,#070c13 100%);
 }
 
 .modeBack{
 position:absolute;
-top:54px;
-left:20px;
-height:48px;
+top:52px;
+left:18px;
+
+height:46px;
+
 padding:0 18px;
+
 border:none;
 border-radius:16px;
+
 background:rgba(255,255,255,.08);
+
 color:white;
-font-size:16px;
+
+font-size:15px;
 font-weight:700;
 }
 
@@ -354,108 +446,100 @@ margin-bottom:12px;
 }
 
 .modePhase{
-font-size:30px;
+font-size:28px;
 font-weight:800;
-margin-bottom:12px;
+margin-bottom:10px;
 }
 
 .modeHint{
 font-size:18px;
 line-height:1.5;
 text-align:center;
-color:#d0dce7;
-min-height:54px;
+color:#d2dde7;
 max-width:320px;
+min-height:54px;
 }
 
 .ballWrap{
-height:260px;
+height:240px;
 display:flex;
 align-items:center;
 justify-content:center;
 }
 
-.ball,
-.recoveryBall,
-.sosBall{
-border-radius:50%;
-transition:
-transform linear,
-background 1.5s ease;
-}
-
 .ball{
-width:92px;
-height:92px;
-background:
-radial-gradient(circle at 30% 30%,#bdfcff,#2fa8ff);
-box-shadow:0 0 70px rgba(86,196,255,.45);
-}
-
-.recoveryBall{
 width:90px;
 height:90px;
-background:
-radial-gradient(circle at 30% 30%,#d7f9ff,#679cff);
-box-shadow:0 0 60px rgba(108,164,255,.4);
-}
+border-radius:50%;
 
-.sosBall{
-width:84px;
-height:84px;
 background:
-radial-gradient(circle at 30% 30%,#d8fbff,#4fd7ff);
-box-shadow:0 0 60px rgba(86,196,255,.42);
+radial-gradient(circle at 30% 30%,#b7fbff,#3ab7ff);
+
+box-shadow:
+0 0 80px rgba(67,189,255,.45);
+
+transform:scale(.7);
+
+transition:
+transform 4s ease-in-out,
+background 2s ease;
 }
 
 .phaseBar{
 width:220px;
 height:8px;
+
 border-radius:999px;
+
 overflow:hidden;
+
 background:rgba(255,255,255,.08);
+
 margin-top:10px;
 }
 
 .phaseProgress{
 height:100%;
 width:0%;
+
 background:
-linear-gradient(90deg,#5adfff,#4de073);
+linear-gradient(90deg,#71e8ff,#4de073);
 }
 
 .timer{
-margin-top:34px;
-font-size:56px;
+margin-top:28px;
+font-size:52px;
 font-weight:900;
 }
 
 /* =========================================================
-RESPONSIVE
+MOBILE
 ========================================================= */
+
 @media(max-width:560px){
 
 .logo{
-font-size:52px;
+font-size:50px;
 }
 
 .subtitle{
-font-size:18px;
+font-size:17px;
 }
 
 .hrvValue{
-font-size:76px;
+font-size:58px;
 }
 
 .statusTitle{
-font-size:32px;
+font-size:30px;
 }
 
-.statusText{
-font-size:19px;
+.infoGrid{
+grid-template-columns:1fr;
 }
 
 }
+
 </style>
 </head>
 
@@ -464,7 +548,7 @@ font-size:19px;
 <div class="app">
 
 <div class="hero">
-<div class="logoWave">〰〰</div>
+<div class="wave">〰〰</div>
 <div class="logo">VagusBuk</div>
 <div class="subtitle">
 Parasympathisches HRV- & Nervensystem-Training
@@ -473,38 +557,68 @@ Parasympathisches HRV- & Nervensystem-Training
 
 <!-- =====================================================
 HRV CARD
-===================================================== -->
+====================================================== -->
+
 <div class="card">
 
-<div class="sectionTitle">HRV heute</div>
+<div class="sectionTitle">
+HRV heute
+</div>
 
-<div class="hrvTop">
+<div class="hrvRow">
 
-<div>
-<div class="hrvValue" id="hrvValue">--</div>
+<div class="hrvMain">
+
+<div class="hrvLabel">
+Aktueller Wert
+</div>
+
+<div class="hrvValueRow">
+
+<div class="hrvValue" id="hrvValue">
+--
+</div>
+
+<div class="hrvTrend" id="trendBadge">
+Analyse
+</div>
+
+</div>
+
 <div class="hrvInfo" id="hrvInfo">
 Noch keine Daten vorhanden.
 </div>
+
 </div>
 
-<div class="hrvAverage">
+<div class="avgBox">
+
+<div class="avgLabel">
 Ø 7 Tage
-<span id="avgValue">--</span>
+</div>
+
+<div class="avgValue" id="avgValue">
+--
 </div>
 
 </div>
 
-<div class="inputRow">
+</div>
+
+<div class="inputWrap">
+
 <input
 type="number"
-inputmode="numeric"
-placeholder="z.B. 41"
+id="hrvInput"
 class="hrvInput"
-id="hrvInput">
+placeholder="z.B. 41"
+inputmode="numeric"
+/>
 
-<button class="saveBtn" id="saveBtn">
+<button class="saveBtn" onclick="App.saveHRV()">
 Speichern
 </button>
+
 </div>
 
 <div class="chart" id="chart"></div>
@@ -512,11 +626,16 @@ Speichern
 </div>
 
 <!-- =====================================================
-STATUS
-===================================================== -->
-<div class="card">
+STATUS CARD
+====================================================== -->
 
-<div class="sectionTitle">Status</div>
+<div class="card statusCard">
+
+<div class="statusGlow" id="statusGlow"></div>
+
+<div class="sectionTitle">
+Heute sinnvoll
+</div>
 
 <div class="statusBadge" id="statusBadge">
 Analyse
@@ -527,30 +646,54 @@ Noch keine Daten
 </div>
 
 <div class="statusText" id="statusText">
-Bitte HRV eintragen.
+Bitte zuerst HRV eintragen.
+</div>
+
+<div class="infoGrid">
+
+<div class="infoBox">
+
+<div class="infoLabel">
+Heute tun
+</div>
+
+<div class="infoText" id="planText">
+–
+</div>
+
 </div>
 
 <div class="infoBox">
-<div class="infoLabel">Heute sinnvoll</div>
-<div class="infoText" id="planText">–</div>
+
+<div class="infoLabel">
+Heute vermeiden
 </div>
 
-<div class="infoBox">
-<div class="infoLabel">Heute vermeiden</div>
-<div class="infoText" id="avoidText">–</div>
+<div class="infoText" id="avoidText">
+–
 </div>
 
-<div class="actionButtons">
+</div>
 
-<button class="primaryBtn" onclick="Pacer.start('training')">
-Training starten
+</div>
+
+<div class="actionGrid">
+
+<button
+class="actionBtn trainBtn"
+onclick="Pacer.start('training')">
+🫁 Training
 </button>
 
-<button class="recoveryBtn" onclick="Pacer.start('recovery')">
-Recovery
+<button
+class="actionBtn recoveryBtn"
+onclick="Pacer.start('recovery')">
+🌙 Recovery
 </button>
 
-<button class="sosBtn" onclick="Pacer.start('sos')">
+<button
+class="actionBtn sosBtn"
+onclick="Pacer.start('sos')">
 ⚠ Es kippt gerade
 </button>
 
@@ -562,14 +705,17 @@ Recovery
 
 <!-- =====================================================
 TRAINING
-===================================================== -->
+====================================================== -->
+
 <div class="modeScreen trainingMode" id="trainingScreen">
 
 <button class="modeBack" onclick="ModeManager.stopAll()">
 Zurück
 </button>
 
-<div class="modeTitle">Vagus-Training</div>
+<div class="modeTitle">
+Vagus-Training
+</div>
 
 <div class="modePhase" id="phaseText">
 Einatmen
@@ -595,25 +741,28 @@ Langsam einatmen
 
 <!-- =====================================================
 RECOVERY
-===================================================== -->
+====================================================== -->
+
 <div class="modeScreen recoveryMode" id="recoveryScreen">
 
 <button class="modeBack" onclick="ModeManager.stopAll()">
 Zurück
 </button>
 
-<div class="modeTitle">Recovery</div>
+<div class="modeTitle">
+Recovery
+</div>
 
 <div class="modePhase" id="recoveryPhase">
-Einatmen
+Ausatmen
 </div>
 
 <div class="modeHint" id="recoveryHint">
-Sanft einatmen
+Langsam entspannen
 </div>
 
 <div class="ballWrap">
-<div class="recoveryBall" id="recoveryBall"></div>
+<div class="ball" id="recoveryBall"></div>
 </div>
 
 <div class="phaseBar">
@@ -628,25 +777,28 @@ Sanft einatmen
 
 <!-- =====================================================
 SOS
-===================================================== -->
+====================================================== -->
+
 <div class="modeScreen sosMode" id="sosScreen">
 
 <button class="modeBack" onclick="ModeManager.stopAll()">
 Zurück
 </button>
 
-<div class="modeTitle">SOS-Regulation</div>
+<div class="modeTitle">
+SOS-Regulation
+</div>
 
 <div class="modePhase" id="sosPhase">
 Ausatmen
 </div>
 
 <div class="modeHint" id="sosHint">
-Ultralang entlasten
+Ultralang entspannen
 </div>
 
 <div class="ballWrap">
-<div class="sosBall" id="sosBall"></div>
+<div class="ball" id="sosBall"></div>
 </div>
 
 <div class="phaseBar">
@@ -660,21 +812,26 @@ Ultralang entlasten
 </div>
 
 <script>
+
 /* =========================================================
 STATE
 ========================================================= */
+
 const State = {
-mode: "idle",
-audioReady: false
+mode:"idle",
+audioReady:false
 };
 
 /* =========================================================
 AUDIO
 ========================================================= */
+
 const AudioEngine = {
 
 unlock(){
+
 if(State.audioReady) return;
+
 State.audioReady = true;
 
 try{
@@ -682,6 +839,7 @@ speechSynthesis.speak(
 new SpeechSynthesisUtterance("")
 );
 }catch(e){}
+
 },
 
 speak(text){
@@ -702,12 +860,15 @@ msg.volume = .9;
 speechSynthesis.speak(msg);
 
 }catch(e){}
+
 },
 
 stop(){
+
 try{
 speechSynthesis.cancel();
 }catch(e){}
+
 }
 
 };
@@ -715,6 +876,7 @@ speechSynthesis.cancel();
 /* =========================================================
 STORAGE
 ========================================================= */
+
 const Storage = {
 
 key:"vagusbuk_hrv",
@@ -725,15 +887,14 @@ return new Date().toISOString().slice(0,10);
 
 load(){
 
-const possibleKeys = [
+const keys = [
 "vagusbuk_hrv",
 "hrvData",
 "vagusbukData",
-"vagus_hrv",
-"vagusbukHRV"
+"vagus_hrv"
 ];
 
-for(const key of possibleKeys){
+for(const key of keys){
 
 try{
 
@@ -744,25 +905,7 @@ if(!raw) continue;
 const parsed = JSON.parse(raw);
 
 if(Array.isArray(parsed)){
-
-return parsed.map(item=>{
-
-if(typeof item === "number"){
-return {
-value:item,
-day:Storage.today(),
-date:Date.now()
-};
-}
-
-return {
-value:item.value,
-day:item.day || Storage.today(),
-date:item.date || Date.now()
-};
-
-});
-
+return parsed;
 }
 
 }catch(e){}
@@ -770,13 +913,16 @@ date:item.date || Date.now()
 }
 
 return [];
+
 },
 
 save(data){
+
 localStorage.setItem(
 this.key,
 JSON.stringify(data)
 );
+
 }
 
 };
@@ -784,19 +930,18 @@ JSON.stringify(data)
 /* =========================================================
 APP
 ========================================================= */
+
 const App = {
 
-hrvData: Storage.load(),
+hrvData:Storage.load(),
 
 recommendedDuration:180,
 
 saveHRV(){
 
-const input =
-document.getElementById("hrvInput");
+const input = document.getElementById("hrvInput");
 
-const value =
-parseInt(input.value);
+const value = parseInt(input.value);
 
 if(isNaN(value) || value <= 0){
 return;
@@ -804,15 +949,15 @@ return;
 
 const today = Storage.today();
 
-const existingIndex =
+const existing =
 this.hrvData.findIndex(
 d => d.day === today
 );
 
-if(existingIndex !== -1){
+if(existing !== -1){
 
-this.hrvData[existingIndex].value = value;
-this.hrvData[existingIndex].date = Date.now();
+this.hrvData[existing].value = value;
+this.hrvData[existing].date = Date.now();
 
 }else{
 
@@ -824,8 +969,9 @@ date:Date.now()
 
 }
 
-this.hrvData =
-this.hrvData.slice(-30);
+if(this.hrvData.length > 30){
+this.hrvData = this.hrvData.slice(-30);
+}
 
 Storage.save(this.hrvData);
 
@@ -838,9 +984,7 @@ this.render();
 render(){
 
 UI.renderHRV(this.hrvData);
-
 UI.renderStatus(this.hrvData);
-
 UI.renderChart(this.hrvData);
 
 }
@@ -850,21 +994,18 @@ UI.renderChart(this.hrvData);
 /* =========================================================
 UI
 ========================================================= */
+
 const UI = {
 
-getAverage(data){
+average(data){
 
 const last7 = data.slice(-7);
 
-if(!last7.length){
-return null;
-}
+if(!last7.length) return null;
 
 return Math.round(
-last7.reduce(
-(a,b)=>a+b.value,
-0
-) / last7.length
+last7.reduce((a,b)=>a+b.value,0)
+/ last7.length
 );
 
 },
@@ -872,30 +1013,33 @@ last7.reduce(
 renderHRV(data){
 
 const latest =
-data.length
-? data[data.length-1].value
-: null;
+data.length ?
+data[data.length-1].value :
+null;
 
-const avg =
-this.getAverage(data);
+const avg = this.average(data);
 
-document.getElementById("hrvValue")
-.innerText = latest ?? "--"
+document.getElementById("hrvValue").innerText =
+latest ?? "--"
 
-document.getElementById("avgValue")
-.innerText = avg ?? "--"
+document.getElementById("avgValue").innerText =
+avg ?? "--"
 
 const info =
 document.getElementById("hrvInfo");
+
+const trend =
+document.getElementById("trendBadge");
 
 if(latest === null){
 
 info.innerText =
 "Noch keine Daten vorhanden."
 
-info.style.color = "#dce5ef"
+trend.innerText = "Analyse"
 
 return;
+
 }
 
 if(avg){
@@ -905,9 +1049,16 @@ if(latest < avg * .9){
 info.innerText =
 "Heute vorsichtig bleiben."
 
-info.style.color = "#eb7474"
+trend.innerText = "↓ niedrig"
+
+trend.style.background =
+"rgba(190,70,70,.2)"
+
+trend.style.color =
+"#ffb2b2"
 
 return;
+
 }
 
 if(latest > avg * 1.08){
@@ -915,9 +1066,16 @@ if(latest > avg * 1.08){
 info.innerText =
 "Sehr stabile Regulation."
 
-info.style.color = "#58de7e"
+trend.innerText = "↑ stabil"
+
+trend.style.background =
+"rgba(47,157,81,.2)"
+
+trend.style.color =
+"#9df3b0"
 
 return;
+
 }
 
 }
@@ -925,19 +1083,25 @@ return;
 info.innerText =
 "Stabiles Niveau."
 
-info.style.color = "#dce5ef"
+trend.innerText =
+"→ normal"
+
+trend.style.background =
+"rgba(255,255,255,.06)"
+
+trend.style.color =
+"#d0deeb"
 
 },
 
 renderStatus(data){
 
 const latest =
-data.length
-? data[data.length-1].value
-: null;
+data.length ?
+data[data.length-1].value :
+null;
 
-const avg =
-this.getAverage(data);
+const avg = this.average(data);
 
 const badge =
 document.getElementById("statusBadge");
@@ -954,6 +1118,9 @@ document.getElementById("planText");
 const avoid =
 document.getElementById("avoidText");
 
+const glow =
+document.getElementById("statusGlow");
+
 if(latest === null){
 
 badge.innerText = "Analyse"
@@ -962,27 +1129,28 @@ title.innerText =
 "Noch keine Daten"
 
 text.innerText =
-"Bitte HRV eintragen."
+"Bitte zuerst HRV eintragen."
 
 plan.innerHTML =
 "• Basisdaten sammeln"
 
 avoid.innerHTML =
-"• Noch keine Analyse"
+"• Noch keine Einschätzung"
 
 return;
+
 }
 
 const low =
-avg
-? latest < avg * .9
-: latest < 35;
+avg ?
+latest < avg * .9 :
+latest < 35;
 
 const mid =
-avg
-? latest >= avg * .9 &&
-latest < avg * 1.05
-: latest < 45;
+avg ?
+latest >= avg * .9 &&
+latest < avg * 1.05 :
+latest < 45;
 
 if(low){
 
@@ -991,6 +1159,9 @@ badge.innerText = "Empfindlich"
 badge.style.background =
 "rgba(180,60,60,.22)"
 
+glow.style.background =
+"radial-gradient(circle,#ff5d5d,transparent 60%)"
+
 title.innerText =
 "⚠ Nervensystem belastet"
 
@@ -998,17 +1169,15 @@ text.innerText =
 "Heute Stabilisierung priorisieren."
 
 plan.innerHTML =
-"• Recovery nutzen<br>" +
-"• lange Ausatmung<br>" +
-"• Summen beim Ausatmen"
+"• Recovery nutzen<br>• lange Ausatmung<br>• Summen beim Ausatmen"
 
 avoid.innerHTML =
-"• emotionale Überlastung<br>" +
-"• Hektik & Multitasking"
+"• emotionale Diskussionen<br>• Multitasking"
 
 App.recommendedDuration = 120;
 
 return;
+
 }
 
 if(mid){
@@ -1018,6 +1187,9 @@ badge.innerText = "Vorsichtig"
 badge.style.background =
 "rgba(173,129,27,.22)"
 
+glow.style.background =
+"radial-gradient(circle,#ffc14d,transparent 60%)"
+
 title.innerText =
 "⚠ Mittlere Belastbarkeit"
 
@@ -1025,22 +1197,24 @@ text.innerText =
 "Sanfter Aufbau sinnvoll."
 
 plan.innerHTML =
-"• ruhiger Rhythmus<br>" +
-"• 4/6 Atmung"
+"• ruhige 4/6 Atmung<br>• Recovery möglich"
 
 avoid.innerHTML =
-"• Zeitdruck<br>" +
-"• Überforderung"
+"• Zeitdruck<br>• Reizüberlastung"
 
 App.recommendedDuration = 180;
 
 return;
+
 }
 
 badge.innerText = "Stabil"
 
 badge.style.background =
 "rgba(47,157,81,.22)"
+
+glow.style.background =
+"radial-gradient(circle,#49ff86,transparent 60%)"
 
 title.innerText =
 "✓ Gute vagale Stabilität"
@@ -1049,8 +1223,7 @@ text.innerText =
 "Heute eignet sich Aufbau."
 
 plan.innerHTML =
-"• Training vertiefen<br>" +
-"• tiefe ruhige Atmung"
+"• Training vertiefen<br>• tiefe Nasenatmung"
 
 avoid.innerHTML =
 "• hektische Reizwechsel"
@@ -1080,6 +1253,7 @@ const value =
 document.createElement("div");
 
 value.className = "barValue"
+
 value.innerText = item.value;
 
 const bar =
@@ -1088,10 +1262,7 @@ document.createElement("div");
 bar.className = "bar"
 
 bar.style.height =
-Math.max(
-28,
-item.value * 1.8
-) + "px"
+Math.max(20,item.value*1.5)+"px"
 
 const label =
 document.createElement("div");
@@ -1118,6 +1289,7 @@ chart.appendChild(wrap);
 /* =========================================================
 MODE MANAGER
 ========================================================= */
+
 const ModeManager = {
 
 interval:null,
@@ -1145,17 +1317,17 @@ el.classList.remove("active");
 /* =========================================================
 PACER
 ========================================================= */
+
 const Pacer = {
 
 config:{
 
 training:{
-screen:"trainingScreen",
-timer:"trainingTimer",
-ball:"breathBall",
-progress:"phaseProgress",
-phase:"phaseText",
-hint:"phaseHint",
+screenId:"trainingScreen",
+timerId:"trainingTimer",
+ballId:"breathBall",
+progressId:"phaseProgress",
+
 phases:[
 {
 name:"Einatmen",
@@ -1173,80 +1345,78 @@ voice:"Halten"
 },
 {
 name:"Ausatmen",
-hint:"Langsam summend ausatmen",
+hint:"Langsam und summend ausatmen",
 duration:6,
-scale:.7,
+scale:.72,
 voice:"Aus"
 },
 {
 name:"Ruhe",
 hint:"Kurz entspannen",
 duration:2,
-scale:.7,
+scale:.72,
 voice:"Pause"
 }
 ]
 },
 
 recovery:{
-screen:"recoveryScreen",
-timer:"recoveryTimer",
-ball:"recoveryBall",
-progress:"recoveryProgress",
-phase:"recoveryPhase",
-hint:"recoveryHint",
+screenId:"recoveryScreen",
+timerId:"recoveryTimer",
+ballId:"recoveryBall",
+progressId:"recoveryProgress",
+
 phases:[
 {
 name:"Einatmen",
-hint:"Sanft in den Bauch einatmen",
+hint:"Sanft Luft holen",
 duration:4,
-scale:1.3,
+scale:1.35,
 voice:"Ein"
 },
 {
 name:"Ausatmen",
-hint:"Summend und langsam ausatmen",
-duration:8,
-scale:.72,
-voice:"Aus"
+hint:"Sehr langsam summend ausatmen",
+duration:7,
+scale:.68,
+voice:"Summen"
 },
 {
 name:"Pause",
 hint:"Nichts forcieren",
 duration:3,
-scale:.72,
+scale:.68,
 voice:"Pause"
 }
 ]
 },
 
 sos:{
-screen:"sosScreen",
-timer:"sosTimer",
-ball:"sosBall",
-progress:"sosProgress",
-phase:"sosPhase",
-hint:"sosHint",
+screenId:"sosScreen",
+timerId:"sosTimer",
+ballId:"sosBall",
+progressId:"sosProgress",
+
 phases:[
 {
 name:"Einatmen",
-hint:"Kurz ruhig Luft holen",
+hint:"Kurz ruhig einatmen",
 duration:3,
 scale:1.2,
 voice:"Ein"
 },
 {
 name:"Ausatmen",
-hint:"Ultralang summend ausatmen",
-duration:9,
-scale:.6,
-voice:"Laaaang aus"
+hint:"Ultralang summend entlasten",
+duration:8,
+scale:.58,
+voice:"Lange ausatmen"
 },
 {
 name:"Pause",
-hint:"Kurz still bleiben",
+hint:"System beruhigen lassen",
 duration:4,
-scale:.6,
+scale:.58,
 voice:"Pause"
 }
 ]
@@ -1262,61 +1432,65 @@ ModeManager.stopAll();
 
 State.mode = type;
 
-const cfg =
-this.config[type];
+const cfg = this.config[type];
 
 document
-.getElementById(cfg.screen)
+.getElementById(cfg.screenId)
 .classList.add("active");
 
 let remaining =
 App.recommendedDuration;
 
 this.updateTimer(
-cfg.timer,
+cfg.timerId,
 remaining
 );
 
 let index = 0;
 
 const ball =
-document.getElementById(cfg.ball);
+document.getElementById(cfg.ballId);
 
 const progress =
-document.getElementById(cfg.progress);
+document.getElementById(cfg.progressId);
 
-const phaseText =
-document.getElementById(cfg.phase);
+const phaseTitle =
+document.getElementById(
+type === "training"
+? "phaseText"
+: type + "Phase"
+);
 
-const hintText =
-document.getElementById(cfg.hint);
+const phaseHint =
+document.getElementById(
+type === "training"
+? "phaseHint"
+: type + "Hint"
+);
 
 const run = ()=>{
 
-if(State.mode !== type){
-return;
-}
+if(State.mode !== type) return;
 
 const phase =
 cfg.phases[index];
 
-phaseText.innerText =
+phaseTitle.innerText =
 phase.name;
 
-hintText.innerText =
+phaseHint.innerText =
 phase.hint;
 
 AudioEngine.speak(
 phase.voice
 );
 
-ball.style.transition =
-`transform ${phase.duration}s linear`;
-
 ball.style.transform =
 `scale(${phase.scale})`;
 
-progress.style.transition = "none"
+progress.style.transition =
+"none"
+
 progress.style.width = "0%"
 
 setTimeout(()=>{
@@ -1329,8 +1503,8 @@ progress.style.width = "100%"
 },40);
 
 index =
-(index + 1) %
-cfg.phases.length;
+(index + 1)
+% cfg.phases.length;
 
 ModeManager.timeout =
 setTimeout(
@@ -1348,19 +1522,17 @@ setInterval(()=>{
 remaining--;
 
 this.updateTimer(
-cfg.timer,
+cfg.timerId,
 remaining
 );
 
 if(remaining <= 0){
 
 AudioEngine.speak(
-"Sitzung beendet"
+"Training beendet"
 );
 
-setTimeout(()=>{
 ModeManager.stopAll();
-},1200);
 
 }
 
@@ -1375,8 +1547,7 @@ Math.floor(sec/60);
 
 const s = sec % 60;
 
-document
-.getElementById(id)
+document.getElementById(id)
 .innerText =
 `${min}:${String(s).padStart(2,"0")}`;
 
@@ -1385,30 +1556,11 @@ document
 };
 
 /* =========================================================
-EVENTS
-========================================================= */
-document
-.getElementById("saveBtn")
-.addEventListener(
-"click",
-()=>App.saveHRV()
-);
-
-document
-.getElementById("hrvInput")
-.addEventListener(
-"keydown",
-(e)=>{
-if(e.key === "Enter"){
-App.saveHRV();
-}
-}
-);
-
-/* =========================================================
 INIT
 ========================================================= */
+
 App.render();
+
 </script>
 
 </body>
