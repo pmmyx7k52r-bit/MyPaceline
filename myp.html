@@ -5,7 +5,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-<title>VagusBuk 7.5.3.1</title>
+<title>VagusBuk 7.5.3.2</title>
 
 <style>
 
@@ -532,7 +532,7 @@ linear-gradient(
 }
 
 /* =========================================================
-MODE SCREEN
+MODE SCREENS
 ========================================================= */
 
 .modeScreen{
@@ -548,7 +548,7 @@ padding:24px;
 
 overflow:hidden;
 
-z-index:2000;
+z-index:3000;
 }
 
 .modeScreen.active{
@@ -559,6 +559,20 @@ display:flex;
 background:
 radial-gradient(circle at center,
 #123b64 0%,
+#020912 100%);
+}
+
+.recoveryMode{
+background:
+radial-gradient(circle at center,
+#0d243b 0%,
+#020912 100%);
+}
+
+.sosMode{
+background:
+radial-gradient(circle at center,
+#351212 0%,
 #020912 100%);
 }
 
@@ -757,8 +771,6 @@ VagusBuk
 HRV- & Nervensystem-Regulation
 </div>
 
-<!-- HERO -->
-
 <div class="card heroCard">
 
 <div class="heroGlow" id="heroGlow"></div>
@@ -790,8 +802,6 @@ Noch keine Regulationsdaten vorhanden.
 </div>
 
 </div>
-
-<!-- KPI -->
 
 <div class="card">
 
@@ -849,8 +859,6 @@ Keine Daten
 
 </div>
 
-<!-- INPUT -->
-
 <div class="card">
 
 <div class="sectionTitle">
@@ -877,8 +885,6 @@ Speichern
 
 </div>
 
-<!-- CHART -->
-
 <div class="card">
 
 <div class="sectionTitle">
@@ -888,8 +894,6 @@ Verlauf
 <div class="chart" id="chart"></div>
 
 </div>
-
-<!-- TODAY -->
 
 <div class="card">
 
@@ -940,17 +944,20 @@ Vermeiden
 <div class="bottomBar">
 
 <button
-class="actionBtn trainBtn">
+class="actionBtn trainBtn"
+onclick="Pacer.start('training')">
 🫁 Training
 </button>
 
 <button
-class="actionBtn recoveryBtn">
+class="actionBtn recoveryBtn"
+onclick="Pacer.start('recovery')">
 🌙 Recovery
 </button>
 
 <button
-class="actionBtn sosBtn">
+class="actionBtn sosBtn"
+onclick="Pacer.start('sos')">
 ⚠ SOS
 </button>
 
@@ -958,16 +965,199 @@ class="actionBtn sosBtn">
 
 </div>
 
+<!-- TRAINING -->
+
+<div class="modeScreen trainingMode" id="trainingScreen">
+
+<button
+class="modeBack"
+onclick="ModeManager.stopAll()">
+Zurück
+</button>
+
+<div class="modeTitle">
+Vagus-Training
+</div>
+
+<div class="modePhase" id="phaseText">
+Einatmen
+</div>
+
+<div class="modeHint" id="phaseHint">
+Langsam durch die Nase einatmen
+</div>
+
+<div class="ballWrap">
+
+<div class="ballAura"></div>
+
+<div class="ball" id="breathBall"></div>
+
+</div>
+
+<div class="phaseBar">
+<div class="phaseProgress" id="phaseProgress"></div>
+</div>
+
+<div class="timer" id="trainingTimer">
+0:00
+</div>
+
+</div>
+
+<!-- RECOVERY -->
+
+<div class="modeScreen recoveryMode" id="recoveryScreen">
+
+<button
+class="modeBack"
+onclick="ModeManager.stopAll()">
+Zurück
+</button>
+
+<div class="modeTitle">
+Recovery
+</div>
+
+<div class="modePhase" id="recoveryPhase">
+Ausatmen
+</div>
+
+<div class="modeHint" id="recoveryHint">
+Sehr langsam entspannen
+</div>
+
+<div class="ballWrap">
+
+<div class="ballAura"></div>
+
+<div class="ball" id="recoveryBall"></div>
+
+</div>
+
+<div class="phaseBar">
+<div class="phaseProgress" id="recoveryProgress"></div>
+</div>
+
+<div class="timer" id="recoveryTimer">
+0:00
+</div>
+
+</div>
+
+<!-- SOS -->
+
+<div class="modeScreen sosMode" id="sosScreen">
+
+<button
+class="modeBack"
+onclick="ModeManager.stopAll()">
+Zurück
+</button>
+
+<div class="modeTitle">
+SOS-Regulation
+</div>
+
+<div class="modePhase" id="sosPhase">
+Ausatmen
+</div>
+
+<div class="modeHint" id="sosHint">
+Ultralang summend entlasten
+</div>
+
+<div class="ballWrap">
+
+<div class="ballAura"></div>
+
+<div class="ball" id="sosBall"></div>
+
+</div>
+
+<div class="phaseBar">
+<div class="phaseProgress" id="sosProgress"></div>
+</div>
+
+<div class="timer" id="sosTimer">
+0:00
+</div>
+
+</div>
+
 <script>
+
+/* =========================================================
+STATE
+========================================================= */
+
+const State = {
+mode:"idle",
+audioReady:false
+};
+
+/* =========================================================
+AUDIO
+========================================================= */
+
+const AudioEngine = {
+
+unlock(){
+
+if(State.audioReady) return;
+
+State.audioReady = true;
+
+try{
+speechSynthesis.speak(
+new SpeechSynthesisUtterance("")
+);
+}catch(e){}
+
+},
+
+speak(text){
+
+if(!State.audioReady) return;
+
+try{
+
+speechSynthesis.cancel();
+
+const msg =
+new SpeechSynthesisUtterance(text);
+
+msg.lang = "de-DE"
+msg.rate = .9;
+msg.pitch = .92;
+msg.volume = .9;
+
+speechSynthesis.speak(msg);
+
+}catch(e){}
+
+},
+
+stop(){
+
+try{
+speechSynthesis.cancel();
+}catch(e){}
+
+}
+
+};
+
+/* =========================================================
+STORAGE
+========================================================= */
 
 const Storage = {
 
 key:"vagusbuk_hrv",
 
 today(){
-return new Date()
-.toISOString()
-.slice(0,10);
+return new Date().toISOString().slice(0,10);
 },
 
 load(){
@@ -1000,9 +1190,15 @@ JSON.stringify(data)
 
 };
 
+/* =========================================================
+APP
+========================================================= */
+
 const App = {
 
 hrvData:Storage.load(),
+
+recommendedDuration:180,
 
 saveHRV(){
 
@@ -1066,6 +1262,10 @@ UI.renderChart(this.hrvData);
 
 };
 
+/* =========================================================
+UI
+========================================================= */
+
 const UI = {
 
 average(data){
@@ -1077,8 +1277,7 @@ if(!last7.length) return null;
 
 return Math.round(
 last7.reduce((a,b)=>a+b.value,0)
-/
-last7.length
+/ last7.length
 );
 
 },
@@ -1185,6 +1384,8 @@ plan.innerHTML =
 avoid.innerHTML =
 "• Stressgespräche<br>• Multitasking"
 
+App.recommendedDuration = 120;
+
 return;
 
 }
@@ -1227,6 +1428,8 @@ plan.innerHTML =
 avoid.innerHTML =
 "• Hektik<br>• zu viele Sinnesreize"
 
+App.recommendedDuration = 180;
+
 return;
 
 }
@@ -1266,6 +1469,8 @@ plan.innerHTML =
 
 avoid.innerHTML =
 "• schnelle Kontextwechsel"
+
+App.recommendedDuration = 300;
 
 },
 
@@ -1334,6 +1539,295 @@ chart.appendChild(wrap);
 }
 
 };
+
+/* =========================================================
+MODE MANAGER
+========================================================= */
+
+const ModeManager = {
+
+interval:null,
+timeout:null,
+
+stopAll(){
+
+State.mode = "idle"
+
+clearInterval(this.interval);
+clearTimeout(this.timeout);
+
+AudioEngine.stop();
+
+document
+.querySelectorAll(".modeScreen")
+.forEach(el=>{
+el.classList.remove("active");
+});
+
+}
+
+};
+
+/* =========================================================
+PACER
+========================================================= */
+
+const Pacer = {
+
+config:{
+
+training:{
+screenId:"trainingScreen",
+timerId:"trainingTimer",
+ballId:"breathBall",
+progressId:"phaseProgress",
+
+phases:[
+
+{
+name:"Einatmen",
+hint:"Langsam durch die Nase einatmen",
+duration:4,
+scale:1.5,
+voice:"Ein"
+},
+
+{
+name:"Halten",
+hint:"Kurz ruhig bleiben",
+duration:2,
+scale:1.5,
+voice:"Halten"
+},
+
+{
+name:"Ausatmen",
+hint:"Langsam summend ausatmen",
+duration:6,
+scale:.72,
+voice:"Summen"
+},
+
+{
+name:"Ruhe",
+hint:"Kurz entspannen",
+duration:2,
+scale:.72,
+voice:"Pause"
+}
+
+]
+},
+
+recovery:{
+screenId:"recoveryScreen",
+timerId:"recoveryTimer",
+ballId:"recoveryBall",
+progressId:"recoveryProgress",
+
+phases:[
+
+{
+name:"Einatmen",
+hint:"Sanft Luft holen",
+duration:4,
+scale:1.35,
+voice:"Ein"
+},
+
+{
+name:"Ausatmen",
+hint:"Sehr langsam summend entspannen",
+duration:7,
+scale:.68,
+voice:"Summen"
+},
+
+{
+name:"Pause",
+hint:"Nichts forcieren",
+duration:3,
+scale:.68,
+voice:"Pause"
+}
+
+]
+},
+
+sos:{
+screenId:"sosScreen",
+timerId:"sosTimer",
+ballId:"sosBall",
+progressId:"sosProgress",
+
+phases:[
+
+{
+name:"Einatmen",
+hint:"Kurz ruhig einatmen",
+duration:3,
+scale:1.2,
+voice:"Ein"
+},
+
+{
+name:"Ausatmen",
+hint:"Ultralang summend entlasten",
+duration:8,
+scale:.58,
+voice:"Summen"
+},
+
+{
+name:"Pause",
+hint:"System beruhigen lassen",
+duration:4,
+scale:.58,
+voice:"Pause"
+}
+
+]
+}
+
+},
+
+start(type){
+
+AudioEngine.unlock();
+
+ModeManager.stopAll();
+
+State.mode = type;
+
+const cfg =
+this.config[type];
+
+document
+.getElementById(cfg.screenId)
+.classList.add("active");
+
+let remaining =
+App.recommendedDuration;
+
+this.updateTimer(
+cfg.timerId,
+remaining
+);
+
+let index = 0;
+
+const ball =
+document.getElementById(cfg.ballId);
+
+const progress =
+document.getElementById(cfg.progressId);
+
+const phaseTitle =
+document.getElementById(
+type === "training"
+? "phaseText"
+: type + "Phase"
+);
+
+const phaseHint =
+document.getElementById(
+type === "training"
+? "phaseHint"
+: type + "Hint"
+);
+
+const run = ()=>{
+
+if(State.mode !== type) return;
+
+const phase =
+cfg.phases[index];
+
+phaseTitle.innerText =
+phase.name;
+
+phaseHint.innerText =
+phase.hint;
+
+AudioEngine.speak(
+phase.voice
+);
+
+ball.style.transform =
+`scale(${phase.scale})`;
+
+progress.style.transition =
+"none"
+
+progress.style.width = "0%"
+
+setTimeout(()=>{
+
+progress.style.transition =
+`width ${phase.duration}s linear`;
+
+progress.style.width = "100%"
+
+},40);
+
+index =
+(index + 1)
+% cfg.phases.length;
+
+ModeManager.timeout =
+setTimeout(
+run,
+phase.duration * 1000
+);
+
+};
+
+run();
+
+ModeManager.interval =
+setInterval(()=>{
+
+remaining--;
+
+this.updateTimer(
+cfg.timerId,
+remaining
+);
+
+if(remaining <= 0){
+
+AudioEngine.speak(
+"Training beendet"
+);
+
+ModeManager.stopAll();
+
+}
+
+},1000);
+
+},
+
+updateTimer(id,sec){
+
+const min =
+Math.floor(sec/60);
+
+const s =
+sec % 60;
+
+document
+.getElementById(id)
+.innerText =
+`${min}:${String(s).padStart(2,"0")}`;
+
+}
+
+};
+
+/* =========================================================
+INIT
+========================================================= */
 
 App.render();
 
