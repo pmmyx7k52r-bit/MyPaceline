@@ -2,9 +2,10 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-<title>VagusBuk 7.5.2</title>
+<title>VagusBuk 7.5.3</title>
 
 <style>
 
@@ -22,13 +23,7 @@ box-sizing:border-box;
 html,body{
 width:100%;
 overflow-x:hidden;
-
-font-family:
--apple-system,
-BlinkMacSystemFont,
-"Segoe UI",
-sans-serif;
-
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 background:#020912;
 color:white;
 }
@@ -36,11 +31,11 @@ color:white;
 body{
 background:
 radial-gradient(circle at top,
-rgba(48,109,184,.28),
-transparent 30%),
+rgba(52,108,176,.28),
+transparent 32%),
 linear-gradient(
 180deg,
-#06111c 0%,
+#06111d 0%,
 #020912 100%
 );
 
@@ -52,31 +47,24 @@ APP
 ========================================================= */
 
 .app{
-width:100%;
 max-width:520px;
 margin:0 auto;
-padding:
-18px 14px
-120px;
+padding:18px 14px 130px;
 }
 
 /* =========================================================
 HEADER
 ========================================================= */
 
-.hero{
-margin-bottom:14px;
-}
-
 .wave{
 text-align:center;
 font-size:18px;
-opacity:.12;
+opacity:.14;
 margin-bottom:6px;
 }
 
 .logo{
-font-size:40px;
+font-size:42px;
 font-weight:900;
 letter-spacing:-3px;
 line-height:.95;
@@ -84,9 +72,9 @@ line-height:.95;
 
 .subtitle{
 margin-top:8px;
-font-size:15px;
-line-height:1.4;
-color:#8da3b6;
+font-size:16px;
+line-height:1.45;
+color:#8ea5ba;
 }
 
 /* =========================================================
@@ -99,7 +87,7 @@ position:relative;
 background:
 linear-gradient(
 180deg,
-rgba(7,20,35,.82),
+rgba(8,20,33,.82),
 rgba(5,13,24,.96)
 );
 
@@ -108,17 +96,17 @@ border:
 
 border-radius:28px;
 
-backdrop-filter:blur(18px);
--webkit-backdrop-filter:blur(18px);
-
 padding:16px;
 
-margin-bottom:12px;
+margin-top:12px;
 
 overflow:hidden;
 
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
+
 box-shadow:
-0 10px 30px rgba(0,0,0,.32),
+0 10px 30px rgba(0,0,0,.34),
 inset 0 1px 0 rgba(255,255,255,.03);
 }
 
@@ -127,16 +115,17 @@ font-size:11px;
 letter-spacing:2px;
 text-transform:uppercase;
 color:#88a0b7;
-margin-bottom:12px;
+margin-bottom:14px;
 }
 
 /* =========================================================
-STATUS HERO
+HERO
 ========================================================= */
 
 .heroCard{
 padding:22px;
-min-height:210px;
+min-height:240px;
+
 display:flex;
 flex-direction:column;
 justify-content:space-between;
@@ -144,11 +133,9 @@ justify-content:space-between;
 
 .heroGlow{
 position:absolute;
-inset:-40%;
-
+inset:-35%;
 filter:blur(90px);
-opacity:.2;
-
+opacity:.16;
 pointer-events:none;
 }
 
@@ -168,32 +155,29 @@ font-weight:800;
 background:
 rgba(255,255,255,.08);
 
-margin-bottom:18px;
+margin-bottom:16px;
 }
 
 .heroTitle{
 font-size:34px;
 font-weight:900;
+line-height:1.04;
 letter-spacing:-2px;
-line-height:1.05;
 position:relative;
 z-index:2;
 }
 
 .heroText{
 margin-top:12px;
-
 font-size:18px;
-line-height:1.45;
-
-color:#d8e4ef;
-
+line-height:1.5;
+color:#dce7f1;
 position:relative;
 z-index:2;
 }
 
 .heroBottom{
-margin-top:18px;
+margin-top:20px;
 
 display:flex;
 align-items:center;
@@ -203,23 +187,24 @@ gap:14px;
 
 .heroEnergy{
 font-size:13px;
-color:#b3c2d0;
-line-height:1.45;
+line-height:1.5;
+color:#b8c5d1;
+max-width:220px;
 }
 
 .heroPulse{
-width:76px;
-height:76px;
+width:78px;
+height:78px;
 
 border-radius:50%;
 
 background:
 radial-gradient(circle at 35% 35%,
-#d6f8ff,
-#4fb9ff);
+#dcfbff,
+#4eb9ff);
 
 box-shadow:
-0 0 45px rgba(74,188,255,.35);
+0 0 50px rgba(75,189,255,.34);
 
 animation:
 pulse 4s ease-in-out infinite;
@@ -229,7 +214,7 @@ pulse 4s ease-in-out infinite;
 
 0%{
 transform:scale(.92);
-opacity:.85;
+opacity:.84;
 }
 
 50%{
@@ -239,22 +224,18 @@ opacity:1;
 
 100%{
 transform:scale(.92);
-opacity:.85;
+opacity:.84;
 }
 
 }
 
 /* =========================================================
-KPI BAR
+KPI
 ========================================================= */
-
-.kpiCard{
-padding:14px;
-}
 
 .kpiGrid{
 display:grid;
-grid-template-columns:repeat(3,1fr);
+grid-template-columns:1fr 1fr 1fr;
 gap:10px;
 }
 
@@ -278,7 +259,7 @@ margin-bottom:8px;
 }
 
 .kpiValue{
-font-size:36px;
+font-size:32px;
 font-weight:900;
 letter-spacing:-2px;
 line-height:1;
@@ -288,7 +269,7 @@ line-height:1;
 margin-top:8px;
 font-size:12px;
 line-height:1.35;
-color:#b2c1cf;
+color:#b8c4d0;
 }
 
 /* =========================================================
@@ -298,6 +279,7 @@ INPUT
 .inputWrap{
 display:flex;
 gap:10px;
+align-items:center;
 }
 
 .hrvInput{
@@ -324,34 +306,33 @@ font-weight:900;
 color:white;
 }
 
-.hrvInput:focus{
-border-color:
-rgba(111,179,255,.7);
+.hrvInput::placeholder{
+color:#6d8295;
 }
 
-.hrvInput::placeholder{
-color:#6d8296;
+.hrvInput:focus{
+border-color:
+rgba(111,179,255,.72);
 }
 
 .saveBtn{
 height:56px;
-padding:0 20px;
+padding:0 22px;
 
 border:none;
 border-radius:20px;
 
 font-size:15px;
-font-weight:800;
-
-color:white;
+font-weight:900;
 
 background:
 linear-gradient(
 135deg,
-#4ae178,
-#248845
+#4be179,
+#258846
 );
 
+color:white;
 cursor:pointer;
 }
 
@@ -359,12 +340,8 @@ cursor:pointer;
 CHART
 ========================================================= */
 
-.chartCard{
-padding-bottom:20px;
-}
-
 .chart{
-height:130px;
+height:140px;
 
 display:flex;
 align-items:flex-end;
@@ -385,7 +362,7 @@ height:100%;
 .barValue{
 font-size:10px;
 margin-bottom:6px;
-color:#dce6ef;
+color:#dce7ef;
 }
 
 .bar{
@@ -396,8 +373,8 @@ border-radius:12px 12px 5px 5px;
 background:
 linear-gradient(
 180deg,
-#76f394,
-#299447
+#74f293,
+#2b9448
 );
 
 box-shadow:
@@ -409,38 +386,35 @@ transform .3s ease;
 }
 
 .bar.today{
+
 background:
 linear-gradient(
 180deg,
-#8fe5ff,
-#3699ff
+#9be8ff,
+#379aff
 );
 
 box-shadow:
-0 10px 22px rgba(73,183,255,.30);
+0 10px 22px rgba(73,183,255,.28);
 
-transform:scale(1.04);
+transform:scale(1.05);
 }
 
 .barLabel{
 margin-top:6px;
 font-size:10px;
-color:#90a5b8;
+color:#90a4b7;
 }
 
 /* =========================================================
-TODAY PANEL
+TODAY
 ========================================================= */
-
-.todayCard{
-padding:18px;
-}
 
 .todayText{
 font-size:18px;
-line-height:1.6;
+line-height:1.55;
 color:#edf4fb;
-margin-bottom:18px;
+margin-bottom:16px;
 }
 
 .infoGrid{
@@ -450,7 +424,6 @@ gap:10px;
 
 .infoBox{
 padding:14px;
-
 border-radius:20px;
 
 background:
@@ -472,12 +445,11 @@ color:#edf5fd;
 }
 
 /* =========================================================
-BOTTOM BAR
+BOTTOM
 ========================================================= */
 
 .bottomWrap{
 position:fixed;
-
 left:0;
 right:0;
 bottom:0;
@@ -486,7 +458,7 @@ padding:
 12px 14px
 calc(14px + env(safe-area-inset-bottom));
 
-z-index:999;
+z-index:1000;
 }
 
 .bottomBar{
@@ -495,20 +467,20 @@ margin:0 auto;
 
 padding:10px;
 
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:10px;
+
 border-radius:28px;
 
 background:
-rgba(6,14,24,.84);
+rgba(5,12,20,.84);
 
 backdrop-filter:blur(22px);
 -webkit-backdrop-filter:blur(22px);
 
 border:
 1px solid rgba(255,255,255,.06);
-
-display:grid;
-grid-template-columns:1fr 1fr 1fr;
-gap:10px;
 }
 
 .actionBtn{
@@ -518,7 +490,7 @@ border:none;
 border-radius:20px;
 
 font-size:14px;
-font-weight:800;
+font-weight:900;
 
 color:white;
 cursor:pointer;
@@ -528,8 +500,8 @@ cursor:pointer;
 background:
 linear-gradient(
 135deg,
-#45dd72,
-#258847
+#43db70,
+#258947
 );
 }
 
@@ -546,13 +518,13 @@ linear-gradient(
 background:
 linear-gradient(
 135deg,
-#db6464,
-#7d2323
+#d95d5d,
+#7e2323
 );
 }
 
 /* =========================================================
-MODE SCREENS
+MODE SCREEN
 ========================================================= */
 
 .modeScreen{
@@ -568,7 +540,7 @@ padding:24px;
 
 overflow:hidden;
 
-z-index:1000;
+z-index:2000;
 }
 
 .modeScreen.active{
@@ -578,7 +550,7 @@ display:flex;
 .trainingMode{
 background:
 radial-gradient(circle at center,
-#10395f 0%,
+#123b64 0%,
 #020912 100%);
 }
 
@@ -666,11 +638,9 @@ height:240px;
 border-radius:50%;
 
 background:
-radial-gradient(
-circle,
+radial-gradient(circle,
 rgba(90,190,255,.24),
-transparent 70%
-);
+transparent 70%);
 
 filter:blur(35px);
 
@@ -698,17 +668,15 @@ opacity:.2;
 }
 
 .ball{
-width:100px;
-height:100px;
+width:102px;
+height:102px;
 
 border-radius:50%;
 
 background:
-radial-gradient(
-circle at 30% 30%,
+radial-gradient(circle at 30% 30%,
 #d4fbff,
-#44bbff
-);
+#44bbff);
 
 box-shadow:
 0 0 70px rgba(75,189,255,.34);
@@ -716,8 +684,7 @@ box-shadow:
 transform:scale(.7);
 
 transition:
-transform 4s ease-in-out,
-box-shadow 2s ease;
+transform 4s ease-in-out;
 }
 
 .phaseBar{
@@ -748,7 +715,6 @@ linear-gradient(
 
 .timer{
 margin-top:26px;
-
 font-size:52px;
 font-weight:900;
 letter-spacing:-2px;
@@ -758,19 +724,23 @@ letter-spacing:-2px;
 MOBILE
 ========================================================= */
 
-@media(max-width:420px){
+@media(max-width:460px){
 
-.heroTitle{
-font-size:28px;
+.kpi{
+padding:12px;
 }
 
 .kpiValue{
+font-size:28px;
+}
+
+.heroTitle{
 font-size:30px;
 }
 
 .heroPulse{
-width:64px;
-height:64px;
+width:68px;
+height:68px;
 }
 
 }
@@ -782,13 +752,7 @@ height:64px;
 
 <div class="app">
 
-<!-- HEADER -->
-
-<div class="hero">
-
-<div class="wave">
-〰〰
-</div>
+<div class="wave">〰〰</div>
 
 <div class="logo">
 VagusBuk
@@ -796,8 +760,6 @@ VagusBuk
 
 <div class="subtitle">
 HRV- & Nervensystem-Regulation
-</div>
-
 </div>
 
 <!-- HERO -->
@@ -836,7 +798,7 @@ Noch keine Regulationsdaten vorhanden.
 
 <!-- KPI -->
 
-<div class="card kpiCard">
+<div class="card">
 
 <div class="kpiGrid">
 
@@ -922,7 +884,7 @@ Speichern
 
 <!-- CHART -->
 
-<div class="card chartCard">
+<div class="card">
 
 <div class="sectionTitle">
 Verlauf
@@ -934,7 +896,7 @@ Verlauf
 
 <!-- TODAY -->
 
-<div class="card todayCard">
+<div class="card">
 
 <div class="sectionTitle">
 Heute beachten
@@ -1006,7 +968,8 @@ onclick="Pacer.start('sos')">
 
 <!-- TRAINING -->
 
-<div class="modeScreen trainingMode" id="trainingScreen">
+<div class="modeScreen trainingMode"
+id="trainingScreen">
 
 <button
 class="modeBack"
@@ -1018,11 +981,13 @@ Zurück
 Vagus-Training
 </div>
 
-<div class="modePhase" id="phaseText">
+<div class="modePhase"
+id="trainingPhase">
 Einatmen
 </div>
 
-<div class="modeHint" id="phaseHint">
+<div class="modeHint"
+id="trainingHint">
 Langsam durch die Nase einatmen
 </div>
 
@@ -1030,95 +995,18 @@ Langsam durch die Nase einatmen
 
 <div class="ballAura"></div>
 
-<div class="ball" id="breathBall"></div>
+<div class="ball"
+id="trainingBall"></div>
 
 </div>
 
 <div class="phaseBar">
-<div class="phaseProgress" id="phaseProgress"></div>
+<div class="phaseProgress"
+id="trainingProgress"></div>
 </div>
 
-<div class="timer" id="trainingTimer">
-0:00
-</div>
-
-</div>
-
-<!-- RECOVERY -->
-
-<div class="modeScreen recoveryMode" id="recoveryScreen">
-
-<button
-class="modeBack"
-onclick="ModeManager.stopAll()">
-Zurück
-</button>
-
-<div class="modeTitle">
-Recovery
-</div>
-
-<div class="modePhase" id="recoveryPhase">
-Ausatmen
-</div>
-
-<div class="modeHint" id="recoveryHint">
-Sehr langsam entspannen
-</div>
-
-<div class="ballWrap">
-
-<div class="ballAura"></div>
-
-<div class="ball" id="recoveryBall"></div>
-
-</div>
-
-<div class="phaseBar">
-<div class="phaseProgress" id="recoveryProgress"></div>
-</div>
-
-<div class="timer" id="recoveryTimer">
-0:00
-</div>
-
-</div>
-
-<!-- SOS -->
-
-<div class="modeScreen sosMode" id="sosScreen">
-
-<button
-class="modeBack"
-onclick="ModeManager.stopAll()">
-Zurück
-</button>
-
-<div class="modeTitle">
-SOS-Regulation
-</div>
-
-<div class="modePhase" id="sosPhase">
-Ausatmen
-</div>
-
-<div class="modeHint" id="sosHint">
-Ultralang summend entlasten
-</div>
-
-<div class="ballWrap">
-
-<div class="ballAura"></div>
-
-<div class="ball" id="sosBall"></div>
-
-</div>
-
-<div class="phaseBar">
-<div class="phaseProgress" id="sosProgress"></div>
-</div>
-
-<div class="timer" id="sosTimer">
+<div class="timer"
+id="trainingTimer">
 0:00
 </div>
 
@@ -1132,8 +1020,7 @@ STATE
 
 const State = {
 mode:"idle",
-audioReady:false,
-running:false
+audioReady:false
 };
 
 /* =========================================================
@@ -1149,9 +1036,11 @@ if(State.audioReady) return;
 State.audioReady = true;
 
 try{
+
 speechSynthesis.speak(
 new SpeechSynthesisUtterance("")
 );
+
 }catch(e){}
 
 },
@@ -1318,16 +1207,9 @@ data.slice(-7);
 if(!last7.length) return null;
 
 return Math.round(
-
-last7.reduce(
-(a,b)=>a+b.value,
-0
-)
-
+last7.reduce((a,b)=>a+b.value,0)
 /
-
 last7.length
-
 );
 
 },
@@ -1419,7 +1301,7 @@ heroTitle.innerText =
 "⚠ Nervensystem belastet"
 
 heroText.innerText =
-"Heute möglichst wenig Reizdruck."
+"Heute Reize möglichst gering halten."
 
 energy.innerText =
 "Geringe Regulationsreserve erkannt."
@@ -1434,7 +1316,7 @@ stateText.innerText =
 "Belastet"
 
 todayText.innerText =
-"Heute geringe Belastbarkeit. Langsame Atmung und Reizreduktion sind sinnvoll."
+"Heute geringe Belastbarkeit."
 
 plan.innerHTML =
 "• Recovery nutzen<br>• lange Ausatmung<br>• Summen"
@@ -1463,7 +1345,7 @@ heroTitle.innerText =
 "⚠ Mittlere Belastbarkeit"
 
 heroText.innerText =
-"Heute etwas ruhiger bleiben."
+"Heute besser langsames Tempo wählen."
 
 energy.innerText =
 "Teilweise reduzierte Regulationskapazität."
@@ -1478,13 +1360,13 @@ stateText.innerText =
 "Vorsichtig"
 
 todayText.innerText =
-"Heute besser mit ruhigem Tempo arbeiten und Reizwechsel reduzieren."
+"Heute besser ruhig arbeiten."
 
 plan.innerHTML =
 "• ruhige 4/6 Atmung<br>• Recovery"
 
 avoid.innerHTML =
-"• Hektik<br>• Reizüberlastung"
+"• Hektik<br>• zu viele Sinnesreize"
 
 App.recommendedDuration = 180;
 
@@ -1505,7 +1387,7 @@ heroTitle.innerText =
 "✓ Gute vagale Stabilität"
 
 heroText.innerText =
-"Heute eignet sich Training."
+"Heute eignet sich ruhiges Training."
 
 energy.innerText =
 "Regulationssystem wirkt stabilisiert."
@@ -1520,13 +1402,13 @@ stateText.innerText =
 "Stabil"
 
 todayText.innerText =
-"Heute eignet sich vorsichtiges Atemtraining und ruhige Aktivität."
+"Heute eignet sich vorsichtiges Atemtraining."
 
 plan.innerHTML =
 "• Training vertiefen<br>• Nasenatmung"
 
 avoid.innerHTML =
-"• hektische Reizwechsel"
+"• schnelle Kontextwechsel"
 
 App.recommendedDuration = 300;
 
@@ -1610,7 +1492,6 @@ timeout:null,
 stopAll(){
 
 State.mode = "idle"
-State.running = false;
 
 clearInterval(this.interval);
 clearTimeout(this.timeout);
@@ -1638,8 +1519,10 @@ config:{
 training:{
 screenId:"trainingScreen",
 timerId:"trainingTimer",
-ballId:"breathBall",
-progressId:"phaseProgress",
+ballId:"trainingBall",
+progressId:"trainingProgress",
+phaseId:"trainingPhase",
+hintId:"trainingHint",
 
 phases:[
 
@@ -1647,7 +1530,7 @@ phases:[
 name:"Einatmen",
 hint:"Langsam durch die Nase einatmen",
 duration:4,
-scale:1.55,
+scale:1.5,
 voice:"Ein"
 },
 
@@ -1655,7 +1538,7 @@ voice:"Ein"
 name:"Halten",
 hint:"Kurz ruhig bleiben",
 duration:2,
-scale:1.55,
+scale:1.5,
 voice:"Halten"
 },
 
@@ -1665,102 +1548,20 @@ hint:"Langsam summend ausatmen",
 duration:6,
 scale:.72,
 voice:"Summen"
-},
-
-{
-name:"Ruhe",
-hint:"Kurz entspannen",
-duration:2,
-scale:.72,
-voice:"Pause"
 }
 
 ]
-},
 
-recovery:{
-screenId:"recoveryScreen",
-timerId:"recoveryTimer",
-ballId:"recoveryBall",
-progressId:"recoveryProgress",
-
-phases:[
-
-{
-name:"Einatmen",
-hint:"Sanft Luft holen",
-duration:4,
-scale:1.35,
-voice:"Ein"
-},
-
-{
-name:"Ausatmen",
-hint:"Sehr langsam summend entspannen",
-duration:7,
-scale:.68,
-voice:"Summen"
-},
-
-{
-name:"Pause",
-hint:"Nichts forcieren",
-duration:3,
-scale:.68,
-voice:"Pause"
-}
-
-]
-},
-
-sos:{
-screenId:"sosScreen",
-timerId:"sosTimer",
-ballId:"sosBall",
-progressId:"sosProgress",
-
-phases:[
-
-{
-name:"Einatmen",
-hint:"Kurz ruhig einatmen",
-duration:3,
-scale:1.18,
-voice:"Ein"
-},
-
-{
-name:"Ausatmen",
-hint:"Ultralang summend entlasten",
-duration:8,
-scale:.58,
-voice:"Summen"
-},
-
-{
-name:"Pause",
-hint:"System beruhigen lassen",
-duration:4,
-scale:.58,
-voice:"Pause"
-}
-
-]
 }
 
 },
 
 start(type){
 
-if(State.running) return;
-
-State.running = true;
-
 AudioEngine.unlock();
 
 ModeManager.stopAll();
 
-State.running = true;
 State.mode = type;
 
 const cfg =
@@ -1778,45 +1579,31 @@ cfg.timerId,
 remaining
 );
 
-let index = 0;
-
 const ball =
 document.getElementById(cfg.ballId);
 
 const progress =
 document.getElementById(cfg.progressId);
 
-const phaseTitle =
-document.getElementById(
+const phaseText =
+document.getElementById(cfg.phaseId);
 
-type === "training"
-? "phaseText"
-: type + "Phase"
+const hintText =
+document.getElementById(cfg.hintId);
 
-);
-
-const phaseHint =
-document.getElementById(
-
-type === "training"
-? "phaseHint"
-: type + "Hint"
-
-);
+let index = 0;
 
 const run = ()=>{
 
-if(State.mode !== type){
-return;
-}
+if(State.mode !== type) return;
 
 const phase =
 cfg.phases[index];
 
-phaseTitle.innerText =
+phaseText.innerText =
 phase.name;
 
-phaseHint.innerText =
+hintText.innerText =
 phase.hint;
 
 AudioEngine.speak(
@@ -1829,20 +1616,23 @@ ball.style.transform =
 progress.style.transition =
 "none"
 
-progress.style.width = "0%"
+progress.style.width =
+"0%"
 
-requestAnimationFrame(()=>{
+setTimeout(()=>{
 
 progress.style.transition =
 `width ${phase.duration}s linear`;
 
-progress.style.width = "100%"
+progress.style.width =
+"100%"
 
-});
+},40);
 
 index =
 (index + 1)
-% cfg.phases.length;
+%
+cfg.phases.length;
 
 ModeManager.timeout =
 setTimeout(
@@ -1881,7 +1671,7 @@ ModeManager.stopAll();
 updateTimer(id,sec){
 
 const min =
-Math.floor(sec/60);
+Math.floor(sec / 60);
 
 const s =
 sec % 60;
@@ -1900,10 +1690,6 @@ INIT
 ========================================================= */
 
 App.render();
-
-document
-.getElementById("hrvInput")
-.focus();
 
 </script>
 
