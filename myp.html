@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-<title>VagusBuk 7.5.3.2</title>
+<title>VagusBuk 7.5.4</title>
 
 <style>
 
@@ -24,16 +24,26 @@ min-width:0;
 html,body{
 width:100%;
 overflow-x:hidden;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+sans-serif;
+
 background:#020912;
 color:white;
 }
 
 body{
+
 background:
-radial-gradient(circle at top,
+radial-gradient(
+circle at top,
 rgba(52,108,176,.28),
-transparent 32%),
+transparent 32%
+),
+
 linear-gradient(
 180deg,
 #06111d 0%,
@@ -83,6 +93,7 @@ CARD
 ========================================================= */
 
 .card{
+
 position:relative;
 
 background:
@@ -125,7 +136,7 @@ HERO
 
 .heroCard{
 padding:22px;
-min-height:240px;
+min-height:270px;
 
 display:flex;
 flex-direction:column;
@@ -141,6 +152,7 @@ pointer-events:none;
 }
 
 .heroBadge{
+
 display:inline-flex;
 align-items:center;
 justify-content:center;
@@ -178,7 +190,7 @@ z-index:2;
 }
 
 .heroBottom{
-margin-top:20px;
+margin-top:22px;
 
 display:flex;
 align-items:center;
@@ -187,25 +199,28 @@ gap:14px;
 }
 
 .heroEnergy{
-font-size:13px;
-line-height:1.5;
-color:#b8c5d1;
+font-size:14px;
+line-height:1.55;
+color:#bcc9d5;
 max-width:220px;
 }
 
 .heroPulse{
-width:78px;
-height:78px;
+
+width:82px;
+height:82px;
 
 border-radius:50%;
 
 background:
-radial-gradient(circle at 35% 35%,
-#dcfbff,
-#4eb9ff);
+radial-gradient(
+circle at 35% 35%,
+#d9fcff,
+#49b8ff
+);
 
 box-shadow:
-0 0 50px rgba(75,189,255,.34);
+0 0 55px rgba(73,184,255,.34);
 
 animation:
 pulse 4s ease-in-out infinite;
@@ -281,12 +296,11 @@ INPUT
 display:flex;
 gap:10px;
 align-items:center;
-width:100%;
 }
 
 .hrvInput{
+
 flex:1;
-min-width:0;
 
 height:56px;
 
@@ -313,13 +327,7 @@ color:white;
 color:#6d8295;
 }
 
-.hrvInput:focus{
-border-color:
-rgba(111,179,255,.72);
-}
-
 .saveBtn{
-flex-shrink:0;
 
 height:56px;
 padding:0 18px;
@@ -338,10 +346,7 @@ linear-gradient(
 );
 
 color:white;
-
 cursor:pointer;
-
-white-space:nowrap;
 }
 
 /* =========================================================
@@ -385,12 +390,8 @@ linear-gradient(
 #2b9448
 );
 
-box-shadow:
-0 8px 18px rgba(65,216,108,.18);
-
 transition:
-height .4s ease,
-transform .3s ease;
+height .4s ease;
 }
 
 .bar.today{
@@ -401,11 +402,6 @@ linear-gradient(
 #9be8ff,
 #379aff
 );
-
-box-shadow:
-0 10px 22px rgba(73,183,255,.28);
-
-transform:scale(1.05);
 }
 
 .barLabel{
@@ -418,38 +414,43 @@ color:#90a4b7;
 TODAY
 ========================================================= */
 
-.todayText{
+.todayMain{
 font-size:18px;
 line-height:1.55;
 color:#edf4fb;
 margin-bottom:16px;
 }
 
-.infoGrid{
-display:grid;
-gap:10px;
-}
+.recommendCard{
 
-.infoBox{
-padding:14px;
-border-radius:20px;
+padding:16px;
+
+border-radius:22px;
 
 background:
 rgba(255,255,255,.04);
+
+margin-top:10px;
 }
 
-.infoLabel{
-font-size:10px;
+.recommendTitle{
+font-size:12px;
 letter-spacing:1px;
 text-transform:uppercase;
-color:#8ea4b8;
-margin-bottom:8px;
+color:#8ea5ba;
+margin-bottom:10px;
 }
 
-.infoText{
-font-size:14px;
+.recommendMode{
+font-size:24px;
+font-weight:900;
+margin-bottom:10px;
+}
+
+.recommendText{
+font-size:15px;
 line-height:1.55;
-color:#edf5fd;
+color:#e5eef7;
 }
 
 /* =========================================================
@@ -470,6 +471,7 @@ z-index:1000;
 }
 
 .bottomBar{
+
 max-width:520px;
 margin:0 auto;
 
@@ -532,10 +534,11 @@ linear-gradient(
 }
 
 /* =========================================================
-MODE SCREENS
+MODE
 ========================================================= */
 
 .modeScreen{
+
 position:fixed;
 inset:0;
 
@@ -577,6 +580,7 @@ radial-gradient(circle at center,
 }
 
 .modeBack{
+
 position:absolute;
 
 top:54px;
@@ -617,14 +621,15 @@ text-align:center;
 color:#d5dfe8;
 
 max-width:320px;
-min-height:54px;
+min-height:58px;
 }
 
 /* =========================================================
-BREATH ENGINE
+BALL
 ========================================================= */
 
 .ballWrap{
+
 position:relative;
 
 width:260px;
@@ -638,6 +643,7 @@ margin-top:20px;
 }
 
 .ballAura{
+
 position:absolute;
 
 width:240px;
@@ -646,9 +652,11 @@ height:240px;
 border-radius:50%;
 
 background:
-radial-gradient(circle,
+radial-gradient(
+circle,
 rgba(90,190,255,.24),
-transparent 70%);
+transparent 70%
+);
 
 filter:blur(35px);
 
@@ -676,15 +684,18 @@ opacity:.2;
 }
 
 .ball{
-width:102px;
-height:102px;
+
+width:100px;
+height:100px;
 
 border-radius:50%;
 
 background:
-radial-gradient(circle at 30% 30%,
+radial-gradient(
+circle at 30% 30%,
 #d4fbff,
-#44bbff);
+#44bbff
+);
 
 box-shadow:
 0 0 70px rgba(75,189,255,.34);
@@ -695,7 +706,53 @@ transition:
 transform 4s ease-in-out;
 }
 
+/* =========================================================
+TAP
+========================================================= */
+
+.tapWrap{
+
+margin-top:26px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+gap:18px;
+}
+
+.tapDot{
+
+width:44px;
+height:44px;
+
+border-radius:50%;
+
+background:
+rgba(255,255,255,.12);
+
+opacity:.3;
+
+transition:
+transform .25s ease,
+opacity .25s ease;
+}
+
+.tapDot.active{
+opacity:1;
+transform:scale(1.2);
+}
+
+.tapCenter{
+font-size:13px;
+color:#cdd8e2;
+}
+
+/* =========================================================
+PHASE
+========================================================= */
+
 .phaseBar{
+
 width:220px;
 height:8px;
 
@@ -710,6 +767,7 @@ margin-top:22px;
 }
 
 .phaseProgress{
+
 height:100%;
 width:0%;
 
@@ -734,22 +792,12 @@ MOBILE
 
 @media(max-width:460px){
 
-.kpiValue{
-font-size:28px;
-}
-
 .heroTitle{
 font-size:30px;
 }
 
-.heroPulse{
-width:68px;
-height:68px;
-}
-
-.saveBtn{
-padding:0 14px;
-font-size:14px;
+.kpiValue{
+font-size:28px;
 }
 
 }
@@ -770,6 +818,8 @@ VagusBuk
 <div class="subtitle">
 HRV- & Nervensystem-Regulation
 </div>
+
+<!-- HERO -->
 
 <div class="card heroCard">
 
@@ -802,6 +852,8 @@ Noch keine Regulationsdaten vorhanden.
 </div>
 
 </div>
+
+<!-- KPI -->
 
 <div class="card">
 
@@ -859,6 +911,8 @@ Keine Daten
 
 </div>
 
+<!-- INPUT -->
+
 <div class="card">
 
 <div class="sectionTitle">
@@ -885,6 +939,8 @@ Speichern
 
 </div>
 
+<!-- CHART -->
+
 <div class="card">
 
 <div class="sectionTitle">
@@ -895,40 +951,30 @@ Verlauf
 
 </div>
 
+<!-- RECOMMEND -->
+
 <div class="card">
 
 <div class="sectionTitle">
-Heute beachten
+Empfehlung heute
 </div>
 
-<div class="todayText" id="todayText">
+<div class="todayMain" id="todayText">
 Noch keine Einschätzung möglich.
 </div>
 
-<div class="infoGrid">
+<div class="recommendCard">
 
-<div class="infoBox">
-
-<div class="infoLabel">
-Tun
+<div class="recommendTitle">
+Empfohlener Modus
 </div>
 
-<div class="infoText" id="planText">
+<div class="recommendMode" id="recommendedMode">
 –
 </div>
 
-</div>
-
-<div class="infoBox">
-
-<div class="infoLabel">
-Vermeiden
-</div>
-
-<div class="infoText" id="avoidText">
+<div class="recommendText" id="recommendedText">
 –
-</div>
-
 </div>
 
 </div>
@@ -979,24 +1025,36 @@ Zurück
 Vagus-Training
 </div>
 
-<div class="modePhase" id="phaseText">
+<div class="modePhase" id="trainingPhase">
 Einatmen
 </div>
 
-<div class="modeHint" id="phaseHint">
-Langsam durch die Nase einatmen
+<div class="modeHint" id="trainingHint">
+Langsam einatmen
 </div>
 
 <div class="ballWrap">
 
 <div class="ballAura"></div>
 
-<div class="ball" id="breathBall"></div>
+<div class="ball" id="trainingBall"></div>
+
+</div>
+
+<div class="tapWrap">
+
+<div class="tapDot" id="leftTap"></div>
+
+<div class="tapCenter">
+bilaterales Klopfen
+</div>
+
+<div class="tapDot" id="rightTap"></div>
 
 </div>
 
 <div class="phaseBar">
-<div class="phaseProgress" id="phaseProgress"></div>
+<div class="phaseProgress" id="trainingProgress"></div>
 </div>
 
 <div class="timer" id="trainingTimer">
@@ -1035,6 +1093,18 @@ Sehr langsam entspannen
 
 </div>
 
+<div class="tapWrap">
+
+<div class="tapDot" id="leftTapRecovery"></div>
+
+<div class="tapCenter">
+sanft links / rechts klopfen
+</div>
+
+<div class="tapDot" id="rightTapRecovery"></div>
+
+</div>
+
 <div class="phaseBar">
 <div class="phaseProgress" id="recoveryProgress"></div>
 </div>
@@ -1064,7 +1134,7 @@ Ausatmen
 </div>
 
 <div class="modeHint" id="sosHint">
-Ultralang summend entlasten
+Ultralang summend entspannen
 </div>
 
 <div class="ballWrap">
@@ -1072,6 +1142,18 @@ Ultralang summend entlasten
 <div class="ballAura"></div>
 
 <div class="ball" id="sosBall"></div>
+
+</div>
+
+<div class="tapWrap">
+
+<div class="tapDot" id="leftTapSos"></div>
+
+<div class="tapCenter">
+langsam links / rechts
+</div>
+
+<div class="tapDot" id="rightTapSos"></div>
 
 </div>
 
@@ -1116,7 +1198,7 @@ new SpeechSynthesisUtterance("")
 
 },
 
-speak(text){
+speak(text,rate=.9){
 
 if(!State.audioReady) return;
 
@@ -1128,7 +1210,7 @@ const msg =
 new SpeechSynthesisUtterance(text);
 
 msg.lang = "de-DE"
-msg.rate = .9;
+msg.rate = rate;
 msg.pitch = .92;
 msg.volume = .9;
 
@@ -1198,6 +1280,7 @@ const App = {
 
 hrvData:Storage.load(),
 
+recommendedMode:"recovery",
 recommendedDuration:180,
 
 saveHRV(){
@@ -1224,9 +1307,6 @@ if(existing !== -1){
 
 this.hrvData[existing].value =
 value;
-
-this.hrvData[existing].date =
-Date.now();
 
 }else{
 
@@ -1302,6 +1382,17 @@ if(latest === null){
 return;
 }
 
+const low =
+avg
+? latest < avg * .9
+: latest < 35;
+
+const mid =
+avg
+? latest >= avg * .9 &&
+latest < avg * 1.05
+: latest < 45;
+
 const heroBadge =
 document.getElementById("heroBadge");
 
@@ -1326,25 +1417,16 @@ document.getElementById("stateText");
 const todayText =
 document.getElementById("todayText");
 
-const plan =
-document.getElementById("planText");
+const recommendedMode =
+document.getElementById("recommendedMode");
 
-const avoid =
-document.getElementById("avoidText");
+const recommendedText =
+document.getElementById("recommendedText");
 
 const energy =
 document.getElementById("heroEnergy");
 
-const low =
-avg
-? latest < avg * .9
-: latest < 35;
-
-const mid =
-avg
-? latest >= avg * .9 &&
-latest < avg * 1.05
-: latest < 45;
+/* LOW */
 
 if(low){
 
@@ -1376,19 +1458,22 @@ stateText.innerText =
 "Belastet"
 
 todayText.innerText =
-"Heute geringe Belastbarkeit."
+"Heute besser nur regulieren."
 
-plan.innerHTML =
-"• Recovery nutzen<br>• lange Ausatmung<br>• Summen"
+recommendedMode.innerText =
+"⚠ SOS"
 
-avoid.innerHTML =
-"• Stressgespräche<br>• Multitasking"
+recommendedText.innerHTML =
+"Ultralange Ausatmung, Summen und langsames bilaterales Klopfen."
 
-App.recommendedDuration = 120;
+App.recommendedMode = "sos"
+App.recommendedDuration = 180;
 
 return;
 
 }
+
+/* MID */
 
 if(mid){
 
@@ -1420,19 +1505,22 @@ stateText.innerText =
 "Vorsichtig"
 
 todayText.innerText =
-"Heute besser ruhig arbeiten."
+"Heute eher beruhigen statt trainieren."
 
-plan.innerHTML =
-"• ruhige 4/6 Atmung<br>• Recovery"
+recommendedMode.innerText =
+"🌙 Recovery"
 
-avoid.innerHTML =
-"• Hektik<br>• zu viele Sinnesreize"
+recommendedText.innerHTML =
+"Langsame Atmung, Summen, sanfte Regulation und reduzierte Reize."
 
-App.recommendedDuration = 180;
+App.recommendedMode = "recovery"
+App.recommendedDuration = 240;
 
 return;
 
 }
+
+/* STABLE */
 
 heroBadge.innerText =
 "Stabil"
@@ -1447,7 +1535,7 @@ heroTitle.innerText =
 "✓ Gute vagale Stabilität"
 
 heroText.innerText =
-"Heute eignet sich ruhiges Training."
+"Heute eignet sich vorsichtiges Training."
 
 energy.innerText =
 "Regulationssystem wirkt stabilisiert."
@@ -1462,14 +1550,15 @@ stateText.innerText =
 "Stabil"
 
 todayText.innerText =
-"Heute eignet sich vorsichtiges Atemtraining."
+"Heute eignet sich Vagus-Training."
 
-plan.innerHTML =
-"• Training vertiefen<br>• Nasenatmung"
+recommendedMode.innerText =
+"🫁 Training"
 
-avoid.innerHTML =
-"• schnelle Kontextwechsel"
+recommendedText.innerHTML =
+"Rhythmische Atmung, Summen und leichte Aktivierung."
 
+App.recommendedMode = "training"
 App.recommendedDuration = 300;
 
 },
@@ -1548,12 +1637,15 @@ const ModeManager = {
 
 interval:null,
 timeout:null,
+tapInterval:null,
 
 stopAll(){
 
 State.mode = "idle"
 
 clearInterval(this.interval);
+clearInterval(this.tapInterval);
+
 clearTimeout(this.timeout);
 
 AudioEngine.stop();
@@ -1577,10 +1669,19 @@ const Pacer = {
 config:{
 
 training:{
+
 screenId:"trainingScreen",
 timerId:"trainingTimer",
-ballId:"breathBall",
-progressId:"phaseProgress",
+ballId:"trainingBall",
+progressId:"trainingProgress",
+
+phaseId:"trainingPhase",
+hintId:"trainingHint",
+
+voiceRate:.95,
+
+tapLeft:"leftTap",
+tapRight:"rightTap",
 
 phases:[
 
@@ -1606,24 +1707,26 @@ hint:"Langsam summend ausatmen",
 duration:6,
 scale:.72,
 voice:"Summen"
-},
-
-{
-name:"Ruhe",
-hint:"Kurz entspannen",
-duration:2,
-scale:.72,
-voice:"Pause"
 }
 
 ]
+
 },
 
 recovery:{
+
 screenId:"recoveryScreen",
 timerId:"recoveryTimer",
 ballId:"recoveryBall",
 progressId:"recoveryProgress",
+
+phaseId:"recoveryPhase",
+hintId:"recoveryHint",
+
+voiceRate:.82,
+
+tapLeft:"leftTapRecovery",
+tapRight:"rightTapRecovery",
 
 phases:[
 
@@ -1631,7 +1734,7 @@ phases:[
 name:"Einatmen",
 hint:"Sanft Luft holen",
 duration:4,
-scale:1.35,
+scale:1.25,
 voice:"Ein"
 },
 
@@ -1645,34 +1748,44 @@ voice:"Summen"
 
 {
 name:"Pause",
-hint:"Nichts forcieren",
+hint:"Kiefer und Augen lösen",
 duration:3,
 scale:.68,
 voice:"Pause"
 }
 
 ]
+
 },
 
 sos:{
+
 screenId:"sosScreen",
 timerId:"sosTimer",
 ballId:"sosBall",
 progressId:"sosProgress",
 
+phaseId:"sosPhase",
+hintId:"sosHint",
+
+voiceRate:.72,
+
+tapLeft:"leftTapSos",
+tapRight:"rightTapSos",
+
 phases:[
 
 {
 name:"Einatmen",
-hint:"Kurz ruhig einatmen",
+hint:"Nur leicht Luft holen",
 duration:3,
-scale:1.2,
+scale:1.1,
 voice:"Ein"
 },
 
 {
 name:"Ausatmen",
-hint:"Ultralang summend entlasten",
+hint:"Sehr lang summend ausatmen",
 duration:8,
 scale:.58,
 voice:"Summen"
@@ -1680,13 +1793,14 @@ voice:"Summen"
 
 {
 name:"Pause",
-hint:"System beruhigen lassen",
+hint:"Du musst gerade nichts leisten",
 duration:4,
 scale:.58,
 voice:"Pause"
 }
 
 ]
+
 }
 
 },
@@ -1714,27 +1828,51 @@ cfg.timerId,
 remaining
 );
 
-let index = 0;
-
 const ball =
 document.getElementById(cfg.ballId);
 
 const progress =
 document.getElementById(cfg.progressId);
 
-const phaseTitle =
-document.getElementById(
-type === "training"
-? "phaseText"
-: type + "Phase"
-);
+const phaseText =
+document.getElementById(cfg.phaseId);
 
 const phaseHint =
-document.getElementById(
-type === "training"
-? "phaseHint"
-: type + "Hint"
-);
+document.getElementById(cfg.hintId);
+
+const leftTap =
+document.getElementById(cfg.tapLeft);
+
+const rightTap =
+document.getElementById(cfg.tapRight);
+
+let tapSide = true;
+
+ModeManager.tapInterval =
+setInterval(()=>{
+
+leftTap.classList.remove("active");
+rightTap.classList.remove("active");
+
+if(tapSide){
+
+leftTap.classList.add("active");
+
+navigator.vibrate?.(20);
+
+}else{
+
+rightTap.classList.add("active");
+
+navigator.vibrate?.(20);
+
+}
+
+tapSide = !tapSide;
+
+},700);
+
+let index = 0;
 
 const run = ()=>{
 
@@ -1743,14 +1881,15 @@ if(State.mode !== type) return;
 const phase =
 cfg.phases[index];
 
-phaseTitle.innerText =
+phaseText.innerText =
 phase.name;
 
 phaseHint.innerText =
 phase.hint;
 
 AudioEngine.speak(
-phase.voice
+phase.voice,
+cfg.voiceRate
 );
 
 ball.style.transform =
@@ -1797,7 +1936,8 @@ remaining
 if(remaining <= 0){
 
 AudioEngine.speak(
-"Training beendet"
+"Session beendet",
+cfg.voiceRate
 );
 
 ModeManager.stopAll();
