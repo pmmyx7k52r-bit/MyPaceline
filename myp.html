@@ -5,7 +5,7 @@
 <meta name="viewport"
 content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
-<title>VagusBuk 8.0.1</title>
+<title>VagusBuk 8.0.2</title>
 
 <style>
 
@@ -26,9 +26,9 @@ overflow-x:hidden;
 }
 
 .app{
-max-width:540px;
+max-width:560px;
 margin:0 auto;
-padding:18px 14px 140px;
+padding:18px 14px 150px;
 }
 
 .logo{
@@ -39,36 +39,37 @@ letter-spacing:-2px;
 
 .subtitle{
 margin-top:8px;
-color:#93a7ba;
+margin-bottom:20px;
 font-size:15px;
-margin-bottom:18px;
+color:#93a7ba;
 }
 
 .card{
 background:
 linear-gradient(
 180deg,
-rgba(11,22,35,.95),
-rgba(5,12,22,.95)
+rgba(10,22,35,.95),
+rgba(4,11,20,.95)
 );
 
-border:1px solid rgba(255,255,255,.06);
+border-radius:28px;
 
-border-radius:26px;
+border:
+1px solid rgba(255,255,255,.06);
 
 padding:16px;
 
 margin-bottom:14px;
 
 box-shadow:
-0 10px 28px rgba(0,0,0,.35);
+0 12px 34px rgba(0,0,0,.34);
 }
 
 .sectionTitle{
 font-size:11px;
 letter-spacing:2px;
 text-transform:uppercase;
-color:#89a0b5;
+color:#88a0b5;
 margin-bottom:12px;
 }
 
@@ -83,7 +84,7 @@ letter-spacing:-2px;
 margin-top:12px;
 font-size:17px;
 line-height:1.5;
-color:#dbe6ef;
+color:#dce7f0;
 }
 
 .stats{
@@ -102,7 +103,7 @@ padding:14px;
 font-size:10px;
 letter-spacing:1px;
 text-transform:uppercase;
-color:#8fa5b9;
+color:#8ea3b6;
 margin-bottom:8px;
 }
 
@@ -116,7 +117,7 @@ letter-spacing:-2px;
 margin-top:6px;
 font-size:12px;
 line-height:1.35;
-color:#afc0cf;
+color:#b3c2cf;
 }
 
 .inputRow{
@@ -130,9 +131,9 @@ height:56px;
 border:none;
 outline:none;
 border-radius:18px;
+padding:0 16px;
 background:#10263b;
 color:white;
-padding:0 16px;
 font-size:22px;
 font-weight:800;
 }
@@ -145,8 +146,31 @@ border-radius:18px;
 font-size:15px;
 font-weight:800;
 color:white;
+
 background:
-linear-gradient(135deg,#46df75,#268646);
+linear-gradient(135deg,#49e174,#248845);
+}
+
+.measureBtns{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:12px;
+}
+
+.measureBtn{
+height:46px;
+border:none;
+border-radius:16px;
+font-size:14px;
+font-weight:800;
+color:white;
+background:#183149;
+}
+
+.measureBtn.active{
+outline:2px solid #71d0ff;
+background:#21496f;
 }
 
 .tagGrid{
@@ -163,16 +187,16 @@ border-radius:14px;
 font-size:13px;
 font-weight:700;
 color:white;
-background:#17314a;
+background:#17314b;
 }
 
 .tag.active{
-outline:2px solid #71d0ff;
-background:#21476c;
+outline:2px solid #72d1ff;
+background:#22496e;
 }
 
 .chart{
-height:130px;
+height:140px;
 display:flex;
 align-items:flex-end;
 gap:8px;
@@ -189,10 +213,10 @@ align-items:center;
 width:100%;
 border-radius:10px 10px 4px 4px;
 background:
-linear-gradient(180deg,#87f6a2,#2f964c);
+linear-gradient(180deg,#8cf5a5,#2d9449);
 
 box-shadow:
-0 6px 18px rgba(72,225,107,.22);
+0 6px 18px rgba(67,222,104,.24);
 }
 
 .barValue{
@@ -206,18 +230,39 @@ margin-top:6px;
 color:#8ea3b6;
 }
 
+.timeline{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.event{
+padding:12px;
+border-radius:16px;
+background:rgba(255,255,255,.04);
+font-size:14px;
+line-height:1.5;
+color:#dfe8f1;
+}
+
 .bottomBar{
 position:fixed;
 left:0;
 right:0;
 bottom:0;
 padding:12px 14px calc(12px + env(safe-area-inset-bottom));
-background:rgba(3,10,18,.95);
+
+background:
+rgba(4,10,18,.95);
+
 backdrop-filter:blur(18px);
+
 display:grid;
 grid-template-columns:1fr 1fr 1fr;
 gap:10px;
-border-top:1px solid rgba(255,255,255,.06);
+
+border-top:
+1px solid rgba(255,255,255,.06);
 }
 
 .actionBtn{
@@ -231,12 +276,12 @@ color:white;
 
 .trainBtn{
 background:
-linear-gradient(135deg,#42dc70,#258946);
+linear-gradient(135deg,#43da6f,#258946);
 }
 
 .recoveryBtn{
 background:
-linear-gradient(135deg,#5c90ef,#355db0);
+linear-gradient(135deg,#5d8ff0,#355cb1);
 }
 
 .sosBtn{
@@ -252,8 +297,10 @@ flex-direction:column;
 align-items:center;
 justify-content:center;
 padding:24px;
+
 background:
-radial-gradient(circle at center,#10243a 0%,#020912 100%);
+radial-gradient(circle at center,#12263d 0%,#020912 100%);
+
 z-index:999;
 }
 
@@ -267,9 +314,9 @@ font-weight:900;
 }
 
 .modePhase{
+margin-top:12px;
 font-size:30px;
 font-weight:800;
-margin-top:12px;
 }
 
 .modeHint{
@@ -284,14 +331,37 @@ min-height:56px;
 
 .ballAura{
 position:absolute;
-width:250px;
-height:250px;
+width:260px;
+height:260px;
 border-radius:50%;
+
 background:
 radial-gradient(circle,
-rgba(85,190,255,.25),
+rgba(90,190,255,.22),
 transparent 70%);
+
 filter:blur(40px);
+
+animation:aura 7s ease-in-out infinite;
+}
+
+@keyframes aura{
+
+0%{
+transform:scale(.92);
+opacity:.22;
+}
+
+50%{
+transform:scale(1.06);
+opacity:.34;
+}
+
+100%{
+transform:scale(.92);
+opacity:.22;
+}
+
 }
 
 .ball{
@@ -299,10 +369,10 @@ position:relative;
 width:110px;
 height:110px;
 border-radius:50%;
-margin-top:30px;
+margin-top:28px;
 
 background:
-radial-gradient(circle at 30% 30%,#d7fbff,#48bcff);
+radial-gradient(circle at 30% 30%,#d7fbff,#4abaff);
 
 box-shadow:
 0 0 70px rgba(72,188,255,.4);
@@ -321,23 +391,26 @@ letter-spacing:-2px;
 .tapRow{
 display:flex;
 gap:20px;
-margin-top:28px;
+margin-top:26px;
 }
 
 .tap{
 width:72px;
 height:72px;
 border-radius:50%;
-background:rgba(255,255,255,.08);
 display:flex;
 align-items:center;
 justify-content:center;
 font-size:26px;
+
+background:
+rgba(255,255,255,.08);
+
 transition:.25s;
 }
 
 .tap.active{
-background:#66c9ff;
+background:#69cbff;
 transform:scale(1.12);
 }
 
@@ -350,7 +423,7 @@ border-radius:18px;
 font-size:15px;
 font-weight:800;
 color:white;
-background:#183149;
+background:#173149;
 }
 
 @media(max-width:560px){
@@ -393,44 +466,56 @@ Bitte zuerst einen HRV-Wert eintragen.
 <div class="stats">
 
 <div class="stat">
+
 <div class="statLabel">
 HRV Jetzt
 </div>
+
 <div class="statValue"
 id="hrvValue">
 --
 </div>
+
 <div class="statHint"
 id="trendText">
 Analyse läuft
 </div>
+
 </div>
 
 <div class="stat">
+
 <div class="statLabel">
 Ø 7 Tage
 </div>
+
 <div class="statValue"
 id="avgValue">
 --
 </div>
+
 <div class="statHint">
 Persönlicher Schnitt
 </div>
+
 </div>
 
 <div class="stat">
+
 <div class="statLabel">
 Zustand
 </div>
+
 <div class="statValue"
 id="stateEmoji">
 🧠
 </div>
+
 <div class="statHint"
 id="stateText">
 Keine Daten
 </div>
+
 </div>
 
 </div>
@@ -440,7 +525,7 @@ Keine Daten
 <div class="card">
 
 <div class="sectionTitle">
-HRV eintragen
+Messung
 </div>
 
 <div class="inputRow">
@@ -455,6 +540,22 @@ placeholder="z.B. 41">
 class="saveBtn"
 onclick="App.saveHRV()">
 Speichern
+</button>
+
+</div>
+
+<div class="measureBtns">
+
+<button
+class="measureBtn active"
+data-measure="before">
+Vor Regulation
+</button>
+
+<button
+class="measureBtn"
+data-measure="after">
+Nach Regulation
 </button>
 
 </div>
@@ -524,11 +625,28 @@ Noch keine Vergleichswerte vorhanden.
 <div class="card">
 
 <div class="sectionTitle">
-HRV Verlauf
+Verlauf
 </div>
 
 <div class="chart"
 id="chart"></div>
+
+</div>
+
+<div class="card">
+
+<div class="sectionTitle">
+Ereignisse
+</div>
+
+<div class="timeline"
+id="timeline">
+
+<div class="event">
+Noch keine Einträge vorhanden.
+</div>
+
+</div>
 
 </div>
 
@@ -571,7 +689,7 @@ Einatmen
 
 <div class="modeHint"
 id="modeHint">
-Langsam durch die Nase atmen
+Langsam durch die Nase einatmen
 </div>
 
 <div class="ballAura"></div>
@@ -608,13 +726,13 @@ Beenden
 
 <script>
 
-/* =====================================================
+/* ====================================================
 STORAGE
-===================================================== */
+==================================================== */
 
 const Storage = {
 
-key:"vagusbuk_801",
+key:"vagusbuk_802",
 
 load(){
 
@@ -643,15 +761,16 @@ JSON.stringify(data)
 
 };
 
-/* =====================================================
+/* ====================================================
 APP
-===================================================== */
+==================================================== */
 
 const App = {
 
 data:Storage.load(),
 
 selectedTag:"morning",
+selectedMeasure:"before",
 
 saveHRV(){
 
@@ -666,14 +785,19 @@ return;
 }
 
 this.data.push({
+
 value:value,
 tag:this.selectedTag,
+measure:this.selectedMeasure,
 date:Date.now()
+
 });
 
-if(this.data.length > 120){
+if(this.data.length > 200){
+
 this.data =
-this.data.slice(-120);
+this.data.slice(-200);
+
 }
 
 Storage.save(this.data);
@@ -725,23 +849,19 @@ if(!latest){
 return;
 }
 
-const latestValue =
+const value =
 latest.value;
 
 const low =
 avg
-? latestValue < avg * .9
-: latestValue < 35;
+? value < avg * .9
+: value < 35;
 
 const mid =
 avg
-? latestValue >= avg * .9 &&
-latestValue < avg * 1.05
-: latestValue < 45;
-
-/* =========================================
-ANALYSE
-========================================= */
+? value >= avg * .9 &&
+value < avg * 1.05
+: value < 45;
 
 let title = ""
 let text = ""
@@ -756,10 +876,10 @@ title =
 "⚡ Innerlich unruhig"
 
 text =
-"Das Nervensystem wirkt aktiviert, aber nicht stabil."
+"Das Nervensystem wirkt aktiviert."
 
 today =
-"Heute eher Recovery und langsame Ausatmung."
+"Recovery und lange Ausatmung."
 
 trend =
 "Unruhe erkannt"
@@ -778,7 +898,7 @@ text =
 "Das System wirkt reizempfindlich."
 
 today =
-"Reize reduzieren und Recovery priorisieren."
+"Reize reduzieren."
 
 trend =
 "Nebel erkannt"
@@ -797,7 +917,7 @@ text =
 "Kopf-/Ohrdruck kann Überlastung anzeigen."
 
 today =
-"Heute möglichst reizarm bleiben."
+"Kein intensives Training."
 
 trend =
 "Druck erkannt"
@@ -832,7 +952,7 @@ title =
 "⚠ Mittlere Belastbarkeit"
 
 text =
-"Heute ruhiger bleiben."
+"Heute besser ruhig bleiben."
 
 today =
 "Recovery wahrscheinlich sinnvoll."
@@ -882,43 +1002,59 @@ emoji;
 document.getElementById("stateText").innerText =
 state;
 
-/* =========================================
-REGULATIONSWIRKUNG
-========================================= */
+this.renderEffect();
+this.renderChart();
+this.renderTimeline();
 
-const last2 =
-this.data.slice(-2);
+},
 
-if(last2.length >= 2){
+renderEffect(){
+
+const effect =
+document.getElementById("effectText");
+
+const before =
+[...this.data]
+.reverse()
+.find(x=>x.measure==="before");
+
+const after =
+[...this.data]
+.reverse()
+.find(x=>x.measure==="after");
+
+if(!before || !after){
+
+effect.innerText =
+"Noch kein Vorher/Nachher-Vergleich."
+
+return;
+
+}
 
 const diff =
-last2[1].value - last2[0].value;
-
-let msg = ""
+after.value - before.value;
 
 if(diff > 0){
 
-msg =
+effect.innerText =
 `HRV zuletzt um +${diff} verbessert. Regulation scheint hilfreich.`;
 
-}else if(diff < 0){
+}
 
-msg =
+else if(diff < 0){
+
+effect.innerText =
 `HRV zuletzt um ${diff} gefallen. System wahrscheinlich belastet.`;
 
-}else{
-
-msg =
-"Keine Veränderung zwischen den letzten Messungen."
-
 }
 
-document.getElementById("effectText").innerText =
-msg;
+else{
+
+effect.innerText =
+"Keine Veränderung nach Regulation."
 
 }
-
-this.renderChart();
 
 },
 
@@ -982,13 +1118,67 @@ chart.appendChild(wrap);
 
 });
 
+},
+
+renderTimeline(){
+
+const box =
+document.getElementById("timeline");
+
+box.innerHTML = ""
+
+const latest =
+[...this.data]
+.reverse()
+.slice(0,5);
+
+if(!latest.length){
+
+box.innerHTML =
+'<div class="event">Noch keine Einträge vorhanden.</div>';
+
+return;
+
+}
+
+latest.forEach(item=>{
+
+const div =
+document.createElement("div");
+
+div.className =
+"event"
+
+const time =
+new Date(item.date)
+.toLocaleTimeString(
+"de-DE",
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+
+div.innerHTML =
+`
+<b>${item.value} HRV</b>
+• ${item.tag}
+• ${item.measure}
+<br>
+${time}
+`;
+
+box.appendChild(div);
+
+});
+
 }
 
 };
 
-/* =====================================================
-TAGS
-===================================================== */
+/* ====================================================
+BUTTONS
+==================================================== */
 
 document
 .querySelectorAll(".tag")
@@ -1011,9 +1201,30 @@ btn.dataset.tag;
 
 });
 
-/* =====================================================
+document
+.querySelectorAll(".measureBtn")
+.forEach(btn=>{
+
+btn.addEventListener("click",()=>{
+
+document
+.querySelectorAll(".measureBtn")
+.forEach(b=>{
+b.classList.remove("active");
+});
+
+btn.classList.add("active");
+
+App.selectedMeasure =
+btn.dataset.measure;
+
+});
+
+});
+
+/* ====================================================
 PACER
-===================================================== */
+==================================================== */
 
 const Pacer = {
 
@@ -1028,24 +1239,28 @@ training:{
 title:"🫁 Training",
 duration:300,
 phases:[
+
 {
 name:"Einatmen",
 hint:"Langsam durch die Nase einatmen",
 duration:4,
 scale:1.5
 },
+
 {
 name:"Halten",
 hint:"Kurz ruhig bleiben",
 duration:2,
 scale:1.5
 },
+
 {
 name:"Ausatmen",
 hint:"Summend langsam ausatmen",
 duration:6,
 scale:.7
 }
+
 ]
 },
 
@@ -1053,18 +1268,21 @@ recovery:{
 title:"🌙 Recovery",
 duration:240,
 phases:[
+
 {
 name:"Einatmen",
 hint:"Sanft Luft holen",
 duration:4,
 scale:1.25
 },
+
 {
 name:"Ausatmen",
 hint:"Sehr langsam entspannen",
 duration:7,
 scale:.65
 }
+
 ]
 },
 
@@ -1072,18 +1290,21 @@ sos:{
 title:"⚠ SOS",
 duration:180,
 phases:[
+
 {
 name:"Einatmen",
 hint:"Nur leicht einatmen",
 duration:3,
 scale:1.1
 },
+
 {
 name:"Ausatmen",
 hint:"Ultralang ausatmen",
 duration:8,
 scale:.55
 }
+
 ]
 }
 
@@ -1153,9 +1374,9 @@ phase.duration * 1000
 
 runPhase();
 
-/* ===================================
+/* ===============================
 TAPPING
-=================================== */
+=============================== */
 
 let left = true;
 
@@ -1190,9 +1411,9 @@ left = !left;
 
 },700);
 
-/* ===================================
+/* ===============================
 TIMER
-=================================== */
+=============================== */
 
 this.timer =
 setInterval(()=>{
@@ -1242,9 +1463,9 @@ document
 
 };
 
-/* =====================================================
+/* ====================================================
 INIT
-===================================================== */
+==================================================== */
 
 App.render();
 
